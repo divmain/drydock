@@ -35,21 +35,21 @@ gulpHelp(gulp);
 
 gulp.task("default", false, ["help"], function () {});
 
-gulp.task("build", "Copy assets, build CSS and JS.", ["lint", "test-phantom"], function () {
-  gulp.run("clean");
-  gulp.run("copy");
-  gulp.run("build:css");
-  gulp.run("build:js");
+gulp.task("frontend:build", "Copy assets, build CSS and JS.", ["frontend:lint", "frontend:test-phantom"], function () {
+  gulp.run("frontend:clean");
+  gulp.run("frontend:copy");
+  gulp.run("frontend:build:css");
+  gulp.run("frontend:build:js");
 });
 
-gulp.task("build-dev", "Build, but with unminified JS + sourcemaps.", ["clean"], function () {
-  gulp.run("copy");
-  gulp.run("build:css");
-  gulp.run("build:js-dev");
+gulp.task("frontend:build-dev", "Build, but with unminified JS + sourcemaps.", ["frontend:clean"], function () {
+  gulp.run("frontend:copy");
+  gulp.run("frontend:build:css");
+  gulp.run("frontend:build:js-dev");
 });
 
-gulp.task("watch", "Perform build-dev when sources change.", ["build-dev"], function () {
-  gulp.watch(path.join(config.srcFullPath, "**/*"), ["build-dev"]);
+gulp.task("frontend:watch", "Perform frontend:build-dev when sources change.", ["frontend:build-dev"], function () {
+  gulp.watch(path.join(config.frontendSrcFullPath, "**/*"), ["frontend:build-dev"]);
 });
 
 
@@ -57,37 +57,26 @@ gulp.task("watch", "Perform build-dev when sources change.", ["build-dev"], func
  * Component Tasks
  */
 
-gulp.task("clean", false, function () {
-  return gulp.src(path.join(config.dest, "*"))
+gulp.task("frontend:clean", false, function () {
+  return gulp.src(path.join(config.frontendDest, "*"))
     .pipe(clean());
 });
 
-gulp.task("copy", false, function () {
+gulp.task("frontend:copy", false, function () {
   return gulp.src(
-    path.join(config.srcFullPath, config.assets, "**/*"),
-    { base: path.join(config.srcFullPath, config.assets) }
-  ).pipe(gulp.dest(config.destFullPath));
+    path.join(config.frontendSrcFullPath, config.frontendAssets, "**/*"),
+    { base: path.join(config.frontendSrcFullPath, config.frontendAssets) }
+  ).pipe(gulp.dest(config.frontendDestFullPath));
 });
 
-gulp.task("lint", "Lint application- and test-code.", function () {
+gulp.task("frontend:lint", "Lint frontend application- and test-code.", function () {
   return gulp.src([
-    path.join(config.srcFullPath, config.js, "**/*.js"),
-    path.join(config.srcFullPath, "spec/js", "**/*.js"),
+    path.join(config.frontendSrcFullPath, config.frontendJs, "**/*.js"),
+    path.join(config.frontendSrcFullPath, "spec/js", "**/*.js"),
     path.join(config.root, "*.js")
   ])
     .pipe(eslint())
     .pipe(eslint.format());
-});
-
-gulp.task("reload:server", false, function () {
-  gulp.src(config.destFullPath)
-    .pipe(webserver({
-      livereload: true,
-      directoryListing: true,
-      port: config.port,
-      open: "/",
-      https: false
-    }));
 });
 
 
@@ -95,14 +84,14 @@ gulp.task("reload:server", false, function () {
  * Stylus / CSS
  */
 
-gulp.task("build:css", "Build CSS.", function () {
-  return gulp.src(path.join(config.srcFullPath, config.styles, "*"))
+gulp.task("frontend:build:css", "Build CSS.", function () {
+  return gulp.src(path.join(config.frontendSrcFullPath, config.frontendStyles, "*"))
     .pipe(stylus({
       set: ["compress"],
       define: { "ie8": true }
     }))
     .pipe(prefix("last 1 version", "> 1%", "ie 8"))
-    .pipe(gulp.dest(path.join(config.destFullPath, "styles")));
+    .pipe(gulp.dest(path.join(config.frontendDestFullPath, "styles")));
 });
 
 
@@ -110,7 +99,7 @@ gulp.task("build:css", "Build CSS.", function () {
  * JS
  */
 
-gulp.task("build:js", "Build minified JS.", function (callback) {
+gulp.task("frontend:build:js", "Build minified JS.", function (callback) {
   var webpackConf = _.cloneDeep(webpackConfig);
 
   webpackConf.plugins = webpackConf.plugins.concat([
@@ -134,7 +123,7 @@ gulp.task("build:js", "Build minified JS.", function (callback) {
   });
 });
 
-gulp.task("build:js-dev", "Build unminified JS, including sourcemaps.", function (callback) {
+gulp.task("frontend:build:js-dev", "Build unminified JS, including sourcemaps.", function (callback) {
   var webpackConf = _.cloneDeep(webpackConfig);
   webpackConf.devtool = "sourcemap";
   webpackConf.debug = true;
@@ -165,7 +154,7 @@ _frontendTest = function (includeCoverage) {
 
   if (includeCoverage) {
     wpConfig.module.postLoaders = [{
-      test: new RegExp(path.join(config.src, config.js)),
+      test: new RegExp(path.join(config.frontendSrc, config.frontendJs)),
       loader: "coverjs-loader"
     }];
   }
@@ -189,11 +178,11 @@ _frontendTest = function (includeCoverage) {
   return server;
 };
 
-gulp.task("test", "Run unit tests in the browser.", _.partial(_frontendTest, false));
-gulp.task("test-coverage", "Run unit tests in browser, include coverage.",
+gulp.task("frontend:test", "Run unit tests in the browser.", _.partial(_frontendTest, false));
+gulp.task("frontend:test-coverage", "Run unit tests in browser, include coverage.",
   _.partial(_frontendTest, true));
 
-gulp.task("test-karma", "Auto-run unit tests in multiple browsers.", function (done) {
+gulp.task("frontend:test-karma", "Auto-run unit tests in multiple browsers.", function (done) {
   karma.start({
     configFile:  path.join(config.root, config.karmaConfig),
     browsers: ["Chrome", "Firefox", "Safari"],
@@ -208,7 +197,7 @@ gulp.task("test-karma", "Auto-run unit tests in multiple browsers.", function (d
   });
 });
 
-gulp.task("test-phantom", "Run browser unit tests in the console.", function (done) {
+gulp.task("frontend:test-phantom", "Run browser unit tests in the console.", function (done) {
   karma.start({
     configFile: path.join(config.root, config.karmaConfig),
     browsers: ["PhantomJS"],
@@ -223,7 +212,7 @@ gulp.task("test-phantom", "Run browser unit tests in the console.", function (do
   });
 });
 
-gulp.task("test-watch", "Run browser unit tests in console, run again on change.", function (done) {
+gulp.task("frontend:test-watch", "Run browser unit tests in console, run again on change.", function (done) {
   karma.start({
     configFile: path.join(config.root, config.karmaConfig),
     browsers: ["PhantomJS"],

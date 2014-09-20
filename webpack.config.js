@@ -3,14 +3,14 @@ var
   config = require("./project.config");
 
 module.exports = {
-  context: config.srcFullPath,
+  context: config.frontendSrcFullPath,
   cache: true,
   entry: {
     main: "./js/main.js"
   },
   output: {
-    path: path.join(config.destFullPath, config.js),
-    publicPath: config.js + "/",
+    path: path.join(config.frontendDestFullPath, config.frontendJs),
+    publicPath: config.frontendJs + "/",
     filename: "[name].bundle.js",
     chunkFilename: "[id].bundle.js",
     sourceMapFilename: "[file].map"
