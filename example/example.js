@@ -9,6 +9,22 @@ var
     }
   });
 
+surrogate.addJsonRoute({
+  name: "set-info",
+  method: "POST",
+  path: "/api/person",
+  handlers: {
+    "set-person-success": {
+      description: "Save the prson info",
+      handler: function (request) {
+        this.state.birthday = request.payload.birthday;
+        this.cookies.hasBirthday = true;
+        return { status: "OK" };
+      }
+    }
+  }
+});
+
 surrogate.addHtmlRoute({
   name: "get-info",
   method: "GET",
@@ -25,6 +41,7 @@ surrogate.addHtmlRoute({
 
         return selectedOption(name + " " + birthday);
       },
+      optionHelperText: "What should birthday info be wrapped in?",
       optionsType: "selectOne",
       options: {
         "wrap in body": function (str) {
@@ -42,22 +59,6 @@ surrogate.addHtmlRoute({
           code: 401,
           payload: "<html>can't do that right now...</html>"
         });
-      }
-    }
-  }
-});
-
-surrogate.addJsonRoute({
-  name: "set-info",
-  method: "POST",
-  path: "/api/person",
-  handlers: {
-    "set-person-success": {
-      description: "Save the prson info",
-      handler: function (request) {
-        this.state.birthday = request.payload.birthday;
-        this.cookies.hasBirthday = true;
-        return { status: "OK" };
       }
     }
   }
