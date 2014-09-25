@@ -71,8 +71,7 @@ gulp.task("frontend:copy", false, function () {
 
 gulp.task("frontend:lint", "Lint frontend application- and test-code.", function () {
   return gulp.src([
-    path.join(config.frontendSrcFullPath, config.frontendJs, "**/*.js"),
-    path.join(config.frontendSrcFullPath, "spec/js", "**/*.js"),
+    path.join(config.frontendSrcFullPath, "**/*.js"),
     path.join(config.root, "*.js")
   ])
     .pipe(eslint())
@@ -154,7 +153,7 @@ _frontendTest = function (includeCoverage) {
 
   if (includeCoverage) {
     wpConfig.module.postLoaders = [{
-      test: new RegExp(path.join(config.frontendSrc, config.frontendJs)),
+      test: /^((?!(\/spec\/|\/node_modules\/)).)*$/,
       loader: "coverjs-loader"
     }];
   }
