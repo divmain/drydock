@@ -25,7 +25,8 @@ surrogate.addHtmlRoute({
 
         return selectedOption(name + " " + birthday);
       },
-      optionsSelectOne: {
+      optionsType: "selectOne",
+      options: {
         "wrap in body": function (str) {
           return "<html><body>" + str + "</body></html>";
         },
