@@ -6,16 +6,17 @@ define([
   Promise
 ) {
 
-  var justWhitespace = /^\s*$/;
+  var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
+    justWhitespace = /^\s*$/;
 
-  var assertSuccess = function (resolvedXhr) {
+  assertSuccess = function (resolvedXhr) {
     if (resolvedXhr.status > 299 || resolvedXhr.status < 200) {
       throw resolvedXhr;
     }
     return resolvedXhr;
   };
 
-  var parseHeaders = function (headerText) {
+  parseHeaders = function (headerText) {
     return _.chain(headerText.split("\n"))
       .filter(function (headerLine) {
         return justWhitespace.test(headerLine);
@@ -31,7 +32,7 @@ define([
       .value();
   };
 
-  var buildResolved = function (resolve) {
+  buildResolved = function (resolve) {
     return function (xhr) {
       resolve({
         data: xhr.target.response,
@@ -42,13 +43,13 @@ define([
     };
   };
 
-  var buildRejected = function (reject) {
+  buildRejected = function (reject) {
     return function (xhr) {
       reject(xhr);
     };
   };
 
-  var request = function (method, url, options) {
+  request = function (method, url, options) {
     var data, xhr, username, password;
 
     method = (method || "GET").toUpperCase();
@@ -67,11 +68,14 @@ define([
       xhr.open(method, url, true, username, password);
 
       if (method !== "GET") {
-        data = _.isObject(options.data) ?
-          JSON.stringify(options.data) :
-          _.isString(options.data) ?
-            options.data :
-            "{}";
+        if (_.isObject(options.data)) {
+          data = JSON.stringify(options.data);
+        } else if (_.isString(options.data)) {
+          data = options.data;
+        } else {
+          data = "{}";
+        }
+
         xhr.setRequestHeader("content-type", options.contentType);
       }
 

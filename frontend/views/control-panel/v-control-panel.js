@@ -39,16 +39,17 @@ define([
       // range 0 - 10
       delayWidgetPosition: {
         $get: function () {
+          var number;
           if (this.delay === 0) {
             return 0;
           } else if (this.delay === "forever") {
             return 10;
           }
-          var number = Math.log(this.delay / 10) / Math.log(2);
+          number = Math.log(this.delay / 10) / Math.log(2);
           return parseFloat(number.toPrecision(2));
         },
         $set: function (newValue) {
-          newValue = parseFloat(newValue)
+          newValue = parseFloat(newValue);
           if (newValue === 0) {
             this.delay = 0;
           } else if (newValue === 10) {
@@ -61,7 +62,7 @@ define([
       delayDisplay: function () {
         return this.delay === "forever" ?
           "HANG" :
-          this.delay.toString() + " ms"
+          this.delay.toString() + " ms";
       }
     },
     components: {

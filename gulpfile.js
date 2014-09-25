@@ -11,7 +11,6 @@ var _frontendTest,
   prefix = require("gulp-autoprefixer"),
   eslint = require("gulp-eslint"),
   openUrl = require("open"),
-  webserver = require("gulp-webserver"),
 
   // Tests
   karma = require("karma").server,
@@ -35,22 +34,37 @@ gulpHelp(gulp);
 
 gulp.task("default", false, ["help"], function () {});
 
-gulp.task("frontend:build", "Copy assets, build CSS and JS.", ["frontend:lint", "frontend:test-phantom"], function () {
-  gulp.run("frontend:clean");
-  gulp.run("frontend:copy");
-  gulp.run("frontend:build:css");
-  gulp.run("frontend:build:js");
-});
+gulp.task(
+  "frontend:build",
+  "Copy assets, build CSS and JS.",
+  ["frontend:lint", "frontend:test-phantom"],
+  function () {
+    gulp.run("frontend:clean");
+    gulp.run("frontend:copy");
+    gulp.run("frontend:build:css");
+    gulp.run("frontend:build:js");
+  }
+);
 
-gulp.task("frontend:build-dev", "Build, but with unminified JS + sourcemaps.", ["frontend:clean"], function () {
-  gulp.run("frontend:copy");
-  gulp.run("frontend:build:css");
-  gulp.run("frontend:build:js-dev");
-});
+gulp.task(
+  "frontend:build-dev",
+  "Build, but with unminified JS + sourcemaps.",
+  ["frontend:clean"],
+  function () {
+    gulp.run("frontend:copy");
+    gulp.run("frontend:build:css");
+    gulp.run("frontend:build:js-dev");
+  }
+);
 
-gulp.task("frontend:watch", "Perform frontend:build-dev when sources change.", ["frontend:build-dev"], function () {
-  gulp.watch(path.join(config.frontendSrcFullPath, "**/*"), ["frontend:build-dev"]);
-});
+gulp.task(
+  "frontend:watch",
+  "Perform frontend:build-dev when sources change.",
+  ["frontend:build-dev"],
+  function () {
+    gulp.watch(path.join(config.frontendSrcFullPath, "**/*"), ["frontend:build-dev"]);
+  }
+);
 
 
 /**
@@ -122,7 +136,7 @@ gulp.task("frontend:build:js", "Build minified JS.", function (callback) {
   });
 });
 
-gulp.task("frontend:build:js-dev", "Build unminified JS, including sourcemaps.", function (callback) {
+gulp.task("frontend:build:js-dev", "Build unminified JS with sourcemaps.", function (callback) {
   var webpackConf = _.cloneDeep(webpackConfig);
   webpackConf.devtool = "sourcemap";
   webpackConf.debug = true;
@@ -211,7 +225,7 @@ gulp.task("frontend:test-phantom", "Run browser unit tests in the console.", fun
   });
 });
 
-gulp.task("frontend:test-watch", "Run browser unit tests in console, run again on change.", function (done) {
+gulp.task("frontend:test-watch", "Run tests in console; run again on change.", function (done) {
   karma.start({
     configFile: path.join(config.root, config.karmaConfig),
     browsers: ["PhantomJS"],

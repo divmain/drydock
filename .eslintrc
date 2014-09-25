@@ -144,7 +144,8 @@
     "after": true,
     "it": true,
     "sinon": true,
-    "expect": true
+    "expect": true,
+    "define": true
   },
   "env":{
     "browser": true,

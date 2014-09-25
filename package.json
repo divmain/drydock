@@ -40,7 +40,6 @@
     "karma-chrome-launcher": "^0.1.4",
     "karma-mocha": "^0.1.9",
     "karma-sinon-chai": "^0.2.0",
-    "gulp-webserver": "^0.8.1",
     "gulp-help": "^1.1.0",
     "bluebird": "^2.3.2",
     "vue": "^0.10.6"
