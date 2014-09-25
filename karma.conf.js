@@ -11,9 +11,9 @@ module.exports = function (config) {
   config.set({
     basePath: projectConfig.root,
     frameworks: ["mocha", "sinon-chai"],
-    files: [ "frontend/spec/js/**/*.js" ],
+    files: [ "spec/frontend/**/*.js" ],
     exclude: [],
-    preprocessors: { "frontend/**/*.js": ["webpack"] },
+    preprocessors: { "spec/frontend/**/*.js": ["webpack"] },
     webpack: webpackConfig,
     webpackServer: {
       hot: true,

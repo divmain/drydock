@@ -3,10 +3,10 @@ var
   config = require("./project.config");
 
 module.exports = {
-  context: config.frontendSrcFullPath,
+  context: config.root,
   cache: true,
   entry: {
-    main: "./js/main.js"
+    main: "./frontend/main.js"
   },
   output: {
     path: path.join(config.frontendDestFullPath, config.frontendJs),
