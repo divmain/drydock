@@ -1,8 +1,8 @@
 define([
   "lodash",
   "vue",
-  "../../util/ajax.js",
-  "../route-config/v-route-config.js",
+  "frontend/util/ajax",
+  "frontend/views/route-config/v-route-config",
   "./v-control-panel.tmpl",
   "./v-control-panel.styl"
 ], function (_, Vue, ajax, RouteConfig, tmpl) {
