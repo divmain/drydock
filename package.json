@@ -1,5 +1,6 @@
 {
   "name": "surrogate",
+  "main": "lib/index.js",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -41,5 +42,10 @@
     "karma-sinon-chai": "^0.2.0",
     "gulp-webserver": "^0.8.1",
     "gulp-help": "^1.1.0"
+  },
+  "dependencies": {
+    "uuid": "^1.4.1",
+    "lodash": "^2.4.1",
+    "hapi": "^6.8.1"
   }
 }
