@@ -55,6 +55,7 @@ surrogate.addJsonRoute({
       description: "Save the prson info",
       handler: function (request) {
         this.state.birthday = request.payload.birthday;
+        this.cookies.hasBirthday = true;
         return { status: "OK" };
       }
     }
