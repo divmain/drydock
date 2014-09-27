@@ -9,7 +9,7 @@ var
     }
   });
 
-surrogate.addJsonRoute({
+surrogate.jsonRoute({
   name: "set-info",
   method: "POST",
   path: "/api/person",
@@ -25,7 +25,7 @@ surrogate.addJsonRoute({
   }
 });
 
-surrogate.addHtmlRoute({
+surrogate.htmlRoute({
   name: "get-info",
   method: "GET",
   path: "/api/person",
@@ -41,7 +41,7 @@ surrogate.addHtmlRoute({
 
         return selectedOption(name + " " + birthday);
       },
-      optionHelperText: "What should birthday info be wrapped in?",
+      optionsHelperText: "What should birthday info be wrapped in?",
       optionsType: "selectOne",
       options: {
         "wrap in body": function (str) {
@@ -64,7 +64,7 @@ surrogate.addHtmlRoute({
   }
 });
 
-surrogate.addHapiRoute({
+surrogate.hapiRoute({
   name: "restart"
   method: "POST",
   path: "/surrogate/api/restart",
