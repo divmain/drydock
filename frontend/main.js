@@ -5,7 +5,7 @@ define([
 ], function (_, ajax, ControlPanel) {
   var routes;
 
-  ajax.get("/surrogate/all-routes").then(function (response) {
+  ajax.get("/surrogate/api/routes").then(function (response) {
     routes = JSON.parse(response.data);
   }).then(function () {
     (new ControlPanel({
