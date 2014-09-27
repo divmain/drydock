@@ -12,7 +12,7 @@ define([
 
     created: function () {
       this.$watch("delay", _.debounce(function (newValue) {
-        ajax.put("/surrogate/api/response-delay", {
+        ajax.put("/surrogate/api/delay", {
           data: { delay: newValue }
         });
       }, 300));
