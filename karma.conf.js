@@ -10,10 +10,10 @@ delete webpackConfig.entry;
 module.exports = function (config) {
   config.set({
     basePath: projectConfig.root,
-    frameworks: ["mocha", "sinon-chai"],
-    files: [ "spec/frontend/**/*.js" ],
+    frameworks: ["mocha"],
+    files: [ "spec/test-runner.js" ],
     exclude: [],
-    preprocessors: { "spec/frontend/**/*.js": ["webpack"] },
+    preprocessors: { "spec/test-runner.js": ["webpack"] },
     webpack: webpackConfig,
     webpackServer: {
       hot: true,
@@ -47,7 +47,6 @@ module.exports = function (config) {
 
     plugins: [
       require("karma-mocha"),
-      require("karma-sinon-chai"),
       require("karma-phantomjs-launcher"),
       require("karma-chrome-launcher"),
       require("karma-firefox-launcher"),
