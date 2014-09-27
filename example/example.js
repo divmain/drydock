@@ -64,17 +64,4 @@ surrogate.htmlRoute({
   }
 });
 
-surrogate.hapiRoute({
-  name: "restart",
-  method: "POST",
-  path: "/surrogate/api/restart",
-  handler: function (request, reply) {
-    surrogate.restart(function () {
-      reply("OK")
-        .type("text/plain")
-        .code(200);
-    });
-  }
-});
-
 surrogate.start();
