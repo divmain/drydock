@@ -9,20 +9,15 @@ define([
 
   return Vue.extend({
     template: tmpl,
-    created: function () {
-      // Push new data to server on data change
-      this.$watch("routes", function (newValue) {
-        ajax.put("/surrogate/api/routes", {
-          data: newValue
-        });
-      });
 
+    created: function () {
       this.$watch("delay", _.debounce(function (newValue) {
         ajax.put("/surrogate/api/response-delay", {
           data: { delay: newValue }
         });
       }, 300));
     },
+
     methods: {
       resetSurrogate: function () {
         ajax.post("/surrogate/api/reset").then(function () {
@@ -33,6 +28,7 @@ define([
         route.expanded = !route.expanded;
       }
     },
+
     computed: {
       // range 0 - 10
       delayWidgetPosition: {
@@ -63,6 +59,7 @@ define([
           this.delay.toString() + " ms";
       }
     },
+
     components: {
       "route-config": RouteConfig
     }
