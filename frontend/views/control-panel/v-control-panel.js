@@ -25,10 +25,8 @@ define([
     },
     methods: {
       resetSurrogate: function () {
-        ajax.post("/surrogate/api/restart").then(function () {
-          setTimeout(function () {
-            document.location.reload();
-          }, 1000);
+        ajax.post("/surrogate/api/reset").then(function () {
+          document.location.reload();
         });
       },
       toggleRouteConfig: function (route) {
