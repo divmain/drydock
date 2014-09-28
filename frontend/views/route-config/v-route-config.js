@@ -8,11 +8,13 @@ define([
 
   return Vue.extend({
     template: tmpl,
+
     computed: {
       selectedHandlerObj: function () {
         return _.find(this.handlers, { name: this.selectedHandler });
       }
     },
+
     methods: {
       selectHandler: function (handler) {
         this.$data.selectedHandler = handler.name;
