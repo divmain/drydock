@@ -8,25 +8,25 @@ define([
 
   return Vue.extend({
     template: tmpl,
+    computed: {
+      selectedHandlerObj: function () {
+        return _.find(this.handlers, { name: this.selectedHandler });
+      }
+    },
     methods: {
-      onMutatorSelectionChange: function (ev) {
-        var
-          selectedValue = ev.target.value,
-          route = _.findWhere(this.routes, {
-            path: ev.targetVM.route.path,
-            method: ev.targetVM.route.method
-          });
-        route.selectedMutator = selectedValue;
+      selectHandler: function (handler) {
+        this.$data.selectedHandler = handler.name;
+      },
+      updateSelectedOptions: function (handler, option) {
+        if (!_.contains(handler.selectedOptions, option)) {
+          handler.selectedOptions.push(option);
+        }
+      },
+      updateSelectedOption: function (handler, option) {
+        handler.selectedOption = option;
       },
       isSelected: function (option, options) {
         return _.contains(options, option);
-      },
-      changeMultiSelection: function (route, option) {
-        if (_.contains(route.selected, option)) {
-          route.selected.splice(route.selected.indexOf(option), 1);
-        } else {
-          route.selected.push(option);
-        }
       }
     }
   });

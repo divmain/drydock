@@ -4,26 +4,46 @@
       <h4>How would you like this route to behave?</h4>
       <div v-repeat="handler: route.handlers">
         <label>
-          <input type="radio" name="config-{{route.description}}" value="{{handler.name}}" v-model="route.selectedHandler"> {{handler.description}}<br />
+          <input
+            type="radio"
+            name="config-{{route.name}}"
+            value="{{handler.name}}"
+            v-model="route.selectedHandler"
+            v-on="change: selectHandler(handler)"
+          >
+          {{handler.description}}<br />
         </label>
       </div>
     </div>
-    <div class="config-panel">
-      <div v-repeat="handler: route.handlers">
-        <div v-if="handler.name === selectedHandler">
-          <h5>{{handler.helperText}}</h5>
-          <div v-if="handler.type === 'selectMany'">
-            <div v-repeat="option: handler.options">
-              <label><input type="checkbox" v-on="change: changeMultiSelection(handler, option)" v-attr="checked: isSelected(option, handler.selected)"> {{option}}</label>
-              <br>
-            </div>
-          </div>
-          <div v-if="handler.type === 'selectOne'">
-            <div v-repeat="option: handler.options">
-              <label><input type="radio" name="config-{{route.description}}-sselect-{{$index}}" value="{{option}}" v-model="handler.selected"> {{option}}</label>
-              <br />
-            </div>
-          </div>
+    <div class="config-panel" v-with="handler: selectedHandlerObj">
+      <h5>{{handler.optionsHelperText}}</h5>
+      <div v-if="handler.optionsType === 'selectMany'">
+        <div v-repeat="option: handler.options">
+          <label>
+            <input
+              type="checkbox"
+              name="config-{{route.description}}-selmany-{{$index}}"
+              v-on="change: updateSelectedOptions(handler, option)"
+              v-attr="checked: isSelected(option, handler.selected)"
+            >
+            {{option}}
+          </label>
+          <br>
+        </div>
+      </div>
+      <div v-if="handler.optionsType === 'selectOne'">
+        <div v-repeat="option: handler.options">
+          <label>
+            <input
+              type="radio"
+              name="config-{{route.description}}-selone-{{$index}}"
+              v-on="change: updateSelectedOption(handler, option)"
+              value="{{option}}"
+              v-model="handler.selectedOption"
+            >
+            {{option}}
+          </label>
+          <br />
         </div>
       </div>
     </div>
