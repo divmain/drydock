@@ -54,7 +54,7 @@ surrogate.htmlRoute({
     },
     "get-person-error": {
       description: "Return an error instead of the person's info.",
-      handler: function (request) {
+      handler: function () {
         throw new Surrogate.HttpErr({
           code: 401,
           payload: "<html>can't do that right now...</html>"
