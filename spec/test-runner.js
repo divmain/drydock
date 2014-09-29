@@ -8,6 +8,9 @@ window.chai.use(sinonChai);
 
 fixturesEl = document.createElement("div");
 fixturesEl.setAttribute("id", "fixtures");
+document.querySelector("body").appendChild(fixturesEl);
+fixturesEl.style.position = "absolute";
+fixturesEl.style.left = "5000px";
 
 require("spec/test-entry");
 

@@ -61,16 +61,22 @@ define([
 
     methods: {
       resetSurrogate: function () {
-        ajax.post("/surrogate/api/reset").then(function () {
-          document.location.reload();
+        var self = this;
+        return ajax.post("/surrogate/api/reset").then(function () {
+          self._getDocument().location.reload();
         });
       },
+
       toggleRouteConfig: function (route) {
         var alreadyExpanded = route.expanded;
         _.each(this.routes, function (route) {
           route.expanded = false;
         });
         route.expanded = !alreadyExpanded;
+      },
+
+      _getDocument: function () {
+        return document;
       }
     }
   });
