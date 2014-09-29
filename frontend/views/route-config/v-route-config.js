@@ -41,9 +41,6 @@ define([
           handler.selectedOptions.push(option);
         }
       },
-      updateSelectedOption: function (handler, option) {
-        handler.selectedOption = option;
-      },
       isSelected: function (option, options) {
         return _.contains(options, option);
       }
