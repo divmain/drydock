@@ -1,6 +1,7 @@
 var sandbox, routesFixture,
   ajax = require("frontend/util/ajax"),
   Promise = require("bluebird"),
+  testHelper = require("spec/helpers/test"),
   ControlPanel = require("frontend/views/control-panel/v-control-panel");
 
 routesFixture = [{
@@ -71,8 +72,9 @@ describe("views/", function () {
       it("should reload the page after the server is reset", function (done) {
         var self = this;
         this.view.resetSurrogate().then(function () {
-          expect(self.reloadStub).to.have.been.calledOnce;
-          done();
+          testHelper.captureExceptions(done, function () {
+            expect(self.reloadStub).to.have.been.calledOnce;
+          });
         });
       });
     });
