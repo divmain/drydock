@@ -37,6 +37,14 @@ describe("views/", function () {
   describe("control-panel", function () {
     beforeEach(function () {
       sandbox = sinon.sandbox.create();
+
+      this.view = new ControlPanel({
+        data: {
+          routes: routesFixture,
+          delay: 0
+        }
+      });
+      this.view.$mount("#fixtures");
     });
 
     afterEach(function () {
@@ -45,20 +53,11 @@ describe("views/", function () {
 
     describe("reset button", function () {
       beforeEach(function () {
-        this.view = new ControlPanel({
-          data: {
-            routes: routesFixture,
-            delay: 0
-          }
-        });
-
         this.reloadStub = sinon.stub();
         sandbox.stub(ajax, "post").returns(Promise.resolve());
         sinon.stub(this.view, "_getDocument").returns({ location: {
           reload: this.reloadStub
         }});
-
-        this.view.$mount("#fixtures");
       });
 
       it("should restart surrogate server when clicked", function () {
