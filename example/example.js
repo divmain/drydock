@@ -15,7 +15,7 @@ surrogate.jsonRoute({
   path: "/api/person",
   handlers: {
     "set-person-success": {
-      description: "Save the prson info",
+      description: "Save the person's info.",
       handler: function (request) {
         this.state.birthday = request.payload.birthday;
         this.cookies.hasBirthday = true;
