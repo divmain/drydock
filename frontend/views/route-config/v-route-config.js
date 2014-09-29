@@ -14,6 +14,12 @@ define([
       watchHash
     ],
 
+    computed: {
+      selectedHandlerObj: function () {
+        return _.find(this.handlers, { name: this.selectedHandler });
+      }
+    },
+
     watch: {
       "selectedHandler": function (newValue) {
         ajax.put("/surrogate/api/route/handler", {
@@ -23,26 +29,41 @@ define([
             selectedHandler: newValue
           }
         });
-      }
-    },
-
-    computed: {
-      selectedHandlerObj: function () {
-        return _.find(this.handlers, { name: this.selectedHandler });
+      },
+      "selectedHandlerObj.selectedOption": function (newSelection) {
+        if (newSelection) {
+          ajax.put("/surrogate/api/route/selected-option", {
+            data: {
+              method: this.$data.method,
+              path: this.$data.path,
+              handler: this.$data.selectedHandler,
+              selectedOption: newSelection
+            }
+          });
+        }
+      },
+      "selectedHandlerObj.selectedOptions": function (newSelections) {
+        if (newSelections) {
+          ajax.put("/surrogate/api/route/selected-options", {
+            data: {
+              method: this.$data.method,
+              path: this.$data.path,
+              handler: this.$data.selectedHandler,
+              selectedOptions: newSelections
+            }
+          });
+        }
       }
     },
 
     methods: {
-      selectHandler: function (handler) {
-        this.$data.selectedHandler = handler.name;
+      updateSelectedOptions: function (handler, newSelection) {
+        handler.selectedOptions = _.filter(handler.options, function (option) {
+          return _.contains(handler.selectedOptions, option) || option === newSelection;
+        });
       },
-      updateSelectedOptions: function (handler, option) {
-        if (!_.contains(handler.selectedOptions, option)) {
-          handler.selectedOptions.push(option);
-        }
-      },
-      isSelected: function (option, options) {
-        return _.contains(options, option);
+      isSelected: function (handler, option) {
+        return _.contains(handler.selectedOptions, option);
       }
     }
   });

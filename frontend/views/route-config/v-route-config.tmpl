@@ -10,9 +10,8 @@
             name="config-{{name}}"
             value="{{handler.name}}"
             v-model="selectedHandler"
-            v-on="change: selectHandler(handler)"
           >
-          {{handler.description}}<br />
+          {{handler.description}}
         </label>
       </div>
     </div>
@@ -26,7 +25,7 @@
               type="checkbox"
               name="config-{{description}}-selmany-{{$index}}"
               v-on="change: updateSelectedOptions(selectedHandlerObj, option)"
-              v-attr="checked: isSelected(option, selectedHandlerObj.selected)"
+              v-attr="checked: isSelected(selectedHandlerObj, option)"
             >
             {{option}}
           </label>
