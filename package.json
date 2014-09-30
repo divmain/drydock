@@ -43,7 +43,8 @@
     "gulp-help": "^1.1.0",
     "bluebird": "^2.3.2",
     "vue": "git://github.com/yyx990803/vue.git#19cfc9dd16faaf6f3451333cd14f755f7f434961",
-    "map-stream": "^0.1.0"
+    "map-stream": "^0.1.0",
+    "karma-mocha-reporter": "^0.3.1"
   },
   "dependencies": {
     "uuid": "^1.4.1",
