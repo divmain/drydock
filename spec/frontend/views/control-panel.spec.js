@@ -51,6 +51,36 @@ describe("views/", function () {
       sandbox.restore();
     });
 
+    describe("route table", function () {
+      it("displays the correct number of routes");
+
+      describe("row", function () {
+        it("displays the name");
+
+        it("displays the method");
+
+        it("displays the path");
+
+        describe("configure button, when clicked", function () {
+          it("expands the route config view if collapsed");
+
+          it("collapses the route config view if expanded");
+
+          it("collapses other route config views if collapsed");
+        });
+      });
+    });
+
+    describe("delay slider", function () {
+      it("updates the delay value logarithmically");
+
+      it("updates its position when the delay value changes");
+
+      it("shows FOREVER if the slider goes all the way to the right");
+
+      it("updates the surrogate backend with the delay value");
+    });
+
     describe("reset button", function () {
       beforeEach(function () {
         this.reloadStub = sinon.stub();
