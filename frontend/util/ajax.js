@@ -1,9 +1,8 @@
-var
+var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
+  justWhitespace = /^\s*$/,
   _ = require("lodash"),
   Promise = require("bluebird");
 
-  var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
-    justWhitespace = /^\s*$/;
 
 assertSuccess = function (resolvedXhr) {
   if (resolvedXhr.status > 299 || resolvedXhr.status < 200) {
