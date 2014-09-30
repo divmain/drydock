@@ -93,16 +93,15 @@ gulp.task("frontend:lint", "Lint frontend application- and test-code.", function
   ])
     .pipe(eslint())
     .pipe(map(function (file, output) {
-      success = success && _.any(file.eslint && file.eslint.messages, function (message) {
-        return message.severity === 2;
+      success = success && _.every(file.eslint && file.eslint.messages, function (message) {
+        return message.severity !== 2;
       });
       return output(null, file);
     }))
     .pipe(eslint.format())
     .on("end", function () {
       if (!success) {
-        console.log("*** FAILED ESLINT ***");
-        process.exit(1);
+        throw new Error("*** FAILED ESLINT ***");
       }
     });
 });
