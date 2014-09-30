@@ -64,4 +64,33 @@ surrogate.htmlRoute({
   }
 });
 
+surrogate.htmlRoute({
+  name: "get-things",
+  method: "GET",
+  path: "/api/things",
+  handlers: {
+    "get-things-success": {
+      description: "Return things.",
+      handler: function (request, selectedOptions) {
+        return selectedOptions.join(" ");
+      },
+      optionsHelperText: "What thigns should be returned?",
+      optionsType: "selectMany",
+      options: {
+        "thing 1": "thing 1",
+        "thing 2": "thing 2"
+      }
+    },
+    "get-things-error": {
+      description: "Return an error instead of the things.",
+      handler: function () {
+        throw new Surrogate.HttpErr({
+          code: 401,
+          payload: "<html>can't do that right now...</html>"
+        });
+      }
+    }
+  }
+});
+
 surrogate.start();
