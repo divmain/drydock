@@ -1,5 +1,6 @@
 var sandbox, routesFixture,
   ajax = require("frontend/util/ajax"),
+  _ = require("lodash"),
   Promise = require("bluebird"),
   testHelper = require("spec/helpers/test"),
   ControlPanel = require("frontend/views/control-panel/v-control-panel");
@@ -40,7 +41,7 @@ describe("views/", function () {
 
       this.view = new ControlPanel({
         data: {
-          routes: routesFixture,
+          routes: _.cloneDeep(routesFixture),
           delay: 0
         }
       });
