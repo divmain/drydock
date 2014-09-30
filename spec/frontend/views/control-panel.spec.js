@@ -49,6 +49,7 @@ describe("views/", function () {
 
     afterEach(function () {
       sandbox.restore();
+      this.view.$destroy();
     });
 
     describe("route table", function () {
