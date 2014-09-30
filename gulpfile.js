@@ -1,6 +1,7 @@
 var _frontendTest,
   path = require("path"),
   _ = require("lodash"),
+  map = require("map-stream"),
 
   // Gulp
   gulp = require("gulp"),
@@ -84,12 +85,26 @@ gulp.task("frontend:copy", false, function () {
 });
 
 gulp.task("frontend:lint", "Lint frontend application- and test-code.", function () {
+  var success = true;
+
   return gulp.src([
     path.join(config.frontendSrcFullPath, "**/*.js"),
     path.join(config.root, "*.js")
   ])
     .pipe(eslint())
-    .pipe(eslint.format());
+    .pipe(map(function (file, output) {
+      success = success && _.any(file.eslint && file.eslint.messages, function (message) {
+        return message.severity === 2;
+      });
+      return output(null, file);
+    }))
+    .pipe(eslint.format())
+    .on("end", function () {
+      if (!success) {
+        console.log("*** FAILED ESLINT ***");
+        process.exit(1);
+      }
+    });
 });
 
 
