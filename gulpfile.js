@@ -15,6 +15,7 @@ var _frontendTest,
 
   // Tests
   karma = require("karma").server,
+  mocha = require("gulp-mocha"),
 
   // Webpack
   webpack = require("webpack"),
@@ -169,7 +170,7 @@ gulp.task("frontend:build:js-dev", "Build unminified JS with sourcemaps.", funct
 
 
 /**
- * Tests
+ * Frontend Tests
  */
 
 _frontendTest = function (includeCoverage) {
@@ -253,4 +254,19 @@ gulp.task("frontend:test-watch", "Run tests in console; run again on change.", f
     done();
     process.exit(0);
   });
+});
+
+/**
+ * Lib Tests
+ */
+
+gulp.task("lib:test", "Run surrogate backend tests.", function () {
+  gulp.src([path.join(config.testFullPath, "lib/**/*.js")], { read: false })
+    .pipe(mocha({
+      reporter: "spec",
+      globals: {
+        sinon: require("sinon"),
+        expect: require("chai").expect
+      }
+    }));
 });
