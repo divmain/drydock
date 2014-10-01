@@ -53,7 +53,7 @@ module.exports = Vue.extend({
     },
 
     delayDisplay: function () {
-      return this.delay === "forever" ?
+      return this.delay === null ?
         "HANG" :
         this.delay.toString() + " ms";
     }
