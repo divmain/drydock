@@ -77,7 +77,7 @@ surrogate.htmlRoute({
       handler: function (request, selectedOptions) {
         return selectedOptions.join(" ");
       },
-      optionsHelperText: "What thigns should be returned?",
+      optionsHelperText: "What things should be returned?",
       optionsType: "selectMany",
       options: {
         "thing 1": "thing 1",
