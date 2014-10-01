@@ -40,6 +40,8 @@ surrogate.htmlRoute({
             "has a birthday on " + this.state.birthday + "." :
             "has no birthday.";
 
+        this.cookies.msg = "1";
+
         return selectedOption(name + " " + birthday);
       },
       optionsHelperText: "What should birthday info be wrapped in?",
