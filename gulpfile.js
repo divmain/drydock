@@ -39,7 +39,7 @@ gulp.task("default", false, ["help"], function () {});
 gulp.task(
   "frontend:build",
   "Copy assets, build CSS and JS.",
-  ["frontend:lint", "frontend:test-phantom"],
+  ["lint", "frontend:test-phantom"],
   function () {
     gulp.run("frontend:clean");
     gulp.run("frontend:copy");
@@ -85,11 +85,12 @@ gulp.task("frontend:copy", false, function () {
   ).pipe(gulp.dest(config.frontendDestFullPath));
 });
 
-gulp.task("frontend:lint", "Lint frontend application- and test-code.", function () {
+gulp.task("lint", "Lint application- and test-code.", function () {
   var success = true;
 
   return gulp.src([
     path.join(config.frontendSrcFullPath, "**/*.js"),
+    path.join(config.libSrc, "**/*.js"),
     path.join(config.testFullPath, "**/*.js"),
     path.join(config.root, "*.js")
   ])

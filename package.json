@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "gulp",
-    "test": "gulp frontend:lint && gulp frontend:test-phantom && gulp lib:test"
+    "test": "gulp lint && gulp frontend:test-phantom && gulp lib:test"
   },
   "devDependencies": {
     "lodash": "^2.4.1",
