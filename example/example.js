@@ -1,4 +1,5 @@
 var
+  path = require("path"),
   Surrogate = require(".."),
   surrogate = new Surrogate({
     port: 1337,
@@ -91,6 +92,11 @@ surrogate.htmlRoute({
       }
     }
   }
+});
+
+surrogate.staticDir({
+  filePath: path.join(__dirname, "example-dir"),
+  urlPath: "/static/"
 });
 
 surrogate.start();
