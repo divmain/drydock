@@ -1,0 +1,17 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  color: #333;
+}
+.place-holder {
+  width: 100%;
+  margin-top: 100px;
+  text-align: center;
+}
+.route {
+  font-family: monospace;
+  font-weight: bold;
+}
+.hidden {
+  display: none;
+}
