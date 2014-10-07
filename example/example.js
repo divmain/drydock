@@ -101,4 +101,9 @@ surrogate.staticDir({
   urlPath: "/static/"
 });
 
-surrogate.start();
+
+if (require.main === module) {
+  surrogate.start();
+} else {
+  module.exports = surrogate;
+}
