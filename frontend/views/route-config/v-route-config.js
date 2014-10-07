@@ -22,7 +22,7 @@ module.exports = Vue.extend({
 
   watch: {
     "selectedHandler": function (newValue) {
-      ajax.put("/surrogate/api/route/handler", {
+      ajax.put("/surrogate/api/route", {
         data: {
           method: this.$data.method,
           path: this.$data.path,
