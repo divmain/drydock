@@ -73,7 +73,7 @@
 	var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
 	  justWhitespace = /^\s*$/,
 	  _ = __webpack_require__(3),
-	  Promise = __webpack_require__(14);
+	  Promise = __webpack_require__(11);
 	
 	
 	assertSuccess = function (resolvedXhr) {
@@ -7419,11 +7419,11 @@
 	var
 	  ajax = __webpack_require__(1),
 	  watchHash = __webpack_require__(5),
-	  tmpl = __webpack_require__(10),
+	  tmpl = __webpack_require__(12),
 	  _ = __webpack_require__(3),
 	  Vue = __webpack_require__(9);
 	
-	__webpack_require__(11);
+	__webpack_require__(13);
 	
 	module.exports = Vue.extend({
 	  template: tmpl,
@@ -7452,6 +7452,7 @@
 	        ajax.put("/surrogate/api/route/selected-option", {
 	          data: {
 	            name: this.$data.name,
+	            handler: this.$data.selectedHandler,
 	            selectedOption: newSelection
 	          }
 	        });
@@ -7462,6 +7463,7 @@
 	        ajax.put("/surrogate/api/route/selected-options", {
 	          data: {
 	            name: this.$data.name,
+	            handler: this.$data.selectedHandler,
 	            selectedOptions: newSelections
 	          }
 	        });
@@ -7514,7 +7516,7 @@
 	var content = __webpack_require__(8);
 	if(typeof content === 'string') content = [module.id, content, ''];
 	// add the styles to the DOM
-	var update = __webpack_require__(13)(content);
+	var update = __webpack_require__(10)(content);
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -7538,7 +7540,7 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	var extend = _.extend
 	
 	/**
@@ -7575,8 +7577,8 @@
 	 */
 	
 	Vue.options = {
-	  directives  : __webpack_require__(17),
-	  filters     : __webpack_require__(24),
+	  directives  : __webpack_require__(24),
+	  filters     : __webpack_require__(25),
 	  partials    : {},
 	  transitions : {},
 	  components  : {}
@@ -7606,10 +7608,10 @@
 	 * Mixin internal instance methods
 	 */
 	
-	extend(p, __webpack_require__(25))
 	extend(p, __webpack_require__(26))
 	extend(p, __webpack_require__(27))
 	extend(p, __webpack_require__(28))
+	extend(p, __webpack_require__(29))
 	
 	/**
 	 * Mixin public API methods
@@ -7621,48 +7623,12 @@
 	extend(p, __webpack_require__(22))
 	extend(p, __webpack_require__(23))
 	
-	window.observer = __webpack_require__(29)
+	window.observer = __webpack_require__(30)
 	
 	module.exports = _.Vue = Vue
 
 /***/ },
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div v-if=\"expanded\">\n  <div class=\"v-route-config\">\n\n    <div class=\"options\">\n      <h4>How would you like this route to behave?</h4>\n      <div v-repeat=\"handler: handlers\">\n        <label>\n          <input\n            type=\"radio\"\n            name=\"config-{{name}}\"\n            value=\"{{handler.name}}\"\n            v-model=\"selectedHandler\"\n          >\n          {{handler.description}}\n        </label>\n      </div>\n    </div>\n\n    <div class=\"config-panel\">\n      <h5>{{selectedHandlerObj.optionsHelperText}}</h5>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectMany'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"checkbox\"\n              name=\"config-{{description}}-selmany-{{$index}}\"\n              v-on=\"change: updateSelectedOptions(selectedHandlerObj, option)\"\n              v-attr=\"checked: isSelected(selectedHandlerObj, option)\"\n            >\n            {{option}}\n          </label>\n          <br>\n        </div>\n      </div>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectOne'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"radio\"\n              name=\"config-{{description}}-selone-{{$index}}\"\n              value=\"{{option}}\"\n              v-model=\"selectedHandlerObj.selectedOption\"\n            >\n            {{option}}\n          </label>\n          <br />\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(12);
-	if(typeof content === 'string') content = [module.id, content, ''];
-	// add the styles to the DOM
-	var update = __webpack_require__(13)(content);
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/route-config/v-route-config.styl", function() {
-			var newContent = require("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/route-config/v-route-config.styl");
-			if(typeof newContent === 'string') newContent = [module.id, newContent, ''];
-			update(newContent);
-		});
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	exports.push([module.id, ".v-route-config {\n  padding: 32px;\n  background-color: #ddd;\n}\n.v-route-config h4 {\n  margin-top: 0;\n}\n", ""]);
-
-/***/ },
-/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7784,7 +7750,7 @@
 
 
 /***/ },
-/* 14 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7810,8 +7776,44 @@
 	 * 
 	 */
 	"use strict";
-	var Promise = __webpack_require__(30)();
+	var Promise = __webpack_require__(16)();
 	module.exports = Promise;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div v-if=\"expanded\">\n  <div class=\"v-route-config\">\n\n    <div class=\"options\">\n      <h4>How would you like this route to behave?</h4>\n      <div v-repeat=\"handler: handlers\">\n        <label>\n          <input\n            type=\"radio\"\n            name=\"config-{{name}}\"\n            value=\"{{handler.name}}\"\n            v-model=\"selectedHandler\"\n          >\n          {{handler.description}}\n        </label>\n      </div>\n    </div>\n\n    <div class=\"config-panel\">\n      <h5>{{selectedHandlerObj.optionsHelperText}}</h5>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectMany'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"checkbox\"\n              name=\"config-{{description}}-selmany-{{$index}}\"\n              v-on=\"change: updateSelectedOptions(selectedHandlerObj, option)\"\n              v-attr=\"checked: isSelected(selectedHandlerObj, option)\"\n            >\n            {{option}}\n          </label>\n          <br>\n        </div>\n      </div>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectOne'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"radio\"\n              name=\"config-{{description}}-selone-{{$index}}\"\n              value=\"{{option}}\"\n              v-model=\"selectedHandlerObj.selectedOption\"\n            >\n            {{option}}\n          </label>\n          <br />\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(14);
+	if(typeof content === 'string') content = [module.id, content, ''];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content);
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		module.hot.accept("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/route-config/v-route-config.styl", function() {
+			var newContent = require("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/route-config/v-route-config.styl");
+			if(typeof newContent === 'string') newContent = [module.id, newContent, ''];
+			update(newContent);
+		});
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	exports.push([module.id, ".v-route-config {\n  padding: 32px;\n  background-color: #ddd;\n}\n.v-route-config h4 {\n  margin-top: 0;\n}\n", ""]);
 
 /***/ },
 /* 15 */
@@ -7831,1767 +7833,6 @@
 
 /***/ },
 /* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var lang   = __webpack_require__(34)
-	var extend = lang.extend
-	
-	extend(exports, lang)
-	extend(exports, __webpack_require__(35))
-	extend(exports, __webpack_require__(36))
-	extend(exports, __webpack_require__(37))
-	extend(exports, __webpack_require__(38))
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// manipulation directives
-	exports.text       = __webpack_require__(40)
-	exports.html       = __webpack_require__(41)
-	exports.attr       = __webpack_require__(42)
-	exports.show       = __webpack_require__(43)
-	exports['class']   = __webpack_require__(44)
-	exports.el         = __webpack_require__(45)
-	exports.ref        = __webpack_require__(46)
-	exports.cloak      = __webpack_require__(47)
-	exports.style      = __webpack_require__(48)
-	exports.partial    = __webpack_require__(49)
-	exports.transition = __webpack_require__(50)
-	
-	// event listener directives
-	exports.on         = __webpack_require__(51)
-	exports.model      = __webpack_require__(61)
-	
-	// child vm directives
-	exports.component  = __webpack_require__(52)
-	exports.repeat     = __webpack_require__(53)
-	exports['if']      = __webpack_require__(54)
-	exports['with']    = __webpack_require__(55)
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var mergeOptions = __webpack_require__(32)
-	
-	/**
-	 * Expose useful internals
-	 */
-	
-	exports.util       = _
-	exports.nextTick   = _.nextTick
-	exports.config     = __webpack_require__(33)
-	
-	/**
-	 * Each instance constructor, including Vue, has a unique
-	 * cid. This enables us to create wrapped "child
-	 * constructors" for prototypal inheritance and cache them.
-	 */
-	
-	exports.cid = 0
-	var cid = 1
-	
-	/**
-	 * Class inehritance
-	 *
-	 * @param {Object} extendOptions
-	 */
-	
-	exports.extend = function (extendOptions) {
-	  extendOptions = extendOptions || {}
-	  var Super = this
-	  var Sub = createClass(extendOptions.name || 'VueComponent')
-	  Sub.prototype = Object.create(Super.prototype)
-	  Sub.prototype.constructor = Sub
-	  Sub.cid = cid++
-	  Sub.options = mergeOptions(
-	    Super.options,
-	    extendOptions
-	  )
-	  Sub['super'] = Super
-	  // allow further extension
-	  Sub.extend = Super.extend
-	  // create asset registers, so extended classes
-	  // can have their private assets too.
-	  createAssetRegisters(Sub)
-	  return Sub
-	}
-	
-	/**
-	 * A function that returns a sub-class constructor with the
-	 * given name. This gives us much nicer output when
-	 * logging instances in the console.
-	 *
-	 * @param {String} name
-	 * @return {Function}
-	 */
-	
-	function createClass (name) {
-	  return new Function(
-	    'Vue',
-	    'return function ' + _.camelize(name) +
-	    ' (options) { Vue.call(this, options) }'
-	  )(_.Vue)
-	}
-	
-	/**
-	 * Plugin system
-	 *
-	 * @param {Object} plugin
-	 */
-	
-	exports.use = function (plugin) {
-	  // additional parameters
-	  var args = _.toArray(arguments, 1)
-	  args.unshift(this)
-	  if (typeof plugin.install === 'function') {
-	    plugin.install.apply(plugin, args)
-	  } else {
-	    plugin.apply(null, args)
-	  }
-	  return this
-	}
-	
-	/**
-	 * Define asset registration methods on a constructor.
-	 *
-	 * @param {Function} Constructor
-	 */
-	
-	var assetTypes = [
-	  'directive',
-	  'filter',
-	  'partial',
-	  'transition'
-	]
-	
-	function createAssetRegisters (Constructor) {
-	
-	  /* Asset registration methods share the same signature:
-	   *
-	   * @param {String} id
-	   * @param {*} definition
-	   */
-	
-	  assetTypes.forEach(function (type) {
-	    Constructor[type] = function (id, definition) {
-	      if (!definition) {
-	        return this.options[type + 's'][id]
-	      } else {
-	        this.options[type + 's'][id] = definition
-	      }
-	    }
-	  })
-	
-	  /**
-	   * Component registration needs to automatically invoke
-	   * Vue.extend on object values.
-	   *
-	   * @param {String} id
-	   * @param {Object|Function} definition
-	   */
-	
-	  Constructor.component = function (id, definition) {
-	    if (!definition) {
-	      return this.options.components[id]
-	    } else {
-	      if (_.isPlainObject(definition)) {
-	        definition.name = id
-	        definition = _.Vue.extend(definition)
-	      }
-	      this.options.components[id] = definition
-	    }
-	  }
-	}
-	
-	createAssetRegisters(exports)
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var Watcher = __webpack_require__(39)
-	var textParser = __webpack_require__(58)
-	var dirParser = __webpack_require__(59)
-	var expParser = __webpack_require__(60)
-	var filterRE = /[^|]\|[^|]/
-	
-	/**
-	 * Get the value from an expression on this vm.
-	 *
-	 * @param {String} exp
-	 * @return {*}
-	 */
-	
-	exports.$get = function (exp) {
-	  var res = expParser.parse(exp)
-	  if (res) {
-	    return res.get.call(this, this)
-	  }
-	}
-	
-	/**
-	 * Set the value from an expression on this vm.
-	 * The expression must be a valid left-hand
-	 * expression in an assignment.
-	 *
-	 * @param {String} exp
-	 * @param {*} val
-	 */
-	
-	exports.$set = function (exp, val) {
-	  var res = expParser.parse(exp, true)
-	  if (res && res.set) {
-	    res.set.call(this, this, val)
-	  }
-	}
-	
-	/**
-	 * Add a property on the VM
-	 *
-	 * @param {String} key
-	 * @param {*} val
-	 */
-	
-	exports.$add = function (key, val) {
-	  this._data.$add(key, val)
-	}
-	
-	/**
-	 * Delete a property on the VM
-	 *
-	 * @param {String} key
-	 */
-	
-	exports.$delete = function (key) {
-	  this._data.$delete(key)
-	}
-	
-	/**
-	 * Watch an expression, trigger callback when its
-	 * value changes.
-	 *
-	 * @param {String} exp
-	 * @param {Function} cb
-	 * @param {Boolean} [deep]
-	 * @param {Boolean} [immediate]
-	 * @return {Function} - unwatchFn
-	 */
-	
-	exports.$watch = function (exp, cb, deep, immediate) {
-	  var vm = this
-	  var key = deep ? exp + '**deep**' : exp
-	  var watcher = vm._userWatchers[key]
-	  var wrappedCb = function (val, oldVal) {
-	    cb.call(vm, val, oldVal)
-	  }
-	  if (!watcher) {
-	    watcher = vm._userWatchers[key] =
-	      new Watcher(vm, exp, wrappedCb, null, false, deep)
-	  } else {
-	    watcher.addCb(wrappedCb)
-	  }
-	  if (immediate) {
-	    wrappedCb(watcher.value)
-	  }
-	  return function unwatchFn () {
-	    watcher.removeCb(wrappedCb)
-	    if (!watcher.active) {
-	      vm._userWatchers[key] = null
-	    }
-	  }
-	}
-	
-	/**
-	 * Evaluate a text directive, including filters.
-	 *
-	 * @param {String} text
-	 * @return {String}
-	 */
-	
-	exports.$eval = function (text) {
-	  // check for filters.
-	  if (filterRE.test(text)) {
-	    var dir = dirParser.parse(text)[0]
-	    // the filter regex check might give false positive
-	    // for pipes inside strings, so it's possible that
-	    // we don't get any filters here
-	    return dir.filters
-	      ? _.applyFilters(
-	          this.$get(dir.expression),
-	          _.resolveFilters(this, dir.filters).read,
-	          this
-	        )
-	      : this.$get(dir.expression)
-	  } else {
-	    // no filter
-	    return this.$get(text)
-	  }
-	}
-	
-	/**
-	 * Interpolate a piece of template text.
-	 *
-	 * @param {String} text
-	 * @return {String}
-	 */
-	
-	exports.$interpolate = function (text) {
-	  var tokens = textParser.parse(text)
-	  var vm = this
-	  if (tokens) {
-	    return tokens.length === 1
-	      ? vm.$eval(tokens[0].value)
-	      : tokens.map(function (token) {
-	          return token.tag
-	            ? vm.$eval(token.value)
-	            : token.value
-	        }).join('')
-	  } else {
-	    return text
-	  }
-	}
-	
-	/**
-	 * Log instance data as a plain JS object
-	 * so that it is easier to inspect in console.
-	 * This method assumes console is available.
-	 *
-	 * @param {String} [key]
-	 */
-	
-	exports.$log = function (key) {
-	  var data = this[key || '_data']
-	  console.log(JSON.parse(JSON.stringify(data)))
-	}
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var transition = __webpack_require__(62)
-	
-	/**
-	 * Append instance to target
-	 *
-	 * @param {Node} target
-	 * @param {Function} [cb]
-	 * @param {Boolean} [withTransition] - defaults to true
-	 */
-	
-	exports.$appendTo = function (target, cb, withTransition) {
-	  var targetIsDetached = !_.inDoc(target)
-	  var op = withTransition === false || targetIsDetached
-	    ? append
-	    : transition.append
-	  insert(this, target, op, targetIsDetached, cb)
-	}
-	
-	/**
-	 * Prepend instance to target
-	 *
-	 * @param {Node} target
-	 * @param {Function} [cb]
-	 * @param {Boolean} [withTransition] - defaults to true
-	 */
-	
-	exports.$prependTo = function (target, cb, withTransition) {
-	  target = query(target)
-	  if (target.hasChildNodes()) {
-	    this.$before(target.firstChild, cb, withTransition)
-	  } else {
-	    this.$appendTo(target, cb, withTransition)
-	  }
-	}
-	
-	/**
-	 * Insert instance before target
-	 *
-	 * @param {Node} target
-	 * @param {Function} [cb]
-	 * @param {Boolean} [withTransition] - defaults to true
-	 */
-	
-	exports.$before = function (target, cb, withTransition) {
-	  var targetIsDetached = !_.inDoc(target)
-	  var op = withTransition === false || targetIsDetached
-	    ? before
-	    : transition.before
-	  insert(this, target, op, targetIsDetached, cb)
-	}
-	
-	/**
-	 * Insert instance after target
-	 *
-	 * @param {Node} target
-	 * @param {Function} [cb]
-	 * @param {Boolean} [withTransition] - defaults to true
-	 */
-	
-	exports.$after = function (target, cb, withTransition) {
-	  target = query(target)
-	  if (target.nextSibling) {
-	    this.$before(target.nextSibling, cb, withTransition)
-	  } else {
-	    this.$appendTo(target.parentNode, cb, withTransition)
-	  }
-	}
-	
-	/**
-	 * Remove instance from DOM
-	 *
-	 * @param {Function} [cb]
-	 * @param {Boolean} [withTransition] - defaults to true
-	 */
-	
-	exports.$remove = function (cb, withTransition) {
-	  var inDoc = this._isAttached && _.inDoc(this.$el)
-	  // if we are not in document, no need to check
-	  // for transitions
-	  if (!inDoc) withTransition = false
-	  var op
-	  var self = this
-	  var realCb = function () {
-	    if (inDoc) self._callHook('detached')
-	    if (cb) cb()
-	  }
-	  if (
-	    this._isBlock &&
-	    !this._blockFragment.hasChildNodes()
-	  ) {
-	    op = withTransition === false
-	      ? append
-	      : transition.removeThenAppend 
-	    blockOp(this, this._blockFragment, op, realCb)
-	  } else {
-	    op = withTransition === false
-	      ? remove
-	      : transition.remove
-	    op(this.$el, this, realCb)
-	  }
-	}
-	
-	/**
-	 * Shared DOM insertion function.
-	 *
-	 * @param {Vue} vm
-	 * @param {Element} target
-	 * @param {Function} op
-	 * @param {Boolean} targetIsDetached
-	 * @param {Function} [cb]
-	 */
-	
-	function insert (vm, target, op, targetIsDetached, cb) {
-	  target = query(target)
-	  var shouldCallHook =
-	    !targetIsDetached &&
-	    !vm._isAttached &&
-	    !_.inDoc(vm.$el)
-	  if (vm._isBlock) {
-	    blockOp(vm, target, op, cb)
-	  } else {
-	    op(vm.$el, target, vm, cb)
-	  }
-	  if (shouldCallHook) {
-	    vm._callHook('attached')
-	  }
-	}
-	
-	/**
-	 * Execute a transition operation on a block instance,
-	 * iterating through all its block nodes.
-	 *
-	 * @param {Vue} vm
-	 * @param {Node} target
-	 * @param {Function} op
-	 * @param {Function} cb
-	 */
-	
-	function blockOp (vm, target, op, cb) {
-	  var current = vm._blockStart
-	  var end = vm._blockEnd
-	  var next
-	  while (next !== end) {
-	    next = current.nextSibling
-	    op(current, target, vm)
-	    current = next
-	  }
-	  op(end, target, vm, cb)
-	}
-	
-	/**
-	 * Check for selectors
-	 *
-	 * @param {String|Element} el
-	 */
-	
-	function query (el) {
-	  return typeof el === 'string'
-	    ? document.querySelector(el)
-	    : el
-	}
-	
-	/**
-	 * Append operation that takes a callback.
-	 *
-	 * @param {Node} el
-	 * @param {Node} target
-	 * @param {Vue} vm - unused
-	 * @param {Function} [cb]
-	 */
-	
-	function append (el, target, vm, cb) {
-	  target.appendChild(el)
-	  if (cb) cb()
-	}
-	
-	/**
-	 * InsertBefore operation that takes a callback.
-	 *
-	 * @param {Node} el
-	 * @param {Node} target
-	 * @param {Vue} vm - unused
-	 * @param {Function} [cb]
-	 */
-	
-	function before (el, target, vm, cb) {
-	  _.before(el, target)
-	  if (cb) cb()
-	}
-	
-	/**
-	 * Remove operation that takes a callback.
-	 *
-	 * @param {Node} el
-	 * @param {Vue} vm - unused
-	 * @param {Function} [cb]
-	 */
-	
-	function remove (el, vm, cb) {
-	  _.remove(el)
-	  if (cb) cb()
-	}
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	
-	/**
-	 * Listen on the given `event` with `fn`.
-	 *
-	 * @param {String} event
-	 * @param {Function} fn
-	 */
-	
-	exports.$on = function (event, fn) {
-	  (this._events[event] || (this._events[event] = []))
-	    .push(fn)
-	  modifyListenerCount(this, event, 1)
-	}
-	
-	/**
-	 * Adds an `event` listener that will be invoked a single
-	 * time then automatically removed.
-	 *
-	 * @param {String} event
-	 * @param {Function} fn
-	 */
-	
-	exports.$once = function (event, fn) {
-	  var self = this
-	  function on () {
-	    self.$off(event, on)
-	    fn.apply(this, arguments)
-	  }
-	  on.fn = fn
-	  this.$on(event, on)
-	}
-	
-	/**
-	 * Remove the given callback for `event` or all
-	 * registered callbacks.
-	 *
-	 * @param {String} event
-	 * @param {Function} fn
-	 */
-	
-	exports.$off = function (event, fn) {
-	  var cbs
-	  // all
-	  if (!arguments.length) {
-	    if (this.$parent) {
-	      for (event in this._events) {
-	        cbs = this._events[event]
-	        if (cbs) {
-	          modifyListenerCount(this, event, -cbs.length)
-	        }
-	      }
-	    }
-	    this._events = {}
-	    return
-	  }
-	  // specific event
-	  cbs = this._events[event]
-	  if (!cbs) return
-	  if (arguments.length === 1) {
-	    modifyListenerCount(this, event, -cbs.length)
-	    this._events[event] = null
-	    return
-	  }
-	  // specific handler
-	  var cb
-	  var i = cbs.length
-	  while (i--) {
-	    cb = cbs[i]
-	    if (cb === fn || cb.fn === fn) {
-	      modifyListenerCount(this, event, -1)
-	      cbs.splice(i, 1)
-	      break
-	    }
-	  }
-	}
-	
-	/**
-	 * Trigger an event on self.
-	 *
-	 * @param {String} event
-	 */
-	
-	exports.$emit = function (event) {
-	  this._eventCancelled = false
-	  var cbs = this._events[event]
-	  if (cbs) {
-	    // avoid leaking arguments:
-	    // http://jsperf.com/closure-with-arguments
-	    var i = arguments.length - 1
-	    var args = new Array(i)
-	    while (i--) {
-	      args[i] = arguments[i + 1]
-	    }
-	    i = 0
-	    cbs = cbs.length > 1
-	      ? _.toArray(cbs)
-	      : cbs
-	    for (var l = cbs.length; i < l; i++) {
-	      if (cbs[i].apply(this, args) === false) {
-	        this._eventCancelled = true
-	      }
-	    }
-	  }
-	}
-	
-	/**
-	 * Recursively broadcast an event to all children instances.
-	 *
-	 * @param {String} event
-	 * @param {...*} additional arguments
-	 */
-	
-	exports.$broadcast = function (event) {
-	  // if no child has registered for this event,
-	  // then there's no need to broadcast.
-	  if (!this._eventsCount[event]) return
-	  var children = this._children
-	  if (children) {
-	    for (var i = 0, l = children.length; i < l; i++) {
-	      var child = children[i]
-	      child.$emit.apply(child, arguments)
-	      if (!child._eventCancelled) {
-	        child.$broadcast.apply(child, arguments)
-	      }
-	    }
-	  }
-	}
-	
-	/**
-	 * Recursively propagate an event up the parent chain.
-	 *
-	 * @param {String} event
-	 * @param {...*} additional arguments
-	 */
-	
-	exports.$dispatch = function () {
-	  var parent = this.$parent
-	  while (parent) {
-	    parent.$emit.apply(parent, arguments)
-	    parent = parent._eventCancelled
-	      ? null
-	      : parent.$parent
-	  }
-	}
-	
-	/**
-	 * Modify the listener counts on all parents.
-	 * This bookkeeping allows $broadcast to return early when
-	 * no child has listened to a certain event.
-	 *
-	 * @param {Vue} vm
-	 * @param {String} event
-	 * @param {Number} count
-	 */
-	
-	var hookRE = /^hook:/
-	function modifyListenerCount (vm, event, count) {
-	  var parent = vm.$parent
-	  // hooks do not get broadcasted so no need
-	  // to do bookkeeping for them
-	  if (!parent || !count || hookRE.test(event)) return
-	  while (parent) {
-	    parent._eventsCount[event] =
-	      (parent._eventsCount[event] || 0) + count
-	    parent = parent.$parent
-	  }
-	}
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	
-	/**
-	 * Create a child instance that prototypally inehrits
-	 * data on parent. To achieve that we create an intermediate
-	 * constructor with its prototype pointing to parent.
-	 *
-	 * @param {Object} opts
-	 * @param {Function} [BaseCtor]
-	 * @return {Vue}
-	 * @public
-	 */
-	
-	exports.$addChild = function (opts, BaseCtor) {
-	  BaseCtor = BaseCtor || _.Vue
-	  opts = opts || {}
-	  var parent = this
-	  var ChildVue
-	  var inherit = opts.inherit !== undefined
-	    ? opts.inherit
-	    : BaseCtor.options.inherit
-	  if (inherit) {
-	    var ctors = parent._childCtors
-	    if (!ctors) {
-	      ctors = parent._childCtors = {}
-	    }
-	    ChildVue = ctors[BaseCtor.cid]
-	    if (!ChildVue) {
-	      ChildVue = function (options) {
-	        this.constructor = ChildVue
-	        _.Vue.call(this, options)
-	      }
-	      ChildVue.options = BaseCtor.options
-	      ChildVue.prototype = this
-	      ctors[BaseCtor.cid] = ChildVue
-	    }
-	  } else {
-	    ChildVue = BaseCtor
-	  }
-	  opts._parent = parent
-	  opts._root = parent.$root
-	  var child = new ChildVue(opts)
-	  if (!this._children) {
-	    this._children = []
-	  }
-	  this._children.push(child)
-	  return child
-	}
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	
-	/**
-	 * Set instance target element and kick off the compilation
-	 * process. The passed in `el` can be a selector string, an
-	 * existing Element, or a DocumentFragment (for block
-	 * instances).
-	 *
-	 * @param {Element|DocumentFragment|string} el
-	 * @public
-	 */
-	
-	exports.$mount = function (el) {
-	  if (this._isCompiled) {
-	    _.warn('$mount() should be called only once.')
-	    return
-	  }
-	  if (typeof el === 'string') {
-	    var selector = el
-	    el = document.querySelector(el)
-	    if (!el) {
-	      _.warn('Cannot find element: ' + selector)
-	      return
-	    }
-	  }
-	  this._compile(el)
-	  this._isCompiled = true
-	  this._callHook('compiled')
-	  if (_.inDoc(this.$el)) {
-	    this._callHook('attached')
-	    this._initDOMHooks()
-	    ready.call(this)
-	  } else {
-	    this._initDOMHooks()
-	    this.$once('hook:attached', ready)
-	  }
-	}
-	
-	/**
-	 * Mark an instance as ready.
-	 */
-	
-	function ready () {
-	  this._isAttached = true
-	  this._isReady = true
-	  this._callHook('ready')
-	}
-	
-	/**
-	 * Teardown an instance, unobserves the data, unbind all the
-	 * directives, turn off all the event listeners, etc.
-	 *
-	 * @param {Boolean} remove - whether to remove the DOM node.
-	 * @public
-	 */
-	
-	exports.$destroy = function (remove) {
-	  if (this._isDestroyed) {
-	    return
-	  }
-	  this._callHook('beforeDestroy')
-	  this._isBeingDestroyed = true
-	  // remove DOM element
-	  if (remove && this.$el) {
-	    this.$remove()
-	  }
-	  var i
-	  // remove self from parent. only necessary
-	  // if parent is not being destroyed as well.
-	  var parent = this.$parent
-	  if (parent && !parent._isBeingDestroyed) {
-	    i = parent._children.indexOf(this)
-	    parent._children.splice(i)
-	  }
-	  // destroy all children.
-	  if (this._children) {
-	    i = this._children.length
-	    while (i--) {
-	      this._children[i].$destroy()
-	    }
-	  }
-	  // teardown all directives. this also tearsdown all
-	  // directive-owned watchers.
-	  i = this._directives.length
-	  while (i--) {
-	    this._directives[i]._teardown()
-	  }
-	  // teardown all user watchers.
-	  for (i in this._userWatchers) {
-	    this._userWatchers[i].teardown()
-	  }
-	  // clean up
-	  if (this.$el) {
-	    this.$el.__vue__ = null
-	  }
-	  // remove reference from data ob
-	  this._data.__ob__.removeVm(this)
-	  this._data =
-	  this._watchers =
-	  this._userWatchers =
-	  this._watcherList =
-	  this.$el =
-	  this.$parent =
-	  this.$root =
-	  this._children =
-	  this._bindings =
-	  this._directives = null
-	  // call the last hook...
-	  this._isDestroyed = true
-	  this._callHook('destroyed')
-	  // turn off all instance listeners.
-	  this.$off()
-	}
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	
-	/**
-	 * Stringify value.
-	 *
-	 * @param {Number} indent
-	 */
-	
-	exports.json = function (value, indent) {
-	  return JSON.stringify(value, null, Number(indent) || 2)
-	}
-	
-	/**
-	 * 'abc' => 'Abc'
-	 */
-	
-	exports.capitalize = function (value) {
-	  if (!value && value !== 0) return ''
-	  value = value.toString()
-	  return value.charAt(0).toUpperCase() + value.slice(1)
-	}
-	
-	/**
-	 * 'abc' => 'ABC'
-	 */
-	
-	exports.uppercase = function (value) {
-	  return (value || value === 0)
-	    ? value.toString().toUpperCase()
-	    : ''
-	}
-	
-	/**
-	 * 'AbC' => 'abc'
-	 */
-	
-	exports.lowercase = function (value) {
-	  return (value || value === 0)
-	    ? value.toString().toLowerCase()
-	    : ''
-	}
-	
-	/**
-	 * 12345 => $12,345.00
-	 *
-	 * @param {String} sign
-	 */
-	
-	var digitsRE = /(\d{3})(?=\d)/g
-	
-	exports.currency = function (value, sign) {
-	  value = parseFloat(value)
-	  if (!value && value !== 0) return ''
-	  sign = sign || '$'
-	  var s = Math.floor(value).toString(),
-	    i = s.length % 3,
-	    h = i > 0
-	      ? (s.slice(0, i) + (s.length > 3 ? ',' : ''))
-	      : '',
-	    f = '.' + value.toFixed(2).slice(-2)
-	  return sign + h + s.slice(i).replace(digitsRE, '$1,') + f
-	}
-	
-	/**
-	 * 'item' => 'items'
-	 *
-	 * @params
-	 *  an array of strings corresponding to
-	 *  the single, double, triple ... forms of the word to
-	 *  be pluralized. When the number to be pluralized
-	 *  exceeds the length of the args, it will use the last
-	 *  entry in the array.
-	 *
-	 *  e.g. ['single', 'double', 'triple', 'multiple']
-	 */
-	
-	exports.pluralize = function (value) {
-	  var args = _.toArray(arguments, 1)
-	  return args.length > 1
-	    ? (args[value % 10 - 1] || args[args.length - 1])
-	    : (args[0] + (value === 1 ? '' : 's'))
-	}
-	
-	/**
-	 * A special filter that takes a handler function,
-	 * wraps it so it only gets triggered on specific
-	 * keypresses. v-on only.
-	 *
-	 * @param {String} key
-	 */
-	
-	var keyCodes = {
-	  enter    : 13,
-	  tab      : 9,
-	  'delete' : 46,
-	  up       : 38,
-	  left     : 37,
-	  right    : 39,
-	  down     : 40,
-	  esc      : 27
-	}
-	
-	exports.key = function (handler, key) {
-	  if (!handler) return
-	  var code = keyCodes[key]
-	  if (!code) {
-	    code = parseInt(key, 10)
-	  }
-	  return function (e) {
-	    if (e.keyCode === code) {
-	      return handler.call(this, e)
-	    }
-	  }
-	}
-	
-	/**
-	 * Install special array filters
-	 */
-	
-	_.extend(exports, __webpack_require__(56))
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var mergeOptions = __webpack_require__(32)
-	
-	/**
-	 * The main init sequence. This is called for every
-	 * instance, including ones that are created from extended
-	 * constructors.
-	 *
-	 * @param {Object} options - this options object should be
-	 *                           the result of merging class
-	 *                           options and the options passed
-	 *                           in to the constructor.
-	 */
-	
-	exports._init = function (options) {
-	
-	  options = options || {}
-	
-	  this.$el           = null
-	  this.$parent       = options._parent
-	  this.$root         = options._root || this
-	  this.$             = {} // child vm references
-	  this.$$            = {} // element references
-	  this._watcherList  = [] // all watchers as an array
-	  this._watchers     = {} // internal watchers as a hash
-	  this._userWatchers = {} // user watchers as a hash
-	  this._directives   = [] // all directives
-	
-	  // a flag to avoid this being observed
-	  this._isVue = true
-	
-	  // events bookkeeping
-	  this._events         = {}    // registered callbacks
-	  this._eventsCount    = {}    // for $broadcast optimization
-	  this._eventCancelled = false // for event cancellation
-	
-	  // block instance properties
-	  this._isBlock     = false
-	  this._blockStart  =          // @type {CommentNode}
-	  this._blockEnd    = null     // @type {CommentNode}
-	
-	  // lifecycle state
-	  this._isCompiled  =
-	  this._isDestroyed =
-	  this._isReady     =
-	  this._isAttached  =
-	  this._isBeingDestroyed = false
-	
-	  // children
-	  this._children =         // @type {Array}
-	  this._childCtors = null  // @type {Object} - hash to cache
-	                           // child constructors
-	
-	  // anonymous instances are created by v-if
-	  // we need to walk along the parent chain to locate the
-	  // first non-anonymous instance as the owner.
-	  this._isAnonymous = options._anonymous
-	  var parent = this.$parent
-	  while (parent && parent._isAnonymous) {
-	    parent = parent.$parent
-	  }
-	  this._owner = parent || this
-	
-	  // merge options.
-	  options = this.$options = mergeOptions(
-	    this.constructor.options,
-	    options,
-	    this
-	  )
-	
-	  // set data after merge.
-	  this._data = options.data || {}
-	
-	  // setup event system and option events.
-	  this._initEvents()
-	
-	  // initialize data observation and scope inheritance.
-	  this._initScope()
-	
-	  // call created hook
-	  this._callHook('created')
-	
-	  // if `el` option is passed, start compilation.
-	  if (options.el) {
-	    this.$mount(options.el)
-	  }
-	}
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var inDoc = _.inDoc
-	
-	/**
-	 * Setup the instance's option events.
-	 * If the value is a string, we pull it from the
-	 * instance's methods by name.
-	 */
-	
-	exports._initEvents = function () {
-	  var options = this.$options
-	  var events = options.events
-	  var methods = options.methods
-	  if (events) {
-	    var handlers, e, i, j
-	    for (e in events) {
-	      handlers = events[e]
-	      if (_.isArray(handlers)) {
-	        for (i = 0, j = handlers.length; i < j; i++) {
-	          register(this, e, handlers[i], methods)
-	        }
-	      } else {
-	        register(this, e, handlers, methods)
-	      }
-	    }
-	  }
-	}
-	
-	/**
-	 * Helper to register an event.
-	 *
-	 * @param {Vue} vm
-	 * @param {String} event
-	 * @param {*} handler
-	 * @param {Object|undefined} methods
-	 */
-	
-	function register (vm, event, handler, methods) {
-	  var type = typeof handler
-	  if (type === 'function') {
-	    vm.$on(event, handler)
-	  } else if (type === 'string') {
-	    var method = methods && methods[handler]
-	    if (method) {
-	      vm.$on(event, method)
-	    } else {
-	      _.warn(
-	        'Unknown method: "' + handler + '" when ' +
-	        'registering callback for event: "' + event + '".'
-	      )
-	    }
-	  }
-	}
-	
-	/**
-	 * Setup recursive attached/detached calls
-	 */
-	
-	exports._initDOMHooks = function () {
-	  this.$on('hook:attached', onAttached)
-	  this.$on('hook:detached', onDetached)
-	}
-	
-	/**
-	 * Callback to recursively call attached hook on children
-	 */
-	
-	function onAttached () {
-	  this._isAttached = true
-	  var children = this._children
-	  if (!children) return
-	  for (var i = 0, l = children.length; i < l; i++) {
-	    var child = children[i]
-	    if (!child._isAttached && inDoc(child.$el)) {
-	      child._callHook('attached')
-	    }
-	  }
-	}
-	
-	/**
-	 * Callback to recursively call detached hook on children
-	 */
-	
-	function onDetached () {
-	  this._isAttached = false
-	  var children = this._children
-	  if (!children) return
-	  for (var i = 0, l = children.length; i < l; i++) {
-	    var child = children[i]
-	    if (child._isAttached && !inDoc(child.$el)) {
-	      child._callHook('detached')
-	    }
-	  }
-	}
-	
-	/**
-	 * Trigger all handlers for a hook
-	 *
-	 * @param {String} hook
-	 */
-	
-	exports._callHook = function (hook) {
-	  var handlers = this.$options[hook]
-	  if (handlers) {
-	    for (var i = 0, j = handlers.length; i < j; i++) {
-	      handlers[i].call(this)
-	    }
-	  }
-	  this.$emit('hook:' + hook)
-	}
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var Observer = __webpack_require__(29)
-	var Binding = __webpack_require__(57)
-	
-	/**
-	 * Setup the scope of an instance, which contains:
-	 * - observed data
-	 * - computed properties
-	 * - user methods
-	 * - meta properties
-	 */
-	
-	exports._initScope = function () {
-	  this._initData()
-	  this._initComputed()
-	  this._initMethods()
-	  this._initMeta()
-	}
-	
-	/**
-	 * Initialize the data. 
-	 */
-	
-	exports._initData = function () {
-	  // proxy data on instance
-	  var data = this._data
-	  var keys = Object.keys(data)
-	  var i = keys.length
-	  var key
-	  while (i--) {
-	    key = keys[i]
-	    if (!_.isReserved(key)) {
-	      this._proxy(key)
-	    }
-	  }
-	  // observe data
-	  Observer.create(data).addVm(this)
-	}
-	
-	/**
-	 * Swap the isntance's $data. Called in $data's setter.
-	 *
-	 * @param {Object} newData
-	 */
-	
-	exports._setData = function (newData) {
-	  var oldData = this._data
-	  this._data = newData
-	  var keys, key, i
-	  // unproxy keys not present in new data
-	  keys = Object.keys(oldData)
-	  i = keys.length
-	  while (i--) {
-	    key = keys[i]
-	    if (!_.isReserved(key) && !(key in newData)) {
-	      this._unproxy(key)
-	    }
-	  }
-	  // proxy keys not already proxied,
-	  // and trigger change for changed values
-	  keys = Object.keys(newData)
-	  i = keys.length
-	  while (i--) {
-	    key = keys[i]
-	    if (!this.hasOwnProperty(key) && !_.isReserved(key)) {
-	      // new property
-	      this._proxy(key)
-	    }
-	  }
-	  oldData.__ob__.removeVm(this)
-	  Observer.create(newData).addVm(this)
-	  this._digest()
-	}
-	
-	/**
-	 * Proxy a property, so that
-	 * vm.prop === vm._data.prop
-	 *
-	 * @param {String} key
-	 */
-	
-	exports._proxy = function (key) {
-	  // need to store ref to self here
-	  // because these getter/setters might
-	  // be called by child instances!
-	  var self = this
-	  Object.defineProperty(self, key, {
-	    configurable: true,
-	    enumerable: true,
-	    get: function proxyGetter () {
-	      return self._data[key]
-	    },
-	    set: function proxySetter (val) {
-	      self._data[key] = val
-	    }
-	  })
-	}
-	
-	/**
-	 * Unproxy a property.
-	 *
-	 * @param {String} key
-	 */
-	
-	exports._unproxy = function (key) {
-	  delete this[key]
-	}
-	
-	/**
-	 * Force update on every watcher in scope.
-	 */
-	
-	exports._digest = function () {
-	  var i = this._watcherList.length
-	  while (i--) {
-	    this._watcherList[i].update()
-	  }
-	  var children = this._children
-	  var child
-	  if (children) {
-	    i = children.length
-	    while (i--) {
-	      child = children[i]
-	      if (child.$options.inherit) {
-	        child._digest()
-	      }
-	    }
-	  }
-	}
-	
-	/**
-	 * Setup computed properties. They are essentially
-	 * special getter/setters
-	 */
-	
-	function noop () {}
-	exports._initComputed = function () {
-	  var computed = this.$options.computed
-	  if (computed) {
-	    for (var key in computed) {
-	      var userDef = computed[key]
-	      var def = {
-	        enumerable: true,
-	        configurable: true
-	      }
-	      if (typeof userDef === 'function') {
-	        def.get = _.bind(userDef, this)
-	        def.set = noop
-	      } else {
-	        def.get = userDef.get
-	          ? _.bind(userDef.get, this)
-	          : noop
-	        def.set = userDef.set
-	          ? _.bind(userDef.set, this)
-	          : noop
-	      }
-	      Object.defineProperty(this, key, def)
-	    }
-	  }
-	}
-	
-	/**
-	 * Setup instance methods. Methods must be bound to the
-	 * instance since they might be called by children
-	 * inheriting them.
-	 */
-	
-	exports._initMethods = function () {
-	  var methods = this.$options.methods
-	  if (methods) {
-	    for (var key in methods) {
-	      this[key] = _.bind(methods[key], this)
-	    }
-	  }
-	}
-	
-	/**
-	 * Initialize meta information like $index, $key & $value.
-	 */
-	
-	exports._initMeta = function () {
-	  var metas = this.$options._meta
-	  if (metas) {
-	    for (var key in metas) {
-	      this._defineMeta(key, metas[key])
-	    }
-	  }
-	}
-	
-	/**
-	 * Define a meta property, e.g $index, $key, $value
-	 * which only exists on the vm instance but not in $data.
-	 *
-	 * @param {String} key
-	 * @param {*} value
-	 */
-	
-	exports._defineMeta = function (key, value) {
-	  var binding = new Binding()
-	  Object.defineProperty(this, key, {
-	    enumerable: true,
-	    configurable: true,
-	    get: function metaGetter () {
-	      if (Observer.target) {
-	        Observer.target.addDep(binding)
-	      }
-	      return value
-	    },
-	    set: function metaSetter (val) {
-	      if (val !== value) {
-	        value = val
-	        binding.notify()
-	      }
-	    }
-	  })
-	}
-
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var Directive = __webpack_require__(63)
-	var compile = __webpack_require__(96)
-	var transclude = __webpack_require__(97)
-	
-	/**
-	 * Transclude, compile and link element.
-	 *
-	 * If a pre-compiled linker is available, that means the
-	 * passed in element will be pre-transcluded and compiled
-	 * as well - all we need to do is to call the linker.
-	 *
-	 * Otherwise we need to call transclude/compile/link here.
-	 *
-	 * @param {Element} el
-	 * @return {Element}
-	 */
-	
-	exports._compile = function (el) {
-	  var options = this.$options
-	  if (options._linker) {
-	    this._initElement(el)
-	    options._linker(this, el)
-	  } else {
-	    var raw = el
-	    el = transclude(el, options)
-	    this._initElement(el)
-	    var linker = compile(el, options)
-	    linker(this, el)
-	    if (options.replace) {
-	      _.replace(raw, el)
-	    }
-	  }
-	  return el
-	}
-	
-	/**
-	 * Initialize instance element. Called in the public
-	 * $mount() method.
-	 *
-	 * @param {Element} el
-	 */
-	
-	exports._initElement = function (el) {
-	  if (el instanceof DocumentFragment) {
-	    this._isBlock = true
-	    this.$el = this._blockStart = el.firstChild
-	    this._blockEnd = el.lastChild
-	    this._blockFragment = el
-	  } else {
-	    this.$el = el
-	  }
-	  this.$el.__vue__ = this
-	  this._callHook('beforeCompile')
-	}
-	
-	/**
-	 * Create and bind a directive to an element.
-	 *
-	 * @param {String} name - directive name
-	 * @param {Node} node   - target node
-	 * @param {Object} desc - parsed directive descriptor
-	 * @param {Object} def  - directive definition object
-	 * @param {Function} [linker] - pre-compiled linker fn
-	 */
-	
-	exports._bindDir = function (name, node, desc, def, linker) {
-	  this._directives.push(
-	    new Directive(name, node, this, desc, def, linker)
-	  )
-	}
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var config = __webpack_require__(33)
-	var Binding = __webpack_require__(57)
-	var arrayAugmentations = __webpack_require__(64)
-	var objectAugmentations = __webpack_require__(65)
-	var arrayKeys = Object.getOwnPropertyNames(arrayAugmentations)
-	var objectKeys = Object.getOwnPropertyNames(objectAugmentations)
-	
-	var uid = 0
-	
-	/**
-	 * Type enums
-	 */
-	
-	var ARRAY  = 0
-	var OBJECT = 1
-	
-	/**
-	 * Augment an target Object or Array by intercepting
-	 * the prototype chain using __proto__
-	 *
-	 * @param {Object|Array} target
-	 * @param {Object} proto
-	 */
-	
-	function protoAugment (target, src) {
-	  target.__proto__ = src
-	}
-	
-	/**
-	 * Augment an target Object or Array by defining
-	 * hidden properties.
-	 *
-	 * @param {Object|Array} target
-	 * @param {Object} proto
-	 */
-	
-	function copyAugment (target, src, keys) {
-	  var i = keys.length
-	  var key
-	  while (i--) {
-	    key = keys[i]
-	    _.define(target, key, src[key])
-	  }
-	}
-	
-	/**
-	 * Observer class that are attached to each observed
-	 * object. Once attached, the observer converts target
-	 * object's property keys into getter/setters that
-	 * collect dependencies and dispatches updates.
-	 *
-	 * @param {Array|Object} value
-	 * @param {Number} type
-	 * @constructor
-	 */
-	
-	function Observer (value, type) {
-	  this.id = ++uid
-	  this.value = value
-	  this.active = true
-	  this.bindings = []
-	  _.define(value, '__ob__', this)
-	  var augment = config.proto && _.hasProto
-	    ? protoAugment
-	    : copyAugment
-	  if (type === ARRAY) {
-	    augment(value, arrayAugmentations, arrayKeys)
-	    this.observeArray(value)
-	  } else if (type === OBJECT) {
-	    augment(value, objectAugmentations, objectKeys)
-	    this.walk(value)
-	  }
-	}
-	
-	Observer.target = null
-	
-	var p = Observer.prototype
-	
-	/**
-	 * Attempt to create an observer instance for a value,
-	 * returns the new observer if successfully observed,
-	 * or the existing observer if the value already has one.
-	 *
-	 * @param {*} value
-	 * @return {Observer|undefined}
-	 * @static
-	 */
-	
-	Observer.create = function (value) {
-	  if (
-	    value &&
-	    value.hasOwnProperty('__ob__') &&
-	    value.__ob__ instanceof Observer
-	  ) {
-	    return value.__ob__
-	  } else if (_.isArray(value)) {
-	    return new Observer(value, ARRAY)
-	  } else if (
-	    _.isPlainObject(value) &&
-	    !value._isVue // avoid Vue instance
-	  ) {
-	    return new Observer(value, OBJECT)
-	  }
-	}
-	
-	/**
-	 * Walk through each property and convert them into
-	 * getter/setters. This method should only be called when
-	 * value type is Object. Properties prefixed with `$` or `_`
-	 * and accessor properties are ignored.
-	 *
-	 * @param {Object} obj
-	 */
-	
-	p.walk = function (obj) {
-	  var keys = Object.keys(obj)
-	  var i = keys.length
-	  var key, prefix
-	  while (i--) {
-	    key = keys[i]
-	    prefix = key.charCodeAt(0)
-	    if (prefix !== 0x24 && prefix !== 0x5F) { // skip $ or _
-	      this.convert(key, obj[key])
-	    }
-	  }
-	}
-	
-	/**
-	 * Try to carete an observer for a child value,
-	 * and if value is array, link binding to the array.
-	 *
-	 * @param {*} val
-	 * @return {Binding|undefined}
-	 */
-	
-	p.observe = function (val) {
-	  return Observer.create(val)
-	}
-	
-	/**
-	 * Observe a list of Array items.
-	 *
-	 * @param {Array} items
-	 */
-	
-	p.observeArray = function (items) {
-	  var i = items.length
-	  while (i--) {
-	    this.observe(items[i])
-	  }
-	}
-	
-	/**
-	 * Convert a property into getter/setter so we can emit
-	 * the events when the property is accessed/changed.
-	 *
-	 * @param {String} key
-	 * @param {*} val
-	 */
-	
-	p.convert = function (key, val) {
-	  var ob = this
-	  var childOb = ob.observe(val)
-	  var binding = new Binding()
-	  if (childOb) {
-	    childOb.bindings.push(binding)
-	  }
-	  Object.defineProperty(ob.value, key, {
-	    enumerable: true,
-	    configurable: true,
-	    get: function () {
-	      // Observer.target is a watcher whose getter is
-	      // currently being evaluated.
-	      if (ob.active && Observer.target) {
-	        Observer.target.addDep(binding)
-	      }
-	      return val
-	    },
-	    set: function (newVal) {
-	      if (newVal === val) return
-	      // remove binding from old value
-	      var oldChildOb = val && val.__ob__
-	      if (oldChildOb) {
-	        var oldBindings = oldChildOb.bindings
-	        oldBindings.splice(oldBindings.indexOf(binding))
-	      }
-	      val = newVal
-	      // add binding to new value
-	      var newChildOb = ob.observe(newVal)
-	      if (newChildOb) {
-	        newChildOb.bindings.push(binding)
-	      }
-	      binding.notify()
-	    }
-	  })
-	}
-	
-	/**
-	 * Notify change on all self bindings on an observer.
-	 * This is called when a mutable value mutates. e.g.
-	 * when an Array's mutating methods are called, or an
-	 * Object's $add/$delete are called.
-	 */
-	
-	p.notify = function () {
-	  var bindings = this.bindings
-	  for (var i = 0, l = bindings.length; i < l; i++) {
-	    bindings[i].notify()
-	  }
-	}
-	
-	/**
-	 * Add an owner vm, so that when $add/$delete mutations
-	 * happen we can notify owner vms to proxy the keys and
-	 * digest the watchers. This is only called when the object
-	 * is observed as an instance's root $data.
-	 *
-	 * @param {Vue} vm
-	 */
-	
-	p.addVm = function (vm) {
-	  (this.vms = this.vms || []).push(vm)
-	}
-	
-	/**
-	 * Remove an owner vm. This is called when the object is
-	 * swapped out as an instance's $data object.
-	 *
-	 * @param {Vue} vm
-	 */
-	
-	p.removeVm = function (vm) {
-	  this.vms.splice(this.vms.indexOf(vm), 1)
-	}
-	
-	module.exports = Observer
-
-/***/ },
-/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -9625,19 +7866,19 @@
 	    return bluebird;
 	}
 	module.exports = function() {
-	var util = __webpack_require__(66);
-	var async = __webpack_require__(67);
-	var errors = __webpack_require__(68);
+	var util = __webpack_require__(32);
+	var async = __webpack_require__(33);
+	var errors = __webpack_require__(34);
 	
 	var INTERNAL = function(){};
 	var APPLY = {};
 	var NEXT_FILTER = {e: null};
 	
-	var cast = __webpack_require__(69)(Promise, INTERNAL);
-	var PromiseArray = __webpack_require__(70)(Promise, INTERNAL, cast);
-	var CapturedTrace = __webpack_require__(71)();
-	var CatchFilter = __webpack_require__(72)(NEXT_FILTER);
-	var PromiseResolver = __webpack_require__(73);
+	var cast = __webpack_require__(35)(Promise, INTERNAL);
+	var PromiseArray = __webpack_require__(36)(Promise, INTERNAL, cast);
+	var CapturedTrace = __webpack_require__(37)();
+	var CatchFilter = __webpack_require__(38)(NEXT_FILTER);
+	var PromiseResolver = __webpack_require__(39);
 	
 	var isArray = util.isArray;
 	
@@ -9654,7 +7895,7 @@
 	var markAsOriginatingFromRejection = errors.markAsOriginatingFromRejection;
 	var canAttach = errors.canAttach;
 	var thrower = util.thrower;
-	var apiRejection = __webpack_require__(74)(Promise);
+	var apiRejection = __webpack_require__(40)(Promise);
 	
 	
 	var makeSelfResolutionError = function Promise$_makeSelfResolutionError() {
@@ -10634,10 +8875,10 @@
 	}
 	
 	Promise._makeSelfResolutionError = makeSelfResolutionError;
-	__webpack_require__(75)(Promise, NEXT_FILTER, cast);
-	__webpack_require__(76)(Promise);
-	__webpack_require__(77)(Promise);
-	__webpack_require__(78)(Promise, PromiseArray, cast, INTERNAL);
+	__webpack_require__(41)(Promise, NEXT_FILTER, cast);
+	__webpack_require__(42)(Promise);
+	__webpack_require__(43)(Promise);
+	__webpack_require__(44)(Promise, PromiseArray, cast, INTERNAL);
 	Promise.RangeError = RangeError;
 	Promise.CancellationError = CancellationError;
 	Promise.TimeoutError = TimeoutError;
@@ -10649,30 +8890,1791 @@
 	util.toFastProperties(Promise);
 	util.toFastProperties(Promise.prototype);
 	Promise.Promise = Promise;
-	__webpack_require__(79)(Promise,INTERNAL,cast);
-	__webpack_require__(80)(Promise,INTERNAL,cast);
-	__webpack_require__(81)(Promise);
-	__webpack_require__(82)(Promise,apiRejection,INTERNAL,cast);
-	__webpack_require__(83)(Promise,PromiseArray,apiRejection,cast,INTERNAL);
-	__webpack_require__(84)(Promise);
-	__webpack_require__(85)(Promise,INTERNAL);
-	__webpack_require__(86)(Promise,PromiseArray,cast);
-	__webpack_require__(87)(Promise,PromiseArray,apiRejection,cast,INTERNAL);
-	__webpack_require__(88)(Promise,PromiseArray);
-	__webpack_require__(89)(Promise,PromiseArray,apiRejection);
-	__webpack_require__(90)(Promise,PromiseArray);
-	__webpack_require__(91)(Promise,INTERNAL);
-	__webpack_require__(92)(Promise,INTERNAL);
-	__webpack_require__(93)(Promise,PromiseArray);
-	__webpack_require__(94)(Promise,INTERNAL);
-	__webpack_require__(95)(Promise,apiRejection,cast);
+	__webpack_require__(45)(Promise,INTERNAL,cast);
+	__webpack_require__(46)(Promise,INTERNAL,cast);
+	__webpack_require__(47)(Promise);
+	__webpack_require__(48)(Promise,apiRejection,INTERNAL,cast);
+	__webpack_require__(49)(Promise,PromiseArray,apiRejection,cast,INTERNAL);
+	__webpack_require__(50)(Promise);
+	__webpack_require__(51)(Promise,INTERNAL);
+	__webpack_require__(52)(Promise,PromiseArray,cast);
+	__webpack_require__(53)(Promise,PromiseArray,apiRejection,cast,INTERNAL);
+	__webpack_require__(54)(Promise,PromiseArray);
+	__webpack_require__(55)(Promise,PromiseArray,apiRejection);
+	__webpack_require__(56)(Promise,PromiseArray);
+	__webpack_require__(57)(Promise,INTERNAL);
+	__webpack_require__(58)(Promise,INTERNAL);
+	__webpack_require__(59)(Promise,PromiseArray);
+	__webpack_require__(60)(Promise,INTERNAL);
+	__webpack_require__(61)(Promise,apiRejection,cast);
 	
 	Promise.prototype = Promise.prototype;
 	return Promise;
 	
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(101)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var lang   = __webpack_require__(62)
+	var extend = lang.extend
+	
+	extend(exports, lang)
+	extend(exports, __webpack_require__(63))
+	extend(exports, __webpack_require__(64))
+	extend(exports, __webpack_require__(65))
+	extend(exports, __webpack_require__(66))
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var mergeOptions = __webpack_require__(67)
+	
+	/**
+	 * Expose useful internals
+	 */
+	
+	exports.util       = _
+	exports.nextTick   = _.nextTick
+	exports.config     = __webpack_require__(68)
+	
+	/**
+	 * Each instance constructor, including Vue, has a unique
+	 * cid. This enables us to create wrapped "child
+	 * constructors" for prototypal inheritance and cache them.
+	 */
+	
+	exports.cid = 0
+	var cid = 1
+	
+	/**
+	 * Class inehritance
+	 *
+	 * @param {Object} extendOptions
+	 */
+	
+	exports.extend = function (extendOptions) {
+	  extendOptions = extendOptions || {}
+	  var Super = this
+	  var Sub = createClass(extendOptions.name || 'VueComponent')
+	  Sub.prototype = Object.create(Super.prototype)
+	  Sub.prototype.constructor = Sub
+	  Sub.cid = cid++
+	  Sub.options = mergeOptions(
+	    Super.options,
+	    extendOptions
+	  )
+	  Sub['super'] = Super
+	  // allow further extension
+	  Sub.extend = Super.extend
+	  // create asset registers, so extended classes
+	  // can have their private assets too.
+	  createAssetRegisters(Sub)
+	  return Sub
+	}
+	
+	/**
+	 * A function that returns a sub-class constructor with the
+	 * given name. This gives us much nicer output when
+	 * logging instances in the console.
+	 *
+	 * @param {String} name
+	 * @return {Function}
+	 */
+	
+	function createClass (name) {
+	  return new Function(
+	    'Vue',
+	    'return function ' + _.camelize(name) +
+	    ' (options) { Vue.call(this, options) }'
+	  )(_.Vue)
+	}
+	
+	/**
+	 * Plugin system
+	 *
+	 * @param {Object} plugin
+	 */
+	
+	exports.use = function (plugin) {
+	  // additional parameters
+	  var args = _.toArray(arguments, 1)
+	  args.unshift(this)
+	  if (typeof plugin.install === 'function') {
+	    plugin.install.apply(plugin, args)
+	  } else {
+	    plugin.apply(null, args)
+	  }
+	  return this
+	}
+	
+	/**
+	 * Define asset registration methods on a constructor.
+	 *
+	 * @param {Function} Constructor
+	 */
+	
+	var assetTypes = [
+	  'directive',
+	  'filter',
+	  'partial',
+	  'transition'
+	]
+	
+	function createAssetRegisters (Constructor) {
+	
+	  /* Asset registration methods share the same signature:
+	   *
+	   * @param {String} id
+	   * @param {*} definition
+	   */
+	
+	  assetTypes.forEach(function (type) {
+	    Constructor[type] = function (id, definition) {
+	      if (!definition) {
+	        return this.options[type + 's'][id]
+	      } else {
+	        this.options[type + 's'][id] = definition
+	      }
+	    }
+	  })
+	
+	  /**
+	   * Component registration needs to automatically invoke
+	   * Vue.extend on object values.
+	   *
+	   * @param {String} id
+	   * @param {Object|Function} definition
+	   */
+	
+	  Constructor.component = function (id, definition) {
+	    if (!definition) {
+	      return this.options.components[id]
+	    } else {
+	      if (_.isPlainObject(definition)) {
+	        definition.name = id
+	        definition = _.Vue.extend(definition)
+	      }
+	      this.options.components[id] = definition
+	    }
+	  }
+	}
+	
+	createAssetRegisters(exports)
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var Watcher = __webpack_require__(69)
+	var textParser = __webpack_require__(92)
+	var dirParser = __webpack_require__(93)
+	var expParser = __webpack_require__(94)
+	var filterRE = /[^|]\|[^|]/
+	
+	/**
+	 * Get the value from an expression on this vm.
+	 *
+	 * @param {String} exp
+	 * @return {*}
+	 */
+	
+	exports.$get = function (exp) {
+	  var res = expParser.parse(exp)
+	  if (res) {
+	    return res.get.call(this, this)
+	  }
+	}
+	
+	/**
+	 * Set the value from an expression on this vm.
+	 * The expression must be a valid left-hand
+	 * expression in an assignment.
+	 *
+	 * @param {String} exp
+	 * @param {*} val
+	 */
+	
+	exports.$set = function (exp, val) {
+	  var res = expParser.parse(exp, true)
+	  if (res && res.set) {
+	    res.set.call(this, this, val)
+	  }
+	}
+	
+	/**
+	 * Add a property on the VM
+	 *
+	 * @param {String} key
+	 * @param {*} val
+	 */
+	
+	exports.$add = function (key, val) {
+	  this._data.$add(key, val)
+	}
+	
+	/**
+	 * Delete a property on the VM
+	 *
+	 * @param {String} key
+	 */
+	
+	exports.$delete = function (key) {
+	  this._data.$delete(key)
+	}
+	
+	/**
+	 * Watch an expression, trigger callback when its
+	 * value changes.
+	 *
+	 * @param {String} exp
+	 * @param {Function} cb
+	 * @param {Boolean} [deep]
+	 * @param {Boolean} [immediate]
+	 * @return {Function} - unwatchFn
+	 */
+	
+	exports.$watch = function (exp, cb, deep, immediate) {
+	  var vm = this
+	  var key = deep ? exp + '**deep**' : exp
+	  var watcher = vm._userWatchers[key]
+	  var wrappedCb = function (val, oldVal) {
+	    cb.call(vm, val, oldVal)
+	  }
+	  if (!watcher) {
+	    watcher = vm._userWatchers[key] =
+	      new Watcher(vm, exp, wrappedCb, null, false, deep)
+	  } else {
+	    watcher.addCb(wrappedCb)
+	  }
+	  if (immediate) {
+	    wrappedCb(watcher.value)
+	  }
+	  return function unwatchFn () {
+	    watcher.removeCb(wrappedCb)
+	    if (!watcher.active) {
+	      vm._userWatchers[key] = null
+	    }
+	  }
+	}
+	
+	/**
+	 * Evaluate a text directive, including filters.
+	 *
+	 * @param {String} text
+	 * @return {String}
+	 */
+	
+	exports.$eval = function (text) {
+	  // check for filters.
+	  if (filterRE.test(text)) {
+	    var dir = dirParser.parse(text)[0]
+	    // the filter regex check might give false positive
+	    // for pipes inside strings, so it's possible that
+	    // we don't get any filters here
+	    return dir.filters
+	      ? _.applyFilters(
+	          this.$get(dir.expression),
+	          _.resolveFilters(this, dir.filters).read,
+	          this
+	        )
+	      : this.$get(dir.expression)
+	  } else {
+	    // no filter
+	    return this.$get(text)
+	  }
+	}
+	
+	/**
+	 * Interpolate a piece of template text.
+	 *
+	 * @param {String} text
+	 * @return {String}
+	 */
+	
+	exports.$interpolate = function (text) {
+	  var tokens = textParser.parse(text)
+	  var vm = this
+	  if (tokens) {
+	    return tokens.length === 1
+	      ? vm.$eval(tokens[0].value)
+	      : tokens.map(function (token) {
+	          return token.tag
+	            ? vm.$eval(token.value)
+	            : token.value
+	        }).join('')
+	  } else {
+	    return text
+	  }
+	}
+	
+	/**
+	 * Log instance data as a plain JS object
+	 * so that it is easier to inspect in console.
+	 * This method assumes console is available.
+	 *
+	 * @param {String} [key]
+	 */
+	
+	exports.$log = function (key) {
+	  var data = this[key || '_data']
+	  console.log(JSON.parse(JSON.stringify(data)))
+	}
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var transition = __webpack_require__(91)
+	
+	/**
+	 * Append instance to target
+	 *
+	 * @param {Node} target
+	 * @param {Function} [cb]
+	 * @param {Boolean} [withTransition] - defaults to true
+	 */
+	
+	exports.$appendTo = function (target, cb, withTransition) {
+	  var targetIsDetached = !_.inDoc(target)
+	  var op = withTransition === false || targetIsDetached
+	    ? append
+	    : transition.append
+	  insert(this, target, op, targetIsDetached, cb)
+	}
+	
+	/**
+	 * Prepend instance to target
+	 *
+	 * @param {Node} target
+	 * @param {Function} [cb]
+	 * @param {Boolean} [withTransition] - defaults to true
+	 */
+	
+	exports.$prependTo = function (target, cb, withTransition) {
+	  target = query(target)
+	  if (target.hasChildNodes()) {
+	    this.$before(target.firstChild, cb, withTransition)
+	  } else {
+	    this.$appendTo(target, cb, withTransition)
+	  }
+	}
+	
+	/**
+	 * Insert instance before target
+	 *
+	 * @param {Node} target
+	 * @param {Function} [cb]
+	 * @param {Boolean} [withTransition] - defaults to true
+	 */
+	
+	exports.$before = function (target, cb, withTransition) {
+	  var targetIsDetached = !_.inDoc(target)
+	  var op = withTransition === false || targetIsDetached
+	    ? before
+	    : transition.before
+	  insert(this, target, op, targetIsDetached, cb)
+	}
+	
+	/**
+	 * Insert instance after target
+	 *
+	 * @param {Node} target
+	 * @param {Function} [cb]
+	 * @param {Boolean} [withTransition] - defaults to true
+	 */
+	
+	exports.$after = function (target, cb, withTransition) {
+	  target = query(target)
+	  if (target.nextSibling) {
+	    this.$before(target.nextSibling, cb, withTransition)
+	  } else {
+	    this.$appendTo(target.parentNode, cb, withTransition)
+	  }
+	}
+	
+	/**
+	 * Remove instance from DOM
+	 *
+	 * @param {Function} [cb]
+	 * @param {Boolean} [withTransition] - defaults to true
+	 */
+	
+	exports.$remove = function (cb, withTransition) {
+	  var inDoc = this._isAttached && _.inDoc(this.$el)
+	  // if we are not in document, no need to check
+	  // for transitions
+	  if (!inDoc) withTransition = false
+	  var op
+	  var self = this
+	  var realCb = function () {
+	    if (inDoc) self._callHook('detached')
+	    if (cb) cb()
+	  }
+	  if (
+	    this._isBlock &&
+	    !this._blockFragment.hasChildNodes()
+	  ) {
+	    op = withTransition === false
+	      ? append
+	      : transition.removeThenAppend 
+	    blockOp(this, this._blockFragment, op, realCb)
+	  } else {
+	    op = withTransition === false
+	      ? remove
+	      : transition.remove
+	    op(this.$el, this, realCb)
+	  }
+	}
+	
+	/**
+	 * Shared DOM insertion function.
+	 *
+	 * @param {Vue} vm
+	 * @param {Element} target
+	 * @param {Function} op
+	 * @param {Boolean} targetIsDetached
+	 * @param {Function} [cb]
+	 */
+	
+	function insert (vm, target, op, targetIsDetached, cb) {
+	  target = query(target)
+	  var shouldCallHook =
+	    !targetIsDetached &&
+	    !vm._isAttached &&
+	    !_.inDoc(vm.$el)
+	  if (vm._isBlock) {
+	    blockOp(vm, target, op, cb)
+	  } else {
+	    op(vm.$el, target, vm, cb)
+	  }
+	  if (shouldCallHook) {
+	    vm._callHook('attached')
+	  }
+	}
+	
+	/**
+	 * Execute a transition operation on a block instance,
+	 * iterating through all its block nodes.
+	 *
+	 * @param {Vue} vm
+	 * @param {Node} target
+	 * @param {Function} op
+	 * @param {Function} cb
+	 */
+	
+	function blockOp (vm, target, op, cb) {
+	  var current = vm._blockStart
+	  var end = vm._blockEnd
+	  var next
+	  while (next !== end) {
+	    next = current.nextSibling
+	    op(current, target, vm)
+	    current = next
+	  }
+	  op(end, target, vm, cb)
+	}
+	
+	/**
+	 * Check for selectors
+	 *
+	 * @param {String|Element} el
+	 */
+	
+	function query (el) {
+	  return typeof el === 'string'
+	    ? document.querySelector(el)
+	    : el
+	}
+	
+	/**
+	 * Append operation that takes a callback.
+	 *
+	 * @param {Node} el
+	 * @param {Node} target
+	 * @param {Vue} vm - unused
+	 * @param {Function} [cb]
+	 */
+	
+	function append (el, target, vm, cb) {
+	  target.appendChild(el)
+	  if (cb) cb()
+	}
+	
+	/**
+	 * InsertBefore operation that takes a callback.
+	 *
+	 * @param {Node} el
+	 * @param {Node} target
+	 * @param {Vue} vm - unused
+	 * @param {Function} [cb]
+	 */
+	
+	function before (el, target, vm, cb) {
+	  _.before(el, target)
+	  if (cb) cb()
+	}
+	
+	/**
+	 * Remove operation that takes a callback.
+	 *
+	 * @param {Node} el
+	 * @param {Vue} vm - unused
+	 * @param {Function} [cb]
+	 */
+	
+	function remove (el, vm, cb) {
+	  _.remove(el)
+	  if (cb) cb()
+	}
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	
+	/**
+	 * Listen on the given `event` with `fn`.
+	 *
+	 * @param {String} event
+	 * @param {Function} fn
+	 */
+	
+	exports.$on = function (event, fn) {
+	  (this._events[event] || (this._events[event] = []))
+	    .push(fn)
+	  modifyListenerCount(this, event, 1)
+	}
+	
+	/**
+	 * Adds an `event` listener that will be invoked a single
+	 * time then automatically removed.
+	 *
+	 * @param {String} event
+	 * @param {Function} fn
+	 */
+	
+	exports.$once = function (event, fn) {
+	  var self = this
+	  function on () {
+	    self.$off(event, on)
+	    fn.apply(this, arguments)
+	  }
+	  on.fn = fn
+	  this.$on(event, on)
+	}
+	
+	/**
+	 * Remove the given callback for `event` or all
+	 * registered callbacks.
+	 *
+	 * @param {String} event
+	 * @param {Function} fn
+	 */
+	
+	exports.$off = function (event, fn) {
+	  var cbs
+	  // all
+	  if (!arguments.length) {
+	    if (this.$parent) {
+	      for (event in this._events) {
+	        cbs = this._events[event]
+	        if (cbs) {
+	          modifyListenerCount(this, event, -cbs.length)
+	        }
+	      }
+	    }
+	    this._events = {}
+	    return
+	  }
+	  // specific event
+	  cbs = this._events[event]
+	  if (!cbs) return
+	  if (arguments.length === 1) {
+	    modifyListenerCount(this, event, -cbs.length)
+	    this._events[event] = null
+	    return
+	  }
+	  // specific handler
+	  var cb
+	  var i = cbs.length
+	  while (i--) {
+	    cb = cbs[i]
+	    if (cb === fn || cb.fn === fn) {
+	      modifyListenerCount(this, event, -1)
+	      cbs.splice(i, 1)
+	      break
+	    }
+	  }
+	}
+	
+	/**
+	 * Trigger an event on self.
+	 *
+	 * @param {String} event
+	 */
+	
+	exports.$emit = function (event) {
+	  this._eventCancelled = false
+	  var cbs = this._events[event]
+	  if (cbs) {
+	    // avoid leaking arguments:
+	    // http://jsperf.com/closure-with-arguments
+	    var i = arguments.length - 1
+	    var args = new Array(i)
+	    while (i--) {
+	      args[i] = arguments[i + 1]
+	    }
+	    i = 0
+	    cbs = cbs.length > 1
+	      ? _.toArray(cbs)
+	      : cbs
+	    for (var l = cbs.length; i < l; i++) {
+	      if (cbs[i].apply(this, args) === false) {
+	        this._eventCancelled = true
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Recursively broadcast an event to all children instances.
+	 *
+	 * @param {String} event
+	 * @param {...*} additional arguments
+	 */
+	
+	exports.$broadcast = function (event) {
+	  // if no child has registered for this event,
+	  // then there's no need to broadcast.
+	  if (!this._eventsCount[event]) return
+	  var children = this._children
+	  if (children) {
+	    for (var i = 0, l = children.length; i < l; i++) {
+	      var child = children[i]
+	      child.$emit.apply(child, arguments)
+	      if (!child._eventCancelled) {
+	        child.$broadcast.apply(child, arguments)
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Recursively propagate an event up the parent chain.
+	 *
+	 * @param {String} event
+	 * @param {...*} additional arguments
+	 */
+	
+	exports.$dispatch = function () {
+	  var parent = this.$parent
+	  while (parent) {
+	    parent.$emit.apply(parent, arguments)
+	    parent = parent._eventCancelled
+	      ? null
+	      : parent.$parent
+	  }
+	}
+	
+	/**
+	 * Modify the listener counts on all parents.
+	 * This bookkeeping allows $broadcast to return early when
+	 * no child has listened to a certain event.
+	 *
+	 * @param {Vue} vm
+	 * @param {String} event
+	 * @param {Number} count
+	 */
+	
+	var hookRE = /^hook:/
+	function modifyListenerCount (vm, event, count) {
+	  var parent = vm.$parent
+	  // hooks do not get broadcasted so no need
+	  // to do bookkeeping for them
+	  if (!parent || !count || hookRE.test(event)) return
+	  while (parent) {
+	    parent._eventsCount[event] =
+	      (parent._eventsCount[event] || 0) + count
+	    parent = parent.$parent
+	  }
+	}
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	
+	/**
+	 * Create a child instance that prototypally inehrits
+	 * data on parent. To achieve that we create an intermediate
+	 * constructor with its prototype pointing to parent.
+	 *
+	 * @param {Object} opts
+	 * @param {Function} [BaseCtor]
+	 * @return {Vue}
+	 * @public
+	 */
+	
+	exports.$addChild = function (opts, BaseCtor) {
+	  BaseCtor = BaseCtor || _.Vue
+	  opts = opts || {}
+	  var parent = this
+	  var ChildVue
+	  var inherit = opts.inherit !== undefined
+	    ? opts.inherit
+	    : BaseCtor.options.inherit
+	  if (inherit) {
+	    var ctors = parent._childCtors
+	    if (!ctors) {
+	      ctors = parent._childCtors = {}
+	    }
+	    ChildVue = ctors[BaseCtor.cid]
+	    if (!ChildVue) {
+	      ChildVue = function (options) {
+	        this.constructor = ChildVue
+	        _.Vue.call(this, options)
+	      }
+	      ChildVue.options = BaseCtor.options
+	      ChildVue.prototype = this
+	      ctors[BaseCtor.cid] = ChildVue
+	    }
+	  } else {
+	    ChildVue = BaseCtor
+	  }
+	  opts._parent = parent
+	  opts._root = parent.$root
+	  var child = new ChildVue(opts)
+	  if (!this._children) {
+	    this._children = []
+	  }
+	  this._children.push(child)
+	  return child
+	}
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	
+	/**
+	 * Set instance target element and kick off the compilation
+	 * process. The passed in `el` can be a selector string, an
+	 * existing Element, or a DocumentFragment (for block
+	 * instances).
+	 *
+	 * @param {Element|DocumentFragment|string} el
+	 * @public
+	 */
+	
+	exports.$mount = function (el) {
+	  if (this._isCompiled) {
+	    _.warn('$mount() should be called only once.')
+	    return
+	  }
+	  if (typeof el === 'string') {
+	    var selector = el
+	    el = document.querySelector(el)
+	    if (!el) {
+	      _.warn('Cannot find element: ' + selector)
+	      return
+	    }
+	  }
+	  this._compile(el)
+	  this._isCompiled = true
+	  this._callHook('compiled')
+	  if (_.inDoc(this.$el)) {
+	    this._callHook('attached')
+	    this._initDOMHooks()
+	    ready.call(this)
+	  } else {
+	    this._initDOMHooks()
+	    this.$once('hook:attached', ready)
+	  }
+	}
+	
+	/**
+	 * Mark an instance as ready.
+	 */
+	
+	function ready () {
+	  this._isAttached = true
+	  this._isReady = true
+	  this._callHook('ready')
+	}
+	
+	/**
+	 * Teardown an instance, unobserves the data, unbind all the
+	 * directives, turn off all the event listeners, etc.
+	 *
+	 * @param {Boolean} remove - whether to remove the DOM node.
+	 * @public
+	 */
+	
+	exports.$destroy = function (remove) {
+	  if (this._isDestroyed) {
+	    return
+	  }
+	  this._callHook('beforeDestroy')
+	  this._isBeingDestroyed = true
+	  // remove DOM element
+	  if (remove && this.$el) {
+	    this.$remove()
+	  }
+	  var i
+	  // remove self from parent. only necessary
+	  // if parent is not being destroyed as well.
+	  var parent = this.$parent
+	  if (parent && !parent._isBeingDestroyed) {
+	    i = parent._children.indexOf(this)
+	    parent._children.splice(i)
+	  }
+	  // destroy all children.
+	  if (this._children) {
+	    i = this._children.length
+	    while (i--) {
+	      this._children[i].$destroy()
+	    }
+	  }
+	  // teardown all directives. this also tearsdown all
+	  // directive-owned watchers.
+	  i = this._directives.length
+	  while (i--) {
+	    this._directives[i]._teardown()
+	  }
+	  // teardown all user watchers.
+	  for (i in this._userWatchers) {
+	    this._userWatchers[i].teardown()
+	  }
+	  // clean up
+	  if (this.$el) {
+	    this.$el.__vue__ = null
+	  }
+	  // remove reference from data ob
+	  this._data.__ob__.removeVm(this)
+	  this._data =
+	  this._watchers =
+	  this._userWatchers =
+	  this._watcherList =
+	  this.$el =
+	  this.$parent =
+	  this.$root =
+	  this._children =
+	  this._bindings =
+	  this._directives = null
+	  // call the last hook...
+	  this._isDestroyed = true
+	  this._callHook('destroyed')
+	  // turn off all instance listeners.
+	  this.$off()
+	}
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// manipulation directives
+	exports.text       = __webpack_require__(70)
+	exports.html       = __webpack_require__(71)
+	exports.attr       = __webpack_require__(72)
+	exports.show       = __webpack_require__(73)
+	exports['class']   = __webpack_require__(74)
+	exports.el         = __webpack_require__(75)
+	exports.ref        = __webpack_require__(76)
+	exports.cloak      = __webpack_require__(77)
+	exports.style      = __webpack_require__(78)
+	exports.partial    = __webpack_require__(79)
+	exports.transition = __webpack_require__(80)
+	
+	// event listener directives
+	exports.on         = __webpack_require__(81)
+	exports.model      = __webpack_require__(95)
+	
+	// child vm directives
+	exports.component  = __webpack_require__(82)
+	exports.repeat     = __webpack_require__(83)
+	exports['if']      = __webpack_require__(84)
+	exports['with']    = __webpack_require__(85)
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	
+	/**
+	 * Stringify value.
+	 *
+	 * @param {Number} indent
+	 */
+	
+	exports.json = function (value, indent) {
+	  return JSON.stringify(value, null, Number(indent) || 2)
+	}
+	
+	/**
+	 * 'abc' => 'Abc'
+	 */
+	
+	exports.capitalize = function (value) {
+	  if (!value && value !== 0) return ''
+	  value = value.toString()
+	  return value.charAt(0).toUpperCase() + value.slice(1)
+	}
+	
+	/**
+	 * 'abc' => 'ABC'
+	 */
+	
+	exports.uppercase = function (value) {
+	  return (value || value === 0)
+	    ? value.toString().toUpperCase()
+	    : ''
+	}
+	
+	/**
+	 * 'AbC' => 'abc'
+	 */
+	
+	exports.lowercase = function (value) {
+	  return (value || value === 0)
+	    ? value.toString().toLowerCase()
+	    : ''
+	}
+	
+	/**
+	 * 12345 => $12,345.00
+	 *
+	 * @param {String} sign
+	 */
+	
+	var digitsRE = /(\d{3})(?=\d)/g
+	
+	exports.currency = function (value, sign) {
+	  value = parseFloat(value)
+	  if (!value && value !== 0) return ''
+	  sign = sign || '$'
+	  var s = Math.floor(value).toString(),
+	    i = s.length % 3,
+	    h = i > 0
+	      ? (s.slice(0, i) + (s.length > 3 ? ',' : ''))
+	      : '',
+	    f = '.' + value.toFixed(2).slice(-2)
+	  return sign + h + s.slice(i).replace(digitsRE, '$1,') + f
+	}
+	
+	/**
+	 * 'item' => 'items'
+	 *
+	 * @params
+	 *  an array of strings corresponding to
+	 *  the single, double, triple ... forms of the word to
+	 *  be pluralized. When the number to be pluralized
+	 *  exceeds the length of the args, it will use the last
+	 *  entry in the array.
+	 *
+	 *  e.g. ['single', 'double', 'triple', 'multiple']
+	 */
+	
+	exports.pluralize = function (value) {
+	  var args = _.toArray(arguments, 1)
+	  return args.length > 1
+	    ? (args[value % 10 - 1] || args[args.length - 1])
+	    : (args[0] + (value === 1 ? '' : 's'))
+	}
+	
+	/**
+	 * A special filter that takes a handler function,
+	 * wraps it so it only gets triggered on specific
+	 * keypresses. v-on only.
+	 *
+	 * @param {String} key
+	 */
+	
+	var keyCodes = {
+	  enter    : 13,
+	  tab      : 9,
+	  'delete' : 46,
+	  up       : 38,
+	  left     : 37,
+	  right    : 39,
+	  down     : 40,
+	  esc      : 27
+	}
+	
+	exports.key = function (handler, key) {
+	  if (!handler) return
+	  var code = keyCodes[key]
+	  if (!code) {
+	    code = parseInt(key, 10)
+	  }
+	  return function (e) {
+	    if (e.keyCode === code) {
+	      return handler.call(this, e)
+	    }
+	  }
+	}
+	
+	/**
+	 * Install special array filters
+	 */
+	
+	_.extend(exports, __webpack_require__(86))
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var mergeOptions = __webpack_require__(67)
+	
+	/**
+	 * The main init sequence. This is called for every
+	 * instance, including ones that are created from extended
+	 * constructors.
+	 *
+	 * @param {Object} options - this options object should be
+	 *                           the result of merging class
+	 *                           options and the options passed
+	 *                           in to the constructor.
+	 */
+	
+	exports._init = function (options) {
+	
+	  options = options || {}
+	
+	  this.$el           = null
+	  this.$parent       = options._parent
+	  this.$root         = options._root || this
+	  this.$             = {} // child vm references
+	  this.$$            = {} // element references
+	  this._watcherList  = [] // all watchers as an array
+	  this._watchers     = {} // internal watchers as a hash
+	  this._userWatchers = {} // user watchers as a hash
+	  this._directives   = [] // all directives
+	
+	  // a flag to avoid this being observed
+	  this._isVue = true
+	
+	  // events bookkeeping
+	  this._events         = {}    // registered callbacks
+	  this._eventsCount    = {}    // for $broadcast optimization
+	  this._eventCancelled = false // for event cancellation
+	
+	  // block instance properties
+	  this._isBlock     = false
+	  this._blockStart  =          // @type {CommentNode}
+	  this._blockEnd    = null     // @type {CommentNode}
+	
+	  // lifecycle state
+	  this._isCompiled  =
+	  this._isDestroyed =
+	  this._isReady     =
+	  this._isAttached  =
+	  this._isBeingDestroyed = false
+	
+	  // children
+	  this._children =         // @type {Array}
+	  this._childCtors = null  // @type {Object} - hash to cache
+	                           // child constructors
+	
+	  // anonymous instances are created by v-if
+	  // we need to walk along the parent chain to locate the
+	  // first non-anonymous instance as the owner.
+	  this._isAnonymous = options._anonymous
+	  var parent = this.$parent
+	  while (parent && parent._isAnonymous) {
+	    parent = parent.$parent
+	  }
+	  this._owner = parent || this
+	
+	  // merge options.
+	  options = this.$options = mergeOptions(
+	    this.constructor.options,
+	    options,
+	    this
+	  )
+	
+	  // set data after merge.
+	  this._data = options.data || {}
+	
+	  // setup event system and option events.
+	  this._initEvents()
+	
+	  // initialize data observation and scope inheritance.
+	  this._initScope()
+	
+	  // call created hook
+	  this._callHook('created')
+	
+	  // if `el` option is passed, start compilation.
+	  if (options.el) {
+	    this.$mount(options.el)
+	  }
+	}
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var inDoc = _.inDoc
+	
+	/**
+	 * Setup the instance's option events.
+	 * If the value is a string, we pull it from the
+	 * instance's methods by name.
+	 */
+	
+	exports._initEvents = function () {
+	  var options = this.$options
+	  var events = options.events
+	  var methods = options.methods
+	  if (events) {
+	    var handlers, e, i, j
+	    for (e in events) {
+	      handlers = events[e]
+	      if (_.isArray(handlers)) {
+	        for (i = 0, j = handlers.length; i < j; i++) {
+	          register(this, e, handlers[i], methods)
+	        }
+	      } else {
+	        register(this, e, handlers, methods)
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Helper to register an event.
+	 *
+	 * @param {Vue} vm
+	 * @param {String} event
+	 * @param {*} handler
+	 * @param {Object|undefined} methods
+	 */
+	
+	function register (vm, event, handler, methods) {
+	  var type = typeof handler
+	  if (type === 'function') {
+	    vm.$on(event, handler)
+	  } else if (type === 'string') {
+	    var method = methods && methods[handler]
+	    if (method) {
+	      vm.$on(event, method)
+	    } else {
+	      _.warn(
+	        'Unknown method: "' + handler + '" when ' +
+	        'registering callback for event: "' + event + '".'
+	      )
+	    }
+	  }
+	}
+	
+	/**
+	 * Setup recursive attached/detached calls
+	 */
+	
+	exports._initDOMHooks = function () {
+	  this.$on('hook:attached', onAttached)
+	  this.$on('hook:detached', onDetached)
+	}
+	
+	/**
+	 * Callback to recursively call attached hook on children
+	 */
+	
+	function onAttached () {
+	  this._isAttached = true
+	  var children = this._children
+	  if (!children) return
+	  for (var i = 0, l = children.length; i < l; i++) {
+	    var child = children[i]
+	    if (!child._isAttached && inDoc(child.$el)) {
+	      child._callHook('attached')
+	    }
+	  }
+	}
+	
+	/**
+	 * Callback to recursively call detached hook on children
+	 */
+	
+	function onDetached () {
+	  this._isAttached = false
+	  var children = this._children
+	  if (!children) return
+	  for (var i = 0, l = children.length; i < l; i++) {
+	    var child = children[i]
+	    if (child._isAttached && !inDoc(child.$el)) {
+	      child._callHook('detached')
+	    }
+	  }
+	}
+	
+	/**
+	 * Trigger all handlers for a hook
+	 *
+	 * @param {String} hook
+	 */
+	
+	exports._callHook = function (hook) {
+	  var handlers = this.$options[hook]
+	  if (handlers) {
+	    for (var i = 0, j = handlers.length; i < j; i++) {
+	      handlers[i].call(this)
+	    }
+	  }
+	  this.$emit('hook:' + hook)
+	}
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var Observer = __webpack_require__(30)
+	var Binding = __webpack_require__(87)
+	
+	/**
+	 * Setup the scope of an instance, which contains:
+	 * - observed data
+	 * - computed properties
+	 * - user methods
+	 * - meta properties
+	 */
+	
+	exports._initScope = function () {
+	  this._initData()
+	  this._initComputed()
+	  this._initMethods()
+	  this._initMeta()
+	}
+	
+	/**
+	 * Initialize the data. 
+	 */
+	
+	exports._initData = function () {
+	  // proxy data on instance
+	  var data = this._data
+	  var keys = Object.keys(data)
+	  var i = keys.length
+	  var key
+	  while (i--) {
+	    key = keys[i]
+	    if (!_.isReserved(key)) {
+	      this._proxy(key)
+	    }
+	  }
+	  // observe data
+	  Observer.create(data).addVm(this)
+	}
+	
+	/**
+	 * Swap the isntance's $data. Called in $data's setter.
+	 *
+	 * @param {Object} newData
+	 */
+	
+	exports._setData = function (newData) {
+	  var oldData = this._data
+	  this._data = newData
+	  var keys, key, i
+	  // unproxy keys not present in new data
+	  keys = Object.keys(oldData)
+	  i = keys.length
+	  while (i--) {
+	    key = keys[i]
+	    if (!_.isReserved(key) && !(key in newData)) {
+	      this._unproxy(key)
+	    }
+	  }
+	  // proxy keys not already proxied,
+	  // and trigger change for changed values
+	  keys = Object.keys(newData)
+	  i = keys.length
+	  while (i--) {
+	    key = keys[i]
+	    if (!this.hasOwnProperty(key) && !_.isReserved(key)) {
+	      // new property
+	      this._proxy(key)
+	    }
+	  }
+	  oldData.__ob__.removeVm(this)
+	  Observer.create(newData).addVm(this)
+	  this._digest()
+	}
+	
+	/**
+	 * Proxy a property, so that
+	 * vm.prop === vm._data.prop
+	 *
+	 * @param {String} key
+	 */
+	
+	exports._proxy = function (key) {
+	  // need to store ref to self here
+	  // because these getter/setters might
+	  // be called by child instances!
+	  var self = this
+	  Object.defineProperty(self, key, {
+	    configurable: true,
+	    enumerable: true,
+	    get: function proxyGetter () {
+	      return self._data[key]
+	    },
+	    set: function proxySetter (val) {
+	      self._data[key] = val
+	    }
+	  })
+	}
+	
+	/**
+	 * Unproxy a property.
+	 *
+	 * @param {String} key
+	 */
+	
+	exports._unproxy = function (key) {
+	  delete this[key]
+	}
+	
+	/**
+	 * Force update on every watcher in scope.
+	 */
+	
+	exports._digest = function () {
+	  var i = this._watcherList.length
+	  while (i--) {
+	    this._watcherList[i].update()
+	  }
+	  var children = this._children
+	  var child
+	  if (children) {
+	    i = children.length
+	    while (i--) {
+	      child = children[i]
+	      if (child.$options.inherit) {
+	        child._digest()
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Setup computed properties. They are essentially
+	 * special getter/setters
+	 */
+	
+	function noop () {}
+	exports._initComputed = function () {
+	  var computed = this.$options.computed
+	  if (computed) {
+	    for (var key in computed) {
+	      var userDef = computed[key]
+	      var def = {
+	        enumerable: true,
+	        configurable: true
+	      }
+	      if (typeof userDef === 'function') {
+	        def.get = _.bind(userDef, this)
+	        def.set = noop
+	      } else {
+	        def.get = userDef.get
+	          ? _.bind(userDef.get, this)
+	          : noop
+	        def.set = userDef.set
+	          ? _.bind(userDef.set, this)
+	          : noop
+	      }
+	      Object.defineProperty(this, key, def)
+	    }
+	  }
+	}
+	
+	/**
+	 * Setup instance methods. Methods must be bound to the
+	 * instance since they might be called by children
+	 * inheriting them.
+	 */
+	
+	exports._initMethods = function () {
+	  var methods = this.$options.methods
+	  if (methods) {
+	    for (var key in methods) {
+	      this[key] = _.bind(methods[key], this)
+	    }
+	  }
+	}
+	
+	/**
+	 * Initialize meta information like $index, $key & $value.
+	 */
+	
+	exports._initMeta = function () {
+	  var metas = this.$options._meta
+	  if (metas) {
+	    for (var key in metas) {
+	      this._defineMeta(key, metas[key])
+	    }
+	  }
+	}
+	
+	/**
+	 * Define a meta property, e.g $index, $key, $value
+	 * which only exists on the vm instance but not in $data.
+	 *
+	 * @param {String} key
+	 * @param {*} value
+	 */
+	
+	exports._defineMeta = function (key, value) {
+	  var binding = new Binding()
+	  Object.defineProperty(this, key, {
+	    enumerable: true,
+	    configurable: true,
+	    get: function metaGetter () {
+	      if (Observer.target) {
+	        Observer.target.addDep(binding)
+	      }
+	      return value
+	    },
+	    set: function metaSetter (val) {
+	      if (val !== value) {
+	        value = val
+	        binding.notify()
+	      }
+	    }
+	  })
+	}
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var Directive = __webpack_require__(88)
+	var compile = __webpack_require__(96)
+	var transclude = __webpack_require__(97)
+	
+	/**
+	 * Transclude, compile and link element.
+	 *
+	 * If a pre-compiled linker is available, that means the
+	 * passed in element will be pre-transcluded and compiled
+	 * as well - all we need to do is to call the linker.
+	 *
+	 * Otherwise we need to call transclude/compile/link here.
+	 *
+	 * @param {Element} el
+	 * @return {Element}
+	 */
+	
+	exports._compile = function (el) {
+	  var options = this.$options
+	  if (options._linker) {
+	    this._initElement(el)
+	    options._linker(this, el)
+	  } else {
+	    var raw = el
+	    el = transclude(el, options)
+	    this._initElement(el)
+	    var linker = compile(el, options)
+	    linker(this, el)
+	    if (options.replace) {
+	      _.replace(raw, el)
+	    }
+	  }
+	  return el
+	}
+	
+	/**
+	 * Initialize instance element. Called in the public
+	 * $mount() method.
+	 *
+	 * @param {Element} el
+	 */
+	
+	exports._initElement = function (el) {
+	  if (el instanceof DocumentFragment) {
+	    this._isBlock = true
+	    this.$el = this._blockStart = el.firstChild
+	    this._blockEnd = el.lastChild
+	    this._blockFragment = el
+	  } else {
+	    this.$el = el
+	  }
+	  this.$el.__vue__ = this
+	  this._callHook('beforeCompile')
+	}
+	
+	/**
+	 * Create and bind a directive to an element.
+	 *
+	 * @param {String} name - directive name
+	 * @param {Node} node   - target node
+	 * @param {Object} desc - parsed directive descriptor
+	 * @param {Object} def  - directive definition object
+	 * @param {Function} [linker] - pre-compiled linker fn
+	 */
+	
+	exports._bindDir = function (name, node, desc, def, linker) {
+	  this._directives.push(
+	    new Directive(name, node, this, desc, def, linker)
+	  )
+	}
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var config = __webpack_require__(68)
+	var Binding = __webpack_require__(87)
+	var arrayAugmentations = __webpack_require__(89)
+	var objectAugmentations = __webpack_require__(90)
+	var arrayKeys = Object.getOwnPropertyNames(arrayAugmentations)
+	var objectKeys = Object.getOwnPropertyNames(objectAugmentations)
+	
+	var uid = 0
+	
+	/**
+	 * Type enums
+	 */
+	
+	var ARRAY  = 0
+	var OBJECT = 1
+	
+	/**
+	 * Augment an target Object or Array by intercepting
+	 * the prototype chain using __proto__
+	 *
+	 * @param {Object|Array} target
+	 * @param {Object} proto
+	 */
+	
+	function protoAugment (target, src) {
+	  target.__proto__ = src
+	}
+	
+	/**
+	 * Augment an target Object or Array by defining
+	 * hidden properties.
+	 *
+	 * @param {Object|Array} target
+	 * @param {Object} proto
+	 */
+	
+	function copyAugment (target, src, keys) {
+	  var i = keys.length
+	  var key
+	  while (i--) {
+	    key = keys[i]
+	    _.define(target, key, src[key])
+	  }
+	}
+	
+	/**
+	 * Observer class that are attached to each observed
+	 * object. Once attached, the observer converts target
+	 * object's property keys into getter/setters that
+	 * collect dependencies and dispatches updates.
+	 *
+	 * @param {Array|Object} value
+	 * @param {Number} type
+	 * @constructor
+	 */
+	
+	function Observer (value, type) {
+	  this.id = ++uid
+	  this.value = value
+	  this.active = true
+	  this.bindings = []
+	  _.define(value, '__ob__', this)
+	  var augment = config.proto && _.hasProto
+	    ? protoAugment
+	    : copyAugment
+	  if (type === ARRAY) {
+	    augment(value, arrayAugmentations, arrayKeys)
+	    this.observeArray(value)
+	  } else if (type === OBJECT) {
+	    augment(value, objectAugmentations, objectKeys)
+	    this.walk(value)
+	  }
+	}
+	
+	Observer.target = null
+	
+	var p = Observer.prototype
+	
+	/**
+	 * Attempt to create an observer instance for a value,
+	 * returns the new observer if successfully observed,
+	 * or the existing observer if the value already has one.
+	 *
+	 * @param {*} value
+	 * @return {Observer|undefined}
+	 * @static
+	 */
+	
+	Observer.create = function (value) {
+	  if (
+	    value &&
+	    value.hasOwnProperty('__ob__') &&
+	    value.__ob__ instanceof Observer
+	  ) {
+	    return value.__ob__
+	  } else if (_.isArray(value)) {
+	    return new Observer(value, ARRAY)
+	  } else if (
+	    _.isPlainObject(value) &&
+	    !value._isVue // avoid Vue instance
+	  ) {
+	    return new Observer(value, OBJECT)
+	  }
+	}
+	
+	/**
+	 * Walk through each property and convert them into
+	 * getter/setters. This method should only be called when
+	 * value type is Object. Properties prefixed with `$` or `_`
+	 * and accessor properties are ignored.
+	 *
+	 * @param {Object} obj
+	 */
+	
+	p.walk = function (obj) {
+	  var keys = Object.keys(obj)
+	  var i = keys.length
+	  var key, prefix
+	  while (i--) {
+	    key = keys[i]
+	    prefix = key.charCodeAt(0)
+	    if (prefix !== 0x24 && prefix !== 0x5F) { // skip $ or _
+	      this.convert(key, obj[key])
+	    }
+	  }
+	}
+	
+	/**
+	 * Try to carete an observer for a child value,
+	 * and if value is array, link binding to the array.
+	 *
+	 * @param {*} val
+	 * @return {Binding|undefined}
+	 */
+	
+	p.observe = function (val) {
+	  return Observer.create(val)
+	}
+	
+	/**
+	 * Observe a list of Array items.
+	 *
+	 * @param {Array} items
+	 */
+	
+	p.observeArray = function (items) {
+	  var i = items.length
+	  while (i--) {
+	    this.observe(items[i])
+	  }
+	}
+	
+	/**
+	 * Convert a property into getter/setter so we can emit
+	 * the events when the property is accessed/changed.
+	 *
+	 * @param {String} key
+	 * @param {*} val
+	 */
+	
+	p.convert = function (key, val) {
+	  var ob = this
+	  var childOb = ob.observe(val)
+	  var binding = new Binding()
+	  if (childOb) {
+	    childOb.bindings.push(binding)
+	  }
+	  Object.defineProperty(ob.value, key, {
+	    enumerable: true,
+	    configurable: true,
+	    get: function () {
+	      // Observer.target is a watcher whose getter is
+	      // currently being evaluated.
+	      if (ob.active && Observer.target) {
+	        Observer.target.addDep(binding)
+	      }
+	      return val
+	    },
+	    set: function (newVal) {
+	      if (newVal === val) return
+	      // remove binding from old value
+	      var oldChildOb = val && val.__ob__
+	      if (oldChildOb) {
+	        var oldBindings = oldChildOb.bindings
+	        oldBindings.splice(oldBindings.indexOf(binding))
+	      }
+	      val = newVal
+	      // add binding to new value
+	      var newChildOb = ob.observe(newVal)
+	      if (newChildOb) {
+	        newChildOb.bindings.push(binding)
+	      }
+	      binding.notify()
+	    }
+	  })
+	}
+	
+	/**
+	 * Notify change on all self bindings on an observer.
+	 * This is called when a mutable value mutates. e.g.
+	 * when an Array's mutating methods are called, or an
+	 * Object's $add/$delete are called.
+	 */
+	
+	p.notify = function () {
+	  var bindings = this.bindings
+	  for (var i = 0, l = bindings.length; i < l; i++) {
+	    bindings[i].notify()
+	  }
+	}
+	
+	/**
+	 * Add an owner vm, so that when $add/$delete mutations
+	 * happen we can notify owner vms to proxy the keys and
+	 * digest the watchers. This is only called when the object
+	 * is observed as an instance's root $data.
+	 *
+	 * @param {Vue} vm
+	 */
+	
+	p.addVm = function (vm) {
+	  (this.vms = this.vms || []).push(vm)
+	}
+	
+	/**
+	 * Remove an owner vm. This is called when the object is
+	 * swapped out as an instance's $data object.
+	 *
+	 * @param {Vue} vm
+	 */
+	
+	p.removeVm = function (vm) {
+	  this.vms.splice(this.vms.indexOf(vm), 1)
+	}
+	
+	module.exports = Observer
 
 /***/ },
 /* 31 */
@@ -10699,7 +10701,4518 @@
 /* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var es5 = __webpack_require__(99);
+	var haveGetters = (function(){
+	    try {
+	        var o = {};
+	        es5.defineProperty(o, "f", {
+	            get: function () {
+	                return 3;
+	            }
+	        });
+	        return o.f === 3;
+	    }
+	    catch (e) {
+	        return false;
+	    }
+	
+	})();
+	var canEvaluate = typeof navigator == "undefined";
+	var errorObj = {e: {}};
+	function tryCatch1(fn, receiver, arg) {
+	    try { return fn.call(receiver, arg); }
+	    catch (e) {
+	        errorObj.e = e;
+	        return errorObj;
+	    }
+	}
+	
+	function tryCatch2(fn, receiver, arg, arg2) {
+	    try { return fn.call(receiver, arg, arg2); }
+	    catch (e) {
+	        errorObj.e = e;
+	        return errorObj;
+	    }
+	}
+	
+	function tryCatch3(fn, receiver, arg, arg2, arg3) {
+	    try { return fn.call(receiver, arg, arg2, arg3); }
+	    catch (e) {
+	        errorObj.e = e;
+	        return errorObj;
+	    }
+	}
+	
+	function tryCatch4(fn, receiver, arg, arg2, arg3, arg4) {
+	    try { return fn.call(receiver, arg, arg2, arg3, arg4); }
+	    catch (e) {
+	        errorObj.e = e;
+	        return errorObj;
+	    }
+	}
+	
+	function tryCatchApply(fn, args, receiver) {
+	    try { return fn.apply(receiver, args); }
+	    catch (e) {
+	        errorObj.e = e;
+	        return errorObj;
+	    }
+	}
+	
+	var inherits = function(Child, Parent) {
+	    var hasProp = {}.hasOwnProperty;
+	
+	    function T() {
+	        this.constructor = Child;
+	        this.constructor$ = Parent;
+	        for (var propertyName in Parent.prototype) {
+	            if (hasProp.call(Parent.prototype, propertyName) &&
+	                propertyName.charAt(propertyName.length-1) !== "$"
+	           ) {
+	                this[propertyName + "$"] = Parent.prototype[propertyName];
+	            }
+	        }
+	    }
+	    T.prototype = Parent.prototype;
+	    Child.prototype = new T();
+	    return Child.prototype;
+	};
+	
+	function asString(val) {
+	    return typeof val === "string" ? val : ("" + val);
+	}
+	
+	function isPrimitive(val) {
+	    return val == null || val === true || val === false ||
+	        typeof val === "string" || typeof val === "number";
+	
+	}
+	
+	function isObject(value) {
+	    return !isPrimitive(value);
+	}
+	
+	function maybeWrapAsError(maybeError) {
+	    if (!isPrimitive(maybeError)) return maybeError;
+	
+	    return new Error(asString(maybeError));
+	}
+	
+	function withAppended(target, appendee) {
+	    var len = target.length;
+	    var ret = new Array(len + 1);
+	    var i;
+	    for (i = 0; i < len; ++i) {
+	        ret[i] = target[i];
+	    }
+	    ret[i] = appendee;
+	    return ret;
+	}
+	
+	function getDataPropertyOrDefault(obj, key, defaultValue) {
+	    if (es5.isES5) {
+	        var desc = Object.getOwnPropertyDescriptor(obj, key);
+	        if (desc != null) {
+	            return desc.get == null && desc.set == null
+	                    ? desc.value
+	                    : defaultValue;
+	        }
+	    } else {
+	        return {}.hasOwnProperty.call(obj, key) ? obj[key] : void 0;
+	    }
+	}
+	
+	function notEnumerableProp(obj, name, value) {
+	    if (isPrimitive(obj)) return obj;
+	    var descriptor = {
+	        value: value,
+	        configurable: true,
+	        enumerable: false,
+	        writable: true
+	    };
+	    es5.defineProperty(obj, name, descriptor);
+	    return obj;
+	}
+	
+	
+	var wrapsPrimitiveReceiver = (function() {
+	    return this !== "string";
+	}).call("string");
+	
+	function thrower(r) {
+	    throw r;
+	}
+	
+	var inheritedDataKeys = (function() {
+	    if (es5.isES5) {
+	        return function(obj, opts) {
+	            var ret = [];
+	            var visitedKeys = Object.create(null);
+	            var getKeys = Object(opts).includeHidden
+	                ? Object.getOwnPropertyNames
+	                : Object.keys;
+	            while (obj != null) {
+	                var keys;
+	                try {
+	                    keys = getKeys(obj);
+	                } catch (e) {
+	                    return ret;
+	                }
+	                for (var i = 0; i < keys.length; ++i) {
+	                    var key = keys[i];
+	                    if (visitedKeys[key]) continue;
+	                    visitedKeys[key] = true;
+	                    var desc = Object.getOwnPropertyDescriptor(obj, key);
+	                    if (desc != null && desc.get == null && desc.set == null) {
+	                        ret.push(key);
+	                    }
+	                }
+	                obj = es5.getPrototypeOf(obj);
+	            }
+	            return ret;
+	        };
+	    } else {
+	        return function(obj) {
+	            var ret = [];
+	            /*jshint forin:false */
+	            for (var key in obj) {
+	                ret.push(key);
+	            }
+	            return ret;
+	        };
+	    }
+	
+	})();
+	
+	function isClass(fn) {
+	    try {
+	        if (typeof fn === "function") {
+	            var keys = es5.keys(fn.prototype);
+	            return keys.length > 0 &&
+	                   !(keys.length === 1 && keys[0] === "constructor");
+	        }
+	        return false;
+	    } catch (e) {
+	        return false;
+	    }
+	}
+	
+	function toFastProperties(obj) {
+	    /*jshint -W027*/
+	    function f() {}
+	    f.prototype = obj;
+	    return f;
+	    eval(obj);
+	}
+	
+	var rident = /^[a-z$_][a-z$_0-9]*$/i;
+	function isIdentifier(str) {
+	    return rident.test(str);
+	}
+	
+	function filledRange(count, prefix, suffix) {
+	    var ret = new Array(count);
+	    for(var i = 0; i < count; ++i) {
+	        ret[i] = prefix + i + suffix;
+	    }
+	    return ret;
+	}
+	
+	var ret = {
+	    isClass: isClass,
+	    isIdentifier: isIdentifier,
+	    inheritedDataKeys: inheritedDataKeys,
+	    getDataPropertyOrDefault: getDataPropertyOrDefault,
+	    thrower: thrower,
+	    isArray: es5.isArray,
+	    haveGetters: haveGetters,
+	    notEnumerableProp: notEnumerableProp,
+	    isPrimitive: isPrimitive,
+	    isObject: isObject,
+	    canEvaluate: canEvaluate,
+	    errorObj: errorObj,
+	    tryCatch1: tryCatch1,
+	    tryCatch2: tryCatch2,
+	    tryCatch3: tryCatch3,
+	    tryCatch4: tryCatch4,
+	    tryCatchApply: tryCatchApply,
+	    inherits: inherits,
+	    withAppended: withAppended,
+	    asString: asString,
+	    maybeWrapAsError: maybeWrapAsError,
+	    wrapsPrimitiveReceiver: wrapsPrimitiveReceiver,
+	    toFastProperties: toFastProperties,
+	    filledRange: filledRange
+	};
+	
+	module.exports = ret;
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var schedule = __webpack_require__(100);
+	var Queue = __webpack_require__(101);
+	var errorObj = __webpack_require__(32).errorObj;
+	var tryCatch1 = __webpack_require__(32).tryCatch1;
+	var _process = typeof process !== "undefined" ? process : void 0;
+	
+	function Async() {
+	    this._isTickUsed = false;
+	    this._schedule = schedule;
+	    this._length = 0;
+	    this._lateBuffer = new Queue(16);
+	    this._functionBuffer = new Queue(65536);
+	    var self = this;
+	    this.consumeFunctionBuffer = function Async$consumeFunctionBuffer() {
+	        self._consumeFunctionBuffer();
+	    };
+	}
+	
+	Async.prototype.haveItemsQueued = function Async$haveItemsQueued() {
+	    return this._length > 0;
+	};
+	
+	Async.prototype.invokeLater = function Async$invokeLater(fn, receiver, arg) {
+	    if (_process !== void 0 &&
+	        _process.domain != null &&
+	        !fn.domain) {
+	        fn = _process.domain.bind(fn);
+	    }
+	    this._lateBuffer.push(fn, receiver, arg);
+	    this._queueTick();
+	};
+	
+	Async.prototype.invoke = function Async$invoke(fn, receiver, arg) {
+	    if (_process !== void 0 &&
+	        _process.domain != null &&
+	        !fn.domain) {
+	        fn = _process.domain.bind(fn);
+	    }
+	    var functionBuffer = this._functionBuffer;
+	    functionBuffer.push(fn, receiver, arg);
+	    this._length = functionBuffer.length();
+	    this._queueTick();
+	};
+	
+	Async.prototype._consumeFunctionBuffer =
+	function Async$_consumeFunctionBuffer() {
+	    var functionBuffer = this._functionBuffer;
+	    while (functionBuffer.length() > 0) {
+	        var fn = functionBuffer.shift();
+	        var receiver = functionBuffer.shift();
+	        var arg = functionBuffer.shift();
+	        fn.call(receiver, arg);
+	    }
+	    this._reset();
+	    this._consumeLateBuffer();
+	};
+	
+	Async.prototype._consumeLateBuffer = function Async$_consumeLateBuffer() {
+	    var buffer = this._lateBuffer;
+	    while(buffer.length() > 0) {
+	        var fn = buffer.shift();
+	        var receiver = buffer.shift();
+	        var arg = buffer.shift();
+	        var res = tryCatch1(fn, receiver, arg);
+	        if (res === errorObj) {
+	            this._queueTick();
+	            if (fn.domain != null) {
+	                fn.domain.emit("error", res.e);
+	            } else {
+	                throw res.e;
+	            }
+	        }
+	    }
+	};
+	
+	Async.prototype._queueTick = function Async$_queue() {
+	    if (!this._isTickUsed) {
+	        this._schedule(this.consumeFunctionBuffer);
+	        this._isTickUsed = true;
+	    }
+	};
+	
+	Async.prototype._reset = function Async$_reset() {
+	    this._isTickUsed = false;
+	    this._length = 0;
+	};
+	
+	module.exports = new Async();
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var Objectfreeze = __webpack_require__(99).freeze;
+	var util = __webpack_require__(32);
+	var inherits = util.inherits;
+	var notEnumerableProp = util.notEnumerableProp;
+	
+	function markAsOriginatingFromRejection(e) {
+	    try {
+	        notEnumerableProp(e, "isOperational", true);
+	    }
+	    catch(ignore) {}
+	}
+	
+	function originatesFromRejection(e) {
+	    if (e == null) return false;
+	    return ((e instanceof OperationalError) ||
+	        e["isOperational"] === true);
+	}
+	
+	function isError(obj) {
+	    return obj instanceof Error;
+	}
+	
+	function canAttach(obj) {
+	    return isError(obj);
+	}
+	
+	function subError(nameProperty, defaultMessage) {
+	    function SubError(message) {
+	        if (!(this instanceof SubError)) return new SubError(message);
+	        this.message = typeof message === "string" ? message : defaultMessage;
+	        this.name = nameProperty;
+	        if (Error.captureStackTrace) {
+	            Error.captureStackTrace(this, this.constructor);
+	        }
+	    }
+	    inherits(SubError, Error);
+	    return SubError;
+	}
+	
+	var _TypeError, _RangeError;
+	var CancellationError = subError("CancellationError", "cancellation error");
+	var TimeoutError = subError("TimeoutError", "timeout error");
+	var AggregateError = subError("AggregateError", "aggregate error");
+	try {
+	    _TypeError = TypeError;
+	    _RangeError = RangeError;
+	} catch(e) {
+	    _TypeError = subError("TypeError", "type error");
+	    _RangeError = subError("RangeError", "range error");
+	}
+	
+	var methods = ("join pop push shift unshift slice filter forEach some " +
+	    "every map indexOf lastIndexOf reduce reduceRight sort reverse").split(" ");
+	
+	for (var i = 0; i < methods.length; ++i) {
+	    if (typeof Array.prototype[methods[i]] === "function") {
+	        AggregateError.prototype[methods[i]] = Array.prototype[methods[i]];
+	    }
+	}
+	
+	AggregateError.prototype.length = 0;
+	AggregateError.prototype["isOperational"] = true;
+	var level = 0;
+	AggregateError.prototype.toString = function() {
+	    var indent = Array(level * 4 + 1).join(" ");
+	    var ret = "\n" + indent + "AggregateError of:" + "\n";
+	    level++;
+	    indent = Array(level * 4 + 1).join(" ");
+	    for (var i = 0; i < this.length; ++i) {
+	        var str = this[i] === this ? "[Circular AggregateError]" : this[i] + "";
+	        var lines = str.split("\n");
+	        for (var j = 0; j < lines.length; ++j) {
+	            lines[j] = indent + lines[j];
+	        }
+	        str = lines.join("\n");
+	        ret += str + "\n";
+	    }
+	    level--;
+	    return ret;
+	};
+	
+	function OperationalError(message) {
+	    this.name = "OperationalError";
+	    this.message = message;
+	    this.cause = message;
+	    this["isOperational"] = true;
+	
+	    if (message instanceof Error) {
+	        this.message = message.message;
+	        this.stack = message.stack;
+	    } else if (Error.captureStackTrace) {
+	        Error.captureStackTrace(this, this.constructor);
+	    }
+	
+	}
+	inherits(OperationalError, Error);
+	
+	var key = "__BluebirdErrorTypes__";
+	var errorTypes = Error[key];
+	if (!errorTypes) {
+	    errorTypes = Objectfreeze({
+	        CancellationError: CancellationError,
+	        TimeoutError: TimeoutError,
+	        OperationalError: OperationalError,
+	        RejectionError: OperationalError,
+	        AggregateError: AggregateError
+	    });
+	    notEnumerableProp(Error, key, errorTypes);
+	}
+	
+	module.exports = {
+	    Error: Error,
+	    TypeError: _TypeError,
+	    RangeError: _RangeError,
+	    CancellationError: errorTypes.CancellationError,
+	    OperationalError: errorTypes.OperationalError,
+	    TimeoutError: errorTypes.TimeoutError,
+	    AggregateError: errorTypes.AggregateError,
+	    originatesFromRejection: originatesFromRejection,
+	    markAsOriginatingFromRejection: markAsOriginatingFromRejection,
+	    canAttach: canAttach
+	};
+
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, INTERNAL) {
+	var util = __webpack_require__(32);
+	var canAttach = __webpack_require__(34).canAttach;
+	var errorObj = util.errorObj;
+	var isObject = util.isObject;
+	
+	function getThen(obj) {
+	    try {
+	        return obj.then;
+	    }
+	    catch(e) {
+	        errorObj.e = e;
+	        return errorObj;
+	    }
+	}
+	
+	function Promise$_Cast(obj, originalPromise) {
+	    if (isObject(obj)) {
+	        if (obj instanceof Promise) {
+	            return obj;
+	        }
+	        else if (isAnyBluebirdPromise(obj)) {
+	            var ret = new Promise(INTERNAL);
+	            ret._setTrace(void 0);
+	            obj._then(
+	                ret._fulfillUnchecked,
+	                ret._rejectUncheckedCheckError,
+	                ret._progressUnchecked,
+	                ret,
+	                null
+	            );
+	            ret._setFollowing();
+	            return ret;
+	        }
+	        var then = getThen(obj);
+	        if (then === errorObj) {
+	            if (originalPromise !== void 0 && canAttach(then.e)) {
+	                originalPromise._attachExtraTrace(then.e);
+	            }
+	            return Promise.reject(then.e);
+	        } else if (typeof then === "function") {
+	            return Promise$_doThenable(obj, then, originalPromise);
+	        }
+	    }
+	    return obj;
+	}
+	
+	var hasProp = {}.hasOwnProperty;
+	function isAnyBluebirdPromise(obj) {
+	    return hasProp.call(obj, "_promise0");
+	}
+	
+	function Promise$_doThenable(x, then, originalPromise) {
+	    var resolver = Promise.defer();
+	    var called = false;
+	    try {
+	        then.call(
+	            x,
+	            Promise$_resolveFromThenable,
+	            Promise$_rejectFromThenable,
+	            Promise$_progressFromThenable
+	        );
+	    } catch(e) {
+	        if (!called) {
+	            called = true;
+	            var trace = canAttach(e) ? e : new Error(e + "");
+	            if (originalPromise !== void 0) {
+	                originalPromise._attachExtraTrace(trace);
+	            }
+	            resolver.promise._reject(e, trace);
+	        }
+	    }
+	    return resolver.promise;
+	
+	    function Promise$_resolveFromThenable(y) {
+	        if (called) return;
+	        called = true;
+	
+	        if (x === y) {
+	            var e = Promise._makeSelfResolutionError();
+	            if (originalPromise !== void 0) {
+	                originalPromise._attachExtraTrace(e);
+	            }
+	            resolver.promise._reject(e, void 0);
+	            return;
+	        }
+	        resolver.resolve(y);
+	    }
+	
+	    function Promise$_rejectFromThenable(r) {
+	        if (called) return;
+	        called = true;
+	        var trace = canAttach(r) ? r : new Error(r + "");
+	        if (originalPromise !== void 0) {
+	            originalPromise._attachExtraTrace(trace);
+	        }
+	        resolver.promise._reject(r, trace);
+	    }
+	
+	    function Promise$_progressFromThenable(v) {
+	        if (called) return;
+	        var promise = resolver.promise;
+	        if (typeof promise._progress === "function") {
+	            promise._progress(v);
+	        }
+	    }
+	}
+	
+	return Promise$_Cast;
+	};
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, INTERNAL, cast) {
+	var canAttach = __webpack_require__(34).canAttach;
+	var util = __webpack_require__(32);
+	var isArray = util.isArray;
+	
+	function toResolutionValue(val) {
+	    switch(val) {
+	    case -1: return void 0;
+	    case -2: return [];
+	    case -3: return {};
+	    }
+	}
+	
+	function PromiseArray(values) {
+	    var promise = this._promise = new Promise(INTERNAL);
+	    var parent = void 0;
+	    if (values instanceof Promise) {
+	        parent = values;
+	        promise._propagateFrom(parent, 1 | 4);
+	    }
+	    promise._setTrace(parent);
+	    this._values = values;
+	    this._length = 0;
+	    this._totalResolved = 0;
+	    this._init(void 0, -2);
+	}
+	PromiseArray.prototype.length = function PromiseArray$length() {
+	    return this._length;
+	};
+	
+	PromiseArray.prototype.promise = function PromiseArray$promise() {
+	    return this._promise;
+	};
+	
+	PromiseArray.prototype._init =
+	function PromiseArray$_init(_, resolveValueIfEmpty) {
+	    var values = cast(this._values, void 0);
+	    if (values instanceof Promise) {
+	        this._values = values;
+	        values._setBoundTo(this._promise._boundTo);
+	        if (values.isFulfilled()) {
+	            values = values._settledValue;
+	            if (!isArray(values)) {
+	                var err = new Promise.TypeError("expecting an array, a promise or a thenable");
+	                this.__hardReject__(err);
+	                return;
+	            }
+	        } else if (values.isPending()) {
+	            values._then(
+	                PromiseArray$_init,
+	                this._reject,
+	                void 0,
+	                this,
+	                resolveValueIfEmpty
+	           );
+	            return;
+	        } else {
+	            values._unsetRejectionIsUnhandled();
+	            this._reject(values._settledValue);
+	            return;
+	        }
+	    } else if (!isArray(values)) {
+	        var err = new Promise.TypeError("expecting an array, a promise or a thenable");
+	        this.__hardReject__(err);
+	        return;
+	    }
+	
+	    if (values.length === 0) {
+	        if (resolveValueIfEmpty === -5) {
+	            this._resolveEmptyArray();
+	        }
+	        else {
+	            this._resolve(toResolutionValue(resolveValueIfEmpty));
+	        }
+	        return;
+	    }
+	    var len = this.getActualLength(values.length);
+	    var newLen = len;
+	    var newValues = this.shouldCopyValues() ? new Array(len) : this._values;
+	    var isDirectScanNeeded = false;
+	    for (var i = 0; i < len; ++i) {
+	        var maybePromise = cast(values[i], void 0);
+	        if (maybePromise instanceof Promise) {
+	            if (maybePromise.isPending()) {
+	                maybePromise._proxyPromiseArray(this, i);
+	            } else {
+	                maybePromise._unsetRejectionIsUnhandled();
+	                isDirectScanNeeded = true;
+	            }
+	        } else {
+	            isDirectScanNeeded = true;
+	        }
+	        newValues[i] = maybePromise;
+	    }
+	    this._values = newValues;
+	    this._length = newLen;
+	    if (isDirectScanNeeded) {
+	        this._scanDirectValues(len);
+	    }
+	};
+	
+	PromiseArray.prototype._settlePromiseAt =
+	function PromiseArray$_settlePromiseAt(index) {
+	    var value = this._values[index];
+	    if (!(value instanceof Promise)) {
+	        this._promiseFulfilled(value, index);
+	    } else if (value.isFulfilled()) {
+	        this._promiseFulfilled(value._settledValue, index);
+	    } else if (value.isRejected()) {
+	        this._promiseRejected(value._settledValue, index);
+	    }
+	};
+	
+	PromiseArray.prototype._scanDirectValues =
+	function PromiseArray$_scanDirectValues(len) {
+	    for (var i = 0; i < len; ++i) {
+	        if (this._isResolved()) {
+	            break;
+	        }
+	        this._settlePromiseAt(i);
+	    }
+	};
+	
+	PromiseArray.prototype._isResolved = function PromiseArray$_isResolved() {
+	    return this._values === null;
+	};
+	
+	PromiseArray.prototype._resolve = function PromiseArray$_resolve(value) {
+	    this._values = null;
+	    this._promise._fulfill(value);
+	};
+	
+	PromiseArray.prototype.__hardReject__ =
+	PromiseArray.prototype._reject = function PromiseArray$_reject(reason) {
+	    this._values = null;
+	    var trace = canAttach(reason) ? reason : new Error(reason + "");
+	    this._promise._attachExtraTrace(trace);
+	    this._promise._reject(reason, trace);
+	};
+	
+	PromiseArray.prototype._promiseProgressed =
+	function PromiseArray$_promiseProgressed(progressValue, index) {
+	    if (this._isResolved()) return;
+	    this._promise._progress({
+	        index: index,
+	        value: progressValue
+	    });
+	};
+	
+	
+	PromiseArray.prototype._promiseFulfilled =
+	function PromiseArray$_promiseFulfilled(value, index) {
+	    if (this._isResolved()) return;
+	    this._values[index] = value;
+	    var totalResolved = ++this._totalResolved;
+	    if (totalResolved >= this._length) {
+	        this._resolve(this._values);
+	    }
+	};
+	
+	PromiseArray.prototype._promiseRejected =
+	function PromiseArray$_promiseRejected(reason, index) {
+	    if (this._isResolved()) return;
+	    this._totalResolved++;
+	    this._reject(reason);
+	};
+	
+	PromiseArray.prototype.shouldCopyValues =
+	function PromiseArray$_shouldCopyValues() {
+	    return true;
+	};
+	
+	PromiseArray.prototype.getActualLength =
+	function PromiseArray$getActualLength(len) {
+	    return len;
+	};
+	
+	return PromiseArray;
+	};
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function() {
+	var inherits = __webpack_require__(32).inherits;
+	var defineProperty = __webpack_require__(99).defineProperty;
+	
+	var rignore = new RegExp(
+	    "\\b(?:[a-zA-Z0-9.]+\\$_\\w+|" +
+	    "tryCatch(?:1|2|3|4|Apply)|new \\w*PromiseArray|" +
+	    "\\w*PromiseArray\\.\\w*PromiseArray|" +
+	    "setTimeout|CatchFilter\\$_\\w+|makeNodePromisified|processImmediate|" +
+	    "process._tickCallback|nextTick|Async\\$\\w+)\\b"
+	);
+	
+	var rtraceline = null;
+	var formatStack = null;
+	
+	function formatNonError(obj) {
+	    var str;
+	    if (typeof obj === "function") {
+	        str = "[function " +
+	            (obj.name || "anonymous") +
+	            "]";
+	    } else {
+	        str = obj.toString();
+	        var ruselessToString = /\[object [a-zA-Z0-9$_]+\]/;
+	        if (ruselessToString.test(str)) {
+	            try {
+	                var newStr = JSON.stringify(obj);
+	                str = newStr;
+	            }
+	            catch(e) {
+	
+	            }
+	        }
+	        if (str.length === 0) {
+	            str = "(empty array)";
+	        }
+	    }
+	    return ("(<" + snip(str) + ">, no stack trace)");
+	}
+	
+	function snip(str) {
+	    var maxChars = 41;
+	    if (str.length < maxChars) {
+	        return str;
+	    }
+	    return str.substr(0, maxChars - 3) + "...";
+	}
+	
+	function CapturedTrace(ignoreUntil, isTopLevel) {
+	    this.captureStackTrace(CapturedTrace, isTopLevel);
+	
+	}
+	inherits(CapturedTrace, Error);
+	
+	CapturedTrace.prototype.captureStackTrace =
+	function CapturedTrace$captureStackTrace(ignoreUntil, isTopLevel) {
+	    captureStackTrace(this, ignoreUntil, isTopLevel);
+	};
+	
+	CapturedTrace.possiblyUnhandledRejection =
+	function CapturedTrace$PossiblyUnhandledRejection(reason) {
+	    if (typeof console === "object") {
+	        var message;
+	        if (typeof reason === "object" || typeof reason === "function") {
+	            var stack = reason.stack;
+	            message = "Possibly unhandled " + formatStack(stack, reason);
+	        } else {
+	            message = "Possibly unhandled " + String(reason);
+	        }
+	        if (typeof console.error === "function" ||
+	            typeof console.error === "object") {
+	            console.error(message);
+	        } else if (typeof console.log === "function" ||
+	            typeof console.log === "object") {
+	            console.log(message);
+	        }
+	    }
+	};
+	
+	CapturedTrace.combine = function CapturedTrace$Combine(current, prev) {
+	    var curLast = current.length - 1;
+	    for (var i = prev.length - 1; i >= 0; --i) {
+	        var line = prev[i];
+	        if (current[curLast] === line) {
+	            current.pop();
+	            curLast--;
+	        } else {
+	            break;
+	        }
+	    }
+	
+	    current.push("From previous event:");
+	    var lines = current.concat(prev);
+	
+	    var ret = [];
+	
+	    for (var i = 0, len = lines.length; i < len; ++i) {
+	
+	        if (((rignore.test(lines[i]) && rtraceline.test(lines[i])) ||
+	            (i > 0 && !rtraceline.test(lines[i])) &&
+	            lines[i] !== "From previous event:")
+	       ) {
+	            continue;
+	        }
+	        ret.push(lines[i]);
+	    }
+	    return ret;
+	};
+	
+	CapturedTrace.protectErrorMessageNewlines = function(stack) {
+	    for (var i = 0; i < stack.length; ++i) {
+	        if (rtraceline.test(stack[i])) {
+	            break;
+	        }
+	    }
+	
+	    if (i <= 1) return;
+	
+	    var errorMessageLines = [];
+	    for (var j = 0; j < i; ++j) {
+	        errorMessageLines.push(stack.shift());
+	    }
+	    stack.unshift(errorMessageLines.join("\u0002\u0000\u0001"));
+	};
+	
+	CapturedTrace.isSupported = function CapturedTrace$IsSupported() {
+	    return typeof captureStackTrace === "function";
+	};
+	
+	var captureStackTrace = (function stackDetection() {
+	    if (typeof Error.stackTraceLimit === "number" &&
+	        typeof Error.captureStackTrace === "function") {
+	        rtraceline = /^\s*at\s*/;
+	        formatStack = function(stack, error) {
+	            if (typeof stack === "string") return stack;
+	
+	            if (error.name !== void 0 &&
+	                error.message !== void 0) {
+	                return error.name + ". " + error.message;
+	            }
+	            return formatNonError(error);
+	
+	
+	        };
+	        var captureStackTrace = Error.captureStackTrace;
+	        return function CapturedTrace$_captureStackTrace(
+	            receiver, ignoreUntil) {
+	            captureStackTrace(receiver, ignoreUntil);
+	        };
+	    }
+	    var err = new Error();
+	
+	    if (typeof err.stack === "string" &&
+	        typeof "".startsWith === "function" &&
+	        (err.stack.startsWith("stackDetection@")) &&
+	        stackDetection.name === "stackDetection") {
+	
+	        defineProperty(Error, "stackTraceLimit", {
+	            writable: true,
+	            enumerable: false,
+	            configurable: false,
+	            value: 25
+	        });
+	        rtraceline = /@/;
+	        var rline = /[@\n]/;
+	
+	        formatStack = function(stack, error) {
+	            if (typeof stack === "string") {
+	                return (error.name + ". " + error.message + "\n" + stack);
+	            }
+	
+	            if (error.name !== void 0 &&
+	                error.message !== void 0) {
+	                return error.name + ". " + error.message;
+	            }
+	            return formatNonError(error);
+	        };
+	
+	        return function captureStackTrace(o) {
+	            var stack = new Error().stack;
+	            var split = stack.split(rline);
+	            var len = split.length;
+	            var ret = "";
+	            for (var i = 0; i < len; i += 2) {
+	                ret += split[i];
+	                ret += "@";
+	                ret += split[i + 1];
+	                ret += "\n";
+	            }
+	            o.stack = ret;
+	        };
+	    } else {
+	        formatStack = function(stack, error) {
+	            if (typeof stack === "string") return stack;
+	
+	            if ((typeof error === "object" ||
+	                typeof error === "function") &&
+	                error.name !== void 0 &&
+	                error.message !== void 0) {
+	                return error.name + ". " + error.message;
+	            }
+	            return formatNonError(error);
+	        };
+	
+	        return null;
+	    }
+	})();
+	
+	return CapturedTrace;
+	};
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(NEXT_FILTER) {
+	var util = __webpack_require__(32);
+	var errors = __webpack_require__(34);
+	var tryCatch1 = util.tryCatch1;
+	var errorObj = util.errorObj;
+	var keys = __webpack_require__(99).keys;
+	var TypeError = errors.TypeError;
+	
+	function CatchFilter(instances, callback, promise) {
+	    this._instances = instances;
+	    this._callback = callback;
+	    this._promise = promise;
+	}
+	
+	function CatchFilter$_safePredicate(predicate, e) {
+	    var safeObject = {};
+	    var retfilter = tryCatch1(predicate, safeObject, e);
+	
+	    if (retfilter === errorObj) return retfilter;
+	
+	    var safeKeys = keys(safeObject);
+	    if (safeKeys.length) {
+	        errorObj.e = new TypeError(
+	            "Catch filter must inherit from Error "
+	          + "or be a simple predicate function");
+	        return errorObj;
+	    }
+	    return retfilter;
+	}
+	
+	CatchFilter.prototype.doFilter = function CatchFilter$_doFilter(e) {
+	    var cb = this._callback;
+	    var promise = this._promise;
+	    var boundTo = promise._boundTo;
+	    for (var i = 0, len = this._instances.length; i < len; ++i) {
+	        var item = this._instances[i];
+	        var itemIsErrorType = item === Error ||
+	            (item != null && item.prototype instanceof Error);
+	
+	        if (itemIsErrorType && e instanceof item) {
+	            var ret = tryCatch1(cb, boundTo, e);
+	            if (ret === errorObj) {
+	                NEXT_FILTER.e = ret.e;
+	                return NEXT_FILTER;
+	            }
+	            return ret;
+	        } else if (typeof item === "function" && !itemIsErrorType) {
+	            var shouldHandle = CatchFilter$_safePredicate(item, e);
+	            if (shouldHandle === errorObj) {
+	                var trace = errors.canAttach(errorObj.e)
+	                    ? errorObj.e
+	                    : new Error(errorObj.e + "");
+	                this._promise._attachExtraTrace(trace);
+	                e = errorObj.e;
+	                break;
+	            } else if (shouldHandle) {
+	                var ret = tryCatch1(cb, boundTo, e);
+	                if (ret === errorObj) {
+	                    NEXT_FILTER.e = ret.e;
+	                    return NEXT_FILTER;
+	                }
+	                return ret;
+	            }
+	        }
+	    }
+	    NEXT_FILTER.e = e;
+	    return NEXT_FILTER;
+	};
+	
+	return CatchFilter;
+	};
+
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var util = __webpack_require__(32);
+	var maybeWrapAsError = util.maybeWrapAsError;
+	var errors = __webpack_require__(34);
+	var TimeoutError = errors.TimeoutError;
+	var OperationalError = errors.OperationalError;
+	var async = __webpack_require__(33);
+	var haveGetters = util.haveGetters;
+	var es5 = __webpack_require__(99);
+	
+	function isUntypedError(obj) {
+	    return obj instanceof Error &&
+	        es5.getPrototypeOf(obj) === Error.prototype;
+	}
+	
+	function wrapAsOperationalError(obj) {
+	    var ret;
+	    if (isUntypedError(obj)) {
+	        ret = new OperationalError(obj);
+	    } else {
+	        ret = obj;
+	    }
+	    errors.markAsOriginatingFromRejection(ret);
+	    return ret;
+	}
+	
+	function nodebackForPromise(promise) {
+	    function PromiseResolver$_callback(err, value) {
+	        if (promise === null) return;
+	
+	        if (err) {
+	            var wrapped = wrapAsOperationalError(maybeWrapAsError(err));
+	            promise._attachExtraTrace(wrapped);
+	            promise._reject(wrapped);
+	        } else if (arguments.length > 2) {
+	            var $_len = arguments.length;var args = new Array($_len - 1); for(var $_i = 1; $_i < $_len; ++$_i) {args[$_i - 1] = arguments[$_i];}
+	            promise._fulfill(args);
+	        } else {
+	            promise._fulfill(value);
+	        }
+	
+	        promise = null;
+	    }
+	    return PromiseResolver$_callback;
+	}
+	
+	
+	var PromiseResolver;
+	if (!haveGetters) {
+	    PromiseResolver = function PromiseResolver(promise) {
+	        this.promise = promise;
+	        this.asCallback = nodebackForPromise(promise);
+	        this.callback = this.asCallback;
+	    };
+	}
+	else {
+	    PromiseResolver = function PromiseResolver(promise) {
+	        this.promise = promise;
+	    };
+	}
+	if (haveGetters) {
+	    var prop = {
+	        get: function() {
+	            return nodebackForPromise(this.promise);
+	        }
+	    };
+	    es5.defineProperty(PromiseResolver.prototype, "asCallback", prop);
+	    es5.defineProperty(PromiseResolver.prototype, "callback", prop);
+	}
+	
+	PromiseResolver._nodebackForPromise = nodebackForPromise;
+	
+	PromiseResolver.prototype.toString = function PromiseResolver$toString() {
+	    return "[object PromiseResolver]";
+	};
+	
+	PromiseResolver.prototype.resolve =
+	PromiseResolver.prototype.fulfill = function PromiseResolver$resolve(value) {
+	    if (!(this instanceof PromiseResolver)) {
+	        throw new TypeError("Illegal invocation, resolver resolve/reject must be called within a resolver context. Consider using the promise constructor instead.");
+	    }
+	
+	    var promise = this.promise;
+	    if (promise._tryFollow(value)) {
+	        return;
+	    }
+	    async.invoke(promise._fulfill, promise, value);
+	};
+	
+	PromiseResolver.prototype.reject = function PromiseResolver$reject(reason) {
+	    if (!(this instanceof PromiseResolver)) {
+	        throw new TypeError("Illegal invocation, resolver resolve/reject must be called within a resolver context. Consider using the promise constructor instead.");
+	    }
+	
+	    var promise = this.promise;
+	    errors.markAsOriginatingFromRejection(reason);
+	    var trace = errors.canAttach(reason) ? reason : new Error(reason + "");
+	    promise._attachExtraTrace(trace);
+	    async.invoke(promise._reject, promise, reason);
+	    if (trace !== reason) {
+	        async.invoke(this._setCarriedStackTrace, this, trace);
+	    }
+	};
+	
+	PromiseResolver.prototype.progress =
+	function PromiseResolver$progress(value) {
+	    if (!(this instanceof PromiseResolver)) {
+	        throw new TypeError("Illegal invocation, resolver resolve/reject must be called within a resolver context. Consider using the promise constructor instead.");
+	    }
+	    async.invoke(this.promise._progress, this.promise, value);
+	};
+	
+	PromiseResolver.prototype.cancel = function PromiseResolver$cancel() {
+	    async.invoke(this.promise.cancel, this.promise, void 0);
+	};
+	
+	PromiseResolver.prototype.timeout = function PromiseResolver$timeout() {
+	    this.reject(new TimeoutError("timeout"));
+	};
+	
+	PromiseResolver.prototype.isResolved = function PromiseResolver$isResolved() {
+	    return this.promise.isResolved();
+	};
+	
+	PromiseResolver.prototype.toJSON = function PromiseResolver$toJSON() {
+	    return this.promise.toJSON();
+	};
+	
+	PromiseResolver.prototype._setCarriedStackTrace =
+	function PromiseResolver$_setCarriedStackTrace(trace) {
+	    if (this.promise.isRejected()) {
+	        this.promise._setCarriedStackTrace(trace);
+	    }
+	};
+	
+	module.exports = PromiseResolver;
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise) {
+	var TypeError = __webpack_require__(34).TypeError;
+	
+	function apiRejection(msg) {
+	    var error = new TypeError(msg);
+	    var ret = Promise.rejected(error);
+	    var parent = ret._peekContext();
+	    if (parent != null) {
+	        parent._attachExtraTrace(error);
+	    }
+	    return ret;
+	}
+	
+	return apiRejection;
+	};
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, NEXT_FILTER, cast) {
+	var util = __webpack_require__(32);
+	var wrapsPrimitiveReceiver = util.wrapsPrimitiveReceiver;
+	var isPrimitive = util.isPrimitive;
+	var thrower = util.thrower;
+	
+	function returnThis() {
+	    return this;
+	}
+	function throwThis() {
+	    throw this;
+	}
+	function return$(r) {
+	    return function Promise$_returner() {
+	        return r;
+	    };
+	}
+	function throw$(r) {
+	    return function Promise$_thrower() {
+	        throw r;
+	    };
+	}
+	function promisedFinally(ret, reasonOrValue, isFulfilled) {
+	    var then;
+	    if (wrapsPrimitiveReceiver && isPrimitive(reasonOrValue)) {
+	        then = isFulfilled ? return$(reasonOrValue) : throw$(reasonOrValue);
+	    } else {
+	        then = isFulfilled ? returnThis : throwThis;
+	    }
+	    return ret._then(then, thrower, void 0, reasonOrValue, void 0);
+	}
+	
+	function finallyHandler(reasonOrValue) {
+	    var promise = this.promise;
+	    var handler = this.handler;
+	
+	    var ret = promise._isBound()
+	                    ? handler.call(promise._boundTo)
+	                    : handler();
+	
+	    if (ret !== void 0) {
+	        var maybePromise = cast(ret, void 0);
+	        if (maybePromise instanceof Promise) {
+	            return promisedFinally(maybePromise, reasonOrValue,
+	                                    promise.isFulfilled());
+	        }
+	    }
+	
+	    if (promise.isRejected()) {
+	        NEXT_FILTER.e = reasonOrValue;
+	        return NEXT_FILTER;
+	    } else {
+	        return reasonOrValue;
+	    }
+	}
+	
+	function tapHandler(value) {
+	    var promise = this.promise;
+	    var handler = this.handler;
+	
+	    var ret = promise._isBound()
+	                    ? handler.call(promise._boundTo, value)
+	                    : handler(value);
+	
+	    if (ret !== void 0) {
+	        var maybePromise = cast(ret, void 0);
+	        if (maybePromise instanceof Promise) {
+	            return promisedFinally(maybePromise, value, true);
+	        }
+	    }
+	    return value;
+	}
+	
+	Promise.prototype._passThroughHandler =
+	function Promise$_passThroughHandler(handler, isFinally) {
+	    if (typeof handler !== "function") return this.then();
+	
+	    var promiseAndHandler = {
+	        promise: this,
+	        handler: handler
+	    };
+	
+	    return this._then(
+	            isFinally ? finallyHandler : tapHandler,
+	            isFinally ? finallyHandler : void 0, void 0,
+	            promiseAndHandler, void 0);
+	};
+	
+	Promise.prototype.lastly =
+	Promise.prototype["finally"] = function Promise$finally(handler) {
+	    return this._passThroughHandler(handler, true);
+	};
+	
+	Promise.prototype.tap = function Promise$tap(handler) {
+	    return this._passThroughHandler(handler, false);
+	};
+	};
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var util = __webpack_require__(32);
+	var isPrimitive = util.isPrimitive;
+	var wrapsPrimitiveReceiver = util.wrapsPrimitiveReceiver;
+	
+	module.exports = function(Promise) {
+	var returner = function Promise$_returner() {
+	    return this;
+	};
+	var thrower = function Promise$_thrower() {
+	    throw this;
+	};
+	
+	var wrapper = function Promise$_wrapper(value, action) {
+	    if (action === 1) {
+	        return function Promise$_thrower() {
+	            throw value;
+	        };
+	    } else if (action === 2) {
+	        return function Promise$_returner() {
+	            return value;
+	        };
+	    }
+	};
+	
+	
+	Promise.prototype["return"] =
+	Promise.prototype.thenReturn =
+	function Promise$thenReturn(value) {
+	    if (wrapsPrimitiveReceiver && isPrimitive(value)) {
+	        return this._then(
+	            wrapper(value, 2),
+	            void 0,
+	            void 0,
+	            void 0,
+	            void 0
+	       );
+	    }
+	    return this._then(returner, void 0, void 0, value, void 0);
+	};
+	
+	Promise.prototype["throw"] =
+	Promise.prototype.thenThrow =
+	function Promise$thenThrow(reason) {
+	    if (wrapsPrimitiveReceiver && isPrimitive(reason)) {
+	        return this._then(
+	            wrapper(reason, 1),
+	            void 0,
+	            void 0,
+	            void 0,
+	            void 0
+	       );
+	    }
+	    return this._then(thrower, void 0, void 0, reason, void 0);
+	};
+	};
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise) {
+	function PromiseInspection(promise) {
+	    if (promise !== void 0) {
+	        this._bitField = promise._bitField;
+	        this._settledValue = promise.isResolved()
+	            ? promise._settledValue
+	            : void 0;
+	    }
+	    else {
+	        this._bitField = 0;
+	        this._settledValue = void 0;
+	    }
+	}
+	
+	PromiseInspection.prototype.isFulfilled =
+	Promise.prototype.isFulfilled = function Promise$isFulfilled() {
+	    return (this._bitField & 268435456) > 0;
+	};
+	
+	PromiseInspection.prototype.isRejected =
+	Promise.prototype.isRejected = function Promise$isRejected() {
+	    return (this._bitField & 134217728) > 0;
+	};
+	
+	PromiseInspection.prototype.isPending =
+	Promise.prototype.isPending = function Promise$isPending() {
+	    return (this._bitField & 402653184) === 0;
+	};
+	
+	PromiseInspection.prototype.value =
+	Promise.prototype.value = function Promise$value() {
+	    if (!this.isFulfilled()) {
+	        throw new TypeError("cannot get fulfillment value of a non-fulfilled promise");
+	    }
+	    return this._settledValue;
+	};
+	
+	PromiseInspection.prototype.error =
+	PromiseInspection.prototype.reason =
+	Promise.prototype.reason = function Promise$reason() {
+	    if (!this.isRejected()) {
+	        throw new TypeError("cannot get rejection reason of a non-rejected promise");
+	    }
+	    return this._settledValue;
+	};
+	
+	PromiseInspection.prototype.isResolved =
+	Promise.prototype.isResolved = function Promise$isResolved() {
+	    return (this._bitField & 402653184) > 0;
+	};
+	
+	Promise.PromiseInspection = PromiseInspection;
+	};
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports =
+	function(Promise, PromiseArray, cast, INTERNAL) {
+	var util = __webpack_require__(32);
+	var canEvaluate = util.canEvaluate;
+	var tryCatch1 = util.tryCatch1;
+	var errorObj = util.errorObj;
+	
+	
+	if (canEvaluate) {
+	    var thenCallback = function(i) {
+	        return new Function("value", "holder", "                             \n\
+	            'use strict';                                                    \n\
+	            holder.pIndex = value;                                           \n\
+	            holder.checkFulfillment(this);                                   \n\
+	            ".replace(/Index/g, i));
+	    };
+	
+	    var caller = function(count) {
+	        var values = [];
+	        for (var i = 1; i <= count; ++i) values.push("holder.p" + i);
+	        return new Function("holder", "                                      \n\
+	            'use strict';                                                    \n\
+	            var callback = holder.fn;                                        \n\
+	            return callback(values);                                         \n\
+	            ".replace(/values/g, values.join(", ")));
+	    };
+	    var thenCallbacks = [];
+	    var callers = [void 0];
+	    for (var i = 1; i <= 5; ++i) {
+	        thenCallbacks.push(thenCallback(i));
+	        callers.push(caller(i));
+	    }
+	
+	    var Holder = function(total, fn) {
+	        this.p1 = this.p2 = this.p3 = this.p4 = this.p5 = null;
+	        this.fn = fn;
+	        this.total = total;
+	        this.now = 0;
+	    };
+	
+	    Holder.prototype.callers = callers;
+	    Holder.prototype.checkFulfillment = function(promise) {
+	        var now = this.now;
+	        now++;
+	        var total = this.total;
+	        if (now >= total) {
+	            var handler = this.callers[total];
+	            var ret = tryCatch1(handler, void 0, this);
+	            if (ret === errorObj) {
+	                promise._rejectUnchecked(ret.e);
+	            } else if (!promise._tryFollow(ret)) {
+	                promise._fulfillUnchecked(ret);
+	            }
+	        } else {
+	            this.now = now;
+	        }
+	    };
+	}
+	
+	
+	
+	
+	Promise.join = function Promise$Join() {
+	    var last = arguments.length - 1;
+	    var fn;
+	    if (last > 0 && typeof arguments[last] === "function") {
+	        fn = arguments[last];
+	        if (last < 6 && canEvaluate) {
+	            var ret = new Promise(INTERNAL);
+	            ret._setTrace(void 0);
+	            var holder = new Holder(last, fn);
+	            var reject = ret._reject;
+	            var callbacks = thenCallbacks;
+	            for (var i = 0; i < last; ++i) {
+	                var maybePromise = cast(arguments[i], void 0);
+	                if (maybePromise instanceof Promise) {
+	                    if (maybePromise.isPending()) {
+	                        maybePromise._then(callbacks[i], reject,
+	                                           void 0, ret, holder);
+	                    } else if (maybePromise.isFulfilled()) {
+	                        callbacks[i].call(ret,
+	                                          maybePromise._settledValue, holder);
+	                    } else {
+	                        ret._reject(maybePromise._settledValue);
+	                        maybePromise._unsetRejectionIsUnhandled();
+	                    }
+	                } else {
+	                    callbacks[i].call(ret, maybePromise, holder);
+	                }
+	            }
+	            return ret;
+	        }
+	    }
+	    var $_len = arguments.length;var args = new Array($_len); for(var $_i = 0; $_i < $_len; ++$_i) {args[$_i] = arguments[$_i];}
+	    var ret = new PromiseArray(args).promise();
+	    return fn !== void 0 ? ret.spread(fn) : ret;
+	};
+	
+	};
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var _setTimeout = function(fn, ms) {
+	    var len = arguments.length;
+	    var arg0 = arguments[2];
+	    var arg1 = arguments[3];
+	    var arg2 = len >= 5 ? arguments[4] : void 0;
+	    setTimeout(function() {
+	        fn(arg0, arg1, arg2);
+	    }, ms|0);
+	};
+	
+	module.exports = function(Promise, INTERNAL, cast) {
+	var util = __webpack_require__(32);
+	var errors = __webpack_require__(34);
+	var apiRejection = __webpack_require__(40)(Promise);
+	var TimeoutError = Promise.TimeoutError;
+	
+	var afterTimeout = function Promise$_afterTimeout(promise, message, ms) {
+	    if (!promise.isPending()) return;
+	    if (typeof message !== "string") {
+	        message = "operation timed out after" + " " + ms + " ms"
+	    }
+	    var err = new TimeoutError(message);
+	    errors.markAsOriginatingFromRejection(err);
+	    promise._attachExtraTrace(err);
+	    promise._cancel(err);
+	};
+	
+	var afterDelay = function Promise$_afterDelay(value, promise) {
+	    promise._fulfill(value);
+	};
+	
+	var delay = Promise.delay = function Promise$Delay(value, ms) {
+	    if (ms === void 0) {
+	        ms = value;
+	        value = void 0;
+	    }
+	    ms = +ms;
+	    var maybePromise = cast(value, void 0);
+	    var promise = new Promise(INTERNAL);
+	
+	    if (maybePromise instanceof Promise) {
+	        promise._propagateFrom(maybePromise, 7);
+	        promise._follow(maybePromise);
+	        return promise.then(function(value) {
+	            return Promise.delay(value, ms);
+	        });
+	    } else {
+	        promise._setTrace(void 0);
+	        _setTimeout(afterDelay, ms, value, promise);
+	    }
+	    return promise;
+	};
+	
+	Promise.prototype.delay = function Promise$delay(ms) {
+	    return delay(this, ms);
+	};
+	
+	Promise.prototype.timeout = function Promise$timeout(ms, message) {
+	    ms = +ms;
+	
+	    var ret = new Promise(INTERNAL);
+	    ret._propagateFrom(this, 7);
+	    ret._follow(this);
+	    _setTimeout(afterTimeout, ms, ret, message, ms);
+	    return ret.cancellable();
+	};
+	
+	};
+
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, INTERNAL, cast) {
+	var apiRejection = __webpack_require__(40)(Promise);
+	var isArray = __webpack_require__(32).isArray;
+	
+	var raceLater = function Promise$_raceLater(promise) {
+	    return promise.then(function(array) {
+	        return Promise$_Race(array, promise);
+	    });
+	};
+	
+	var hasOwn = {}.hasOwnProperty;
+	function Promise$_Race(promises, parent) {
+	    var maybePromise = cast(promises, void 0);
+	
+	    if (maybePromise instanceof Promise) {
+	        return raceLater(maybePromise);
+	    } else if (!isArray(promises)) {
+	        return apiRejection("expecting an array, a promise or a thenable");
+	    }
+	
+	    var ret = new Promise(INTERNAL);
+	    if (parent !== void 0) {
+	        ret._propagateFrom(parent, 7);
+	    } else {
+	        ret._setTrace(void 0);
+	    }
+	    var fulfill = ret._fulfill;
+	    var reject = ret._reject;
+	    for (var i = 0, len = promises.length; i < len; ++i) {
+	        var val = promises[i];
+	
+	        if (val === void 0 && !(hasOwn.call(promises, i))) {
+	            continue;
+	        }
+	
+	        Promise.cast(val)._then(fulfill, reject, void 0, ret, null);
+	    }
+	    return ret;
+	}
+	
+	Promise.race = function Promise$Race(promises) {
+	    return Promise$_Race(promises, void 0);
+	};
+	
+	Promise.prototype.race = function Promise$race() {
+	    return Promise$_Race(this, void 0);
+	};
+	
+	};
+
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var cr = Object.create;
+	if (cr) {
+	    var callerCache = cr(null);
+	    var getterCache = cr(null);
+	    callerCache[" size"] = getterCache[" size"] = 0;
+	}
+	
+	module.exports = function(Promise) {
+	var util = __webpack_require__(32);
+	var canEvaluate = util.canEvaluate;
+	var isIdentifier = util.isIdentifier;
+	
+	function makeMethodCaller (methodName) {
+	    return new Function("obj", "                                             \n\
+	        'use strict'                                                         \n\
+	        var len = this.length;                                               \n\
+	        switch(len) {                                                        \n\
+	            case 1: return obj.methodName(this[0]);                          \n\
+	            case 2: return obj.methodName(this[0], this[1]);                 \n\
+	            case 3: return obj.methodName(this[0], this[1], this[2]);        \n\
+	            case 0: return obj.methodName();                                 \n\
+	            default: return obj.methodName.apply(obj, this);                 \n\
+	        }                                                                    \n\
+	        ".replace(/methodName/g, methodName));
+	}
+	
+	function makeGetter (propertyName) {
+	    return new Function("obj", "                                             \n\
+	        'use strict';                                                        \n\
+	        return obj.propertyName;                                             \n\
+	        ".replace("propertyName", propertyName));
+	}
+	
+	function getCompiled(name, compiler, cache) {
+	    var ret = cache[name];
+	    if (typeof ret !== "function") {
+	        if (!isIdentifier(name)) {
+	            return null;
+	        }
+	        ret = compiler(name);
+	        cache[name] = ret;
+	        cache[" size"]++;
+	        if (cache[" size"] > 512) {
+	            var keys = Object.keys(cache);
+	            for (var i = 0; i < 256; ++i) delete cache[keys[i]];
+	            cache[" size"] = keys.length - 256;
+	        }
+	    }
+	    return ret;
+	}
+	
+	function getMethodCaller(name) {
+	    return getCompiled(name, makeMethodCaller, callerCache);
+	}
+	
+	function getGetter(name) {
+	    return getCompiled(name, makeGetter, getterCache);
+	}
+	
+	function caller(obj) {
+	    return obj[this.pop()].apply(obj, this);
+	}
+	Promise.prototype.call = function Promise$call(methodName) {
+	    var $_len = arguments.length;var args = new Array($_len - 1); for(var $_i = 1; $_i < $_len; ++$_i) {args[$_i - 1] = arguments[$_i];}
+	    if (canEvaluate) {
+	        var maybeCaller = getMethodCaller(methodName);
+	        if (maybeCaller !== null) {
+	            return this._then(maybeCaller, void 0, void 0, args, void 0);
+	        }
+	    }
+	    args.push(methodName);
+	    return this._then(caller, void 0, void 0, args, void 0);
+	};
+	
+	function namedGetter(obj) {
+	    return obj[this];
+	}
+	function indexedGetter(obj) {
+	    return obj[this];
+	}
+	Promise.prototype.get = function Promise$get(propertyName) {
+	    var isIndex = (typeof propertyName === "number");
+	    var getter;
+	    if (!isIndex) {
+	        if (canEvaluate) {
+	            var maybeGetter = getGetter(propertyName);
+	            getter = maybeGetter !== null ? maybeGetter : namedGetter;
+	        } else {
+	            getter = namedGetter;
+	        }
+	    } else {
+	        getter = indexedGetter;
+	    }
+	    return this._then(getter, void 0, void 0, propertyName, void 0);
+	};
+	};
+
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, apiRejection, INTERNAL, cast) {
+	var errors = __webpack_require__(34);
+	var TypeError = errors.TypeError;
+	var deprecated = __webpack_require__(32).deprecated;
+	var util = __webpack_require__(32);
+	var errorObj = util.errorObj;
+	var tryCatch1 = util.tryCatch1;
+	var yieldHandlers = [];
+	
+	function promiseFromYieldHandler(value, yieldHandlers) {
+	    var _errorObj = errorObj;
+	    var _Promise = Promise;
+	    var len = yieldHandlers.length;
+	    for (var i = 0; i < len; ++i) {
+	        var result = tryCatch1(yieldHandlers[i], void 0, value);
+	        if (result === _errorObj) {
+	            return _Promise.reject(_errorObj.e);
+	        }
+	        var maybePromise = cast(result, promiseFromYieldHandler);
+	        if (maybePromise instanceof _Promise) return maybePromise;
+	    }
+	    return null;
+	}
+	
+	function PromiseSpawn(generatorFunction, receiver, yieldHandler) {
+	    var promise = this._promise = new Promise(INTERNAL);
+	    promise._setTrace(void 0);
+	    this._generatorFunction = generatorFunction;
+	    this._receiver = receiver;
+	    this._generator = void 0;
+	    this._yieldHandlers = typeof yieldHandler === "function"
+	        ? [yieldHandler].concat(yieldHandlers)
+	        : yieldHandlers;
+	}
+	
+	PromiseSpawn.prototype.promise = function PromiseSpawn$promise() {
+	    return this._promise;
+	};
+	
+	PromiseSpawn.prototype._run = function PromiseSpawn$_run() {
+	    this._generator = this._generatorFunction.call(this._receiver);
+	    this._receiver =
+	        this._generatorFunction = void 0;
+	    this._next(void 0);
+	};
+	
+	PromiseSpawn.prototype._continue = function PromiseSpawn$_continue(result) {
+	    if (result === errorObj) {
+	        this._generator = void 0;
+	        var trace = errors.canAttach(result.e)
+	            ? result.e : new Error(result.e + "");
+	        this._promise._attachExtraTrace(trace);
+	        this._promise._reject(result.e, trace);
+	        return;
+	    }
+	
+	    var value = result.value;
+	    if (result.done === true) {
+	        this._generator = void 0;
+	        if (!this._promise._tryFollow(value)) {
+	            this._promise._fulfill(value);
+	        }
+	    } else {
+	        var maybePromise = cast(value, void 0);
+	        if (!(maybePromise instanceof Promise)) {
+	            maybePromise =
+	                promiseFromYieldHandler(maybePromise, this._yieldHandlers);
+	            if (maybePromise === null) {
+	                this._throw(new TypeError("A value was yielded that could not be treated as a promise"));
+	                return;
+	            }
+	        }
+	        maybePromise._then(
+	            this._next,
+	            this._throw,
+	            void 0,
+	            this,
+	            null
+	       );
+	    }
+	};
+	
+	PromiseSpawn.prototype._throw = function PromiseSpawn$_throw(reason) {
+	    if (errors.canAttach(reason))
+	        this._promise._attachExtraTrace(reason);
+	    this._continue(
+	        tryCatch1(this._generator["throw"], this._generator, reason)
+	   );
+	};
+	
+	PromiseSpawn.prototype._next = function PromiseSpawn$_next(value) {
+	    this._continue(
+	        tryCatch1(this._generator.next, this._generator, value)
+	   );
+	};
+	
+	Promise.coroutine =
+	function Promise$Coroutine(generatorFunction, options) {
+	    if (typeof generatorFunction !== "function") {
+	        throw new TypeError("generatorFunction must be a function");
+	    }
+	    var yieldHandler = Object(options).yieldHandler;
+	    var PromiseSpawn$ = PromiseSpawn;
+	    return function () {
+	        var generator = generatorFunction.apply(this, arguments);
+	        var spawn = new PromiseSpawn$(void 0, void 0, yieldHandler);
+	        spawn._generator = generator;
+	        spawn._next(void 0);
+	        return spawn.promise();
+	    };
+	};
+	
+	Promise.coroutine.addYieldHandler = function(fn) {
+	    if (typeof fn !== "function") throw new TypeError("fn must be a function");
+	    yieldHandlers.push(fn);
+	};
+	
+	Promise.spawn = function Promise$Spawn(generatorFunction) {
+	    deprecated("Promise.spawn is deprecated. Use Promise.coroutine instead.");
+	    if (typeof generatorFunction !== "function") {
+	        return apiRejection("generatorFunction must be a function");
+	    }
+	    var spawn = new PromiseSpawn(generatorFunction, this);
+	    var ret = spawn.promise();
+	    spawn._run(Promise.spawn);
+	    return ret;
+	};
+	};
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, PromiseArray, apiRejection, cast, INTERNAL) {
+	var util = __webpack_require__(32);
+	var tryCatch3 = util.tryCatch3;
+	var errorObj = util.errorObj;
+	var PENDING = {};
+	var EMPTY_ARRAY = [];
+	
+	function MappingPromiseArray(promises, fn, limit, _filter) {
+	    this.constructor$(promises);
+	    this._callback = fn;
+	    this._preservedValues = _filter === INTERNAL
+	        ? new Array(this.length())
+	        : null;
+	    this._limit = limit;
+	    this._inFlight = 0;
+	    this._queue = limit >= 1 ? [] : EMPTY_ARRAY;
+	    this._init$(void 0, -2);
+	}
+	util.inherits(MappingPromiseArray, PromiseArray);
+	
+	MappingPromiseArray.prototype._init = function MappingPromiseArray$_init() {};
+	
+	MappingPromiseArray.prototype._promiseFulfilled =
+	function MappingPromiseArray$_promiseFulfilled(value, index) {
+	    var values = this._values;
+	    if (values === null) return;
+	
+	    var length = this.length();
+	    var preservedValues = this._preservedValues;
+	    var limit = this._limit;
+	    if (values[index] === PENDING) {
+	        values[index] = value;
+	        if (limit >= 1) {
+	            this._inFlight--;
+	            this._drainQueue();
+	            if (this._isResolved()) return;
+	        }
+	    } else {
+	        if (limit >= 1 && this._inFlight >= limit) {
+	            values[index] = value;
+	            this._queue.push(index);
+	            return;
+	        }
+	        if (preservedValues !== null) preservedValues[index] = value;
+	
+	        var callback = this._callback;
+	        var receiver = this._promise._boundTo;
+	        var ret = tryCatch3(callback, receiver, value, index, length);
+	        if (ret === errorObj) return this._reject(ret.e);
+	
+	        var maybePromise = cast(ret, void 0);
+	        if (maybePromise instanceof Promise) {
+	            if (maybePromise.isPending()) {
+	                if (limit >= 1) this._inFlight++;
+	                values[index] = PENDING;
+	                return maybePromise._proxyPromiseArray(this, index);
+	            } else if (maybePromise.isFulfilled()) {
+	                ret = maybePromise.value();
+	            } else {
+	                maybePromise._unsetRejectionIsUnhandled();
+	                return this._reject(maybePromise.reason());
+	            }
+	        }
+	        values[index] = ret;
+	    }
+	    var totalResolved = ++this._totalResolved;
+	    if (totalResolved >= length) {
+	        if (preservedValues !== null) {
+	            this._filter(values, preservedValues);
+	        } else {
+	            this._resolve(values);
+	        }
+	
+	    }
+	};
+	
+	MappingPromiseArray.prototype._drainQueue =
+	function MappingPromiseArray$_drainQueue() {
+	    var queue = this._queue;
+	    var limit = this._limit;
+	    var values = this._values;
+	    while (queue.length > 0 && this._inFlight < limit) {
+	        var index = queue.pop();
+	        this._promiseFulfilled(values[index], index);
+	    }
+	};
+	
+	MappingPromiseArray.prototype._filter =
+	function MappingPromiseArray$_filter(booleans, values) {
+	    var len = values.length;
+	    var ret = new Array(len);
+	    var j = 0;
+	    for (var i = 0; i < len; ++i) {
+	        if (booleans[i]) ret[j++] = values[i];
+	    }
+	    ret.length = j;
+	    this._resolve(ret);
+	};
+	
+	MappingPromiseArray.prototype.preservedValues =
+	function MappingPromiseArray$preserveValues() {
+	    return this._preservedValues;
+	};
+	
+	function map(promises, fn, options, _filter) {
+	    var limit = typeof options === "object" && options !== null
+	        ? options.concurrency
+	        : 0;
+	    limit = typeof limit === "number" &&
+	        isFinite(limit) && limit >= 1 ? limit : 0;
+	    return new MappingPromiseArray(promises, fn, limit, _filter);
+	}
+	
+	Promise.prototype.map = function Promise$map(fn, options) {
+	    if (typeof fn !== "function") return apiRejection("fn must be a function");
+	
+	    return map(this, fn, options, null).promise();
+	};
+	
+	Promise.map = function Promise$Map(promises, fn, options, _filter) {
+	    if (typeof fn !== "function") return apiRejection("fn must be a function");
+	    return map(promises, fn, options, _filter).promise();
+	};
+	
+	
+	};
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise) {
+	var util = __webpack_require__(32);
+	var async = __webpack_require__(33);
+	var tryCatch2 = util.tryCatch2;
+	var tryCatch1 = util.tryCatch1;
+	var errorObj = util.errorObj;
+	
+	function thrower(r) {
+	    throw r;
+	}
+	
+	function Promise$_spreadAdapter(val, receiver) {
+	    if (!util.isArray(val)) return Promise$_successAdapter(val, receiver);
+	    var ret = util.tryCatchApply(this, [null].concat(val), receiver);
+	    if (ret === errorObj) {
+	        async.invokeLater(thrower, void 0, ret.e);
+	    }
+	}
+	
+	function Promise$_successAdapter(val, receiver) {
+	    var nodeback = this;
+	    var ret = val === void 0
+	        ? tryCatch1(nodeback, receiver, null)
+	        : tryCatch2(nodeback, receiver, null, val);
+	    if (ret === errorObj) {
+	        async.invokeLater(thrower, void 0, ret.e);
+	    }
+	}
+	function Promise$_errorAdapter(reason, receiver) {
+	    var nodeback = this;
+	    var ret = tryCatch1(nodeback, receiver, reason);
+	    if (ret === errorObj) {
+	        async.invokeLater(thrower, void 0, ret.e);
+	    }
+	}
+	
+	Promise.prototype.nodeify = function Promise$nodeify(nodeback, options) {
+	    if (typeof nodeback == "function") {
+	        var adapter = Promise$_successAdapter;
+	        if (options !== void 0 && Object(options).spread) {
+	            adapter = Promise$_spreadAdapter;
+	        }
+	        this._then(
+	            adapter,
+	            Promise$_errorAdapter,
+	            void 0,
+	            nodeback,
+	            this._boundTo
+	        );
+	    }
+	    return this;
+	};
+	};
+
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, INTERNAL) {
+	var THIS = {};
+	var util = __webpack_require__(32);
+	var nodebackForPromise = __webpack_require__(39)
+	    ._nodebackForPromise;
+	var withAppended = util.withAppended;
+	var maybeWrapAsError = util.maybeWrapAsError;
+	var canEvaluate = util.canEvaluate;
+	var TypeError = __webpack_require__(34).TypeError;
+	var defaultSuffix = "Async";
+	var defaultFilter = function(name, func) {
+	    return util.isIdentifier(name) &&
+	        name.charAt(0) !== "_" &&
+	        !util.isClass(func);
+	};
+	var defaultPromisified = {__isPromisified__: true};
+	
+	
+	function escapeIdentRegex(str) {
+	    return str.replace(/([$])/, "\\$");
+	}
+	
+	function isPromisified(fn) {
+	    try {
+	        return fn.__isPromisified__ === true;
+	    }
+	    catch (e) {
+	        return false;
+	    }
+	}
+	
+	function hasPromisified(obj, key, suffix) {
+	    var val = util.getDataPropertyOrDefault(obj, key + suffix,
+	                                            defaultPromisified);
+	    return val ? isPromisified(val) : false;
+	}
+	function checkValid(ret, suffix, suffixRegexp) {
+	    for (var i = 0; i < ret.length; i += 2) {
+	        var key = ret[i];
+	        if (suffixRegexp.test(key)) {
+	            var keyWithoutAsyncSuffix = key.replace(suffixRegexp, "");
+	            for (var j = 0; j < ret.length; j += 2) {
+	                if (ret[j] === keyWithoutAsyncSuffix) {
+	                    throw new TypeError("Cannot promisify an API " +
+	                        "that has normal methods with '"+suffix+"'-suffix");
+	                }
+	            }
+	        }
+	    }
+	}
+	
+	function promisifiableMethods(obj, suffix, suffixRegexp, filter) {
+	    var keys = util.inheritedDataKeys(obj);
+	    var ret = [];
+	    for (var i = 0; i < keys.length; ++i) {
+	        var key = keys[i];
+	        var value = obj[key];
+	        if (typeof value === "function" &&
+	            !isPromisified(value) &&
+	            !hasPromisified(obj, key, suffix) &&
+	            filter(key, value, obj)) {
+	            ret.push(key, value);
+	        }
+	    }
+	    checkValid(ret, suffix, suffixRegexp);
+	    return ret;
+	}
+	
+	function switchCaseArgumentOrder(likelyArgumentCount) {
+	    var ret = [likelyArgumentCount];
+	    var min = Math.max(0, likelyArgumentCount - 1 - 5);
+	    for(var i = likelyArgumentCount - 1; i >= min; --i) {
+	        if (i === likelyArgumentCount) continue;
+	        ret.push(i);
+	    }
+	    for(var i = likelyArgumentCount + 1; i <= 5; ++i) {
+	        ret.push(i);
+	    }
+	    return ret;
+	}
+	
+	function argumentSequence(argumentCount) {
+	    return util.filledRange(argumentCount, "arguments[", "]");
+	}
+	
+	function parameterDeclaration(parameterCount) {
+	    return util.filledRange(parameterCount, "_arg", "");
+	}
+	
+	function parameterCount(fn) {
+	    if (typeof fn.length === "number") {
+	        return Math.max(Math.min(fn.length, 1023 + 1), 0);
+	    }
+	    return 0;
+	}
+	
+	function generatePropertyAccess(key) {
+	    if (util.isIdentifier(key)) {
+	        return "." + key;
+	    }
+	    else return "['" + key.replace(/(['\\])/g, "\\$1") + "']";
+	}
+	
+	function makeNodePromisifiedEval(callback, receiver, originalName, fn, suffix) {
+	    var newParameterCount = Math.max(0, parameterCount(fn) - 1);
+	    var argumentOrder = switchCaseArgumentOrder(newParameterCount);
+	    var callbackName =
+	        (typeof originalName === "string" && util.isIdentifier(originalName)
+	            ? originalName + suffix
+	            : "promisified");
+	
+	    function generateCallForArgumentCount(count) {
+	        var args = argumentSequence(count).join(", ");
+	        var comma = count > 0 ? ", " : "";
+	        var ret;
+	        if (typeof callback === "string") {
+	            ret = "                                                          \n\
+	                this.method(args, fn);                                       \n\
+	                break;                                                       \n\
+	            ".replace(".method", generatePropertyAccess(callback));
+	        } else if (receiver === THIS) {
+	            ret =  "                                                         \n\
+	                callback.call(this, args, fn);                               \n\
+	                break;                                                       \n\
+	            ";
+	        } else if (receiver !== void 0) {
+	            ret =  "                                                         \n\
+	                callback.call(receiver, args, fn);                           \n\
+	                break;                                                       \n\
+	            ";
+	        } else {
+	            ret =  "                                                         \n\
+	                callback(args, fn);                                          \n\
+	                break;                                                       \n\
+	            ";
+	        }
+	        return ret.replace("args", args).replace(", ", comma);
+	    }
+	
+	    function generateArgumentSwitchCase() {
+	        var ret = "";
+	        for(var i = 0; i < argumentOrder.length; ++i) {
+	            ret += "case " + argumentOrder[i] +":" +
+	                generateCallForArgumentCount(argumentOrder[i]);
+	        }
+	        var codeForCall;
+	        if (typeof callback === "string") {
+	            codeForCall = "                                                  \n\
+	                this.property.apply(this, args);                             \n\
+	            "
+	                .replace(".property", generatePropertyAccess(callback));
+	        } else if (receiver === THIS) {
+	            codeForCall = "                                                  \n\
+	                callback.apply(this, args);                                  \n\
+	            ";
+	        } else {
+	            codeForCall = "                                                  \n\
+	                callback.apply(receiver, args);                              \n\
+	            ";
+	        }
+	
+	        ret += "                                                             \n\
+	        default:                                                             \n\
+	            var args = new Array(len + 1);                                   \n\
+	            var i = 0;                                                       \n\
+	            for (var i = 0; i < len; ++i) {                                  \n\
+	               args[i] = arguments[i];                                       \n\
+	            }                                                                \n\
+	            args[i] = fn;                                                    \n\
+	            [CodeForCall]                                                    \n\
+	            break;                                                           \n\
+	        ".replace("[CodeForCall]", codeForCall);
+	        return ret;
+	    }
+	
+	    return new Function("Promise",
+	                        "callback",
+	                        "receiver",
+	                        "withAppended",
+	                        "maybeWrapAsError",
+	                        "nodebackForPromise",
+	                        "INTERNAL","                                         \n\
+	        var ret = function FunctionName(Parameters) {                        \n\
+	            'use strict';                                                    \n\
+	            var len = arguments.length;                                      \n\
+	            var promise = new Promise(INTERNAL);                             \n\
+	            promise._setTrace(void 0);                                       \n\
+	            var fn = nodebackForPromise(promise);                            \n\
+	            try {                                                            \n\
+	                switch(len) {                                                \n\
+	                    [CodeForSwitchCase]                                      \n\
+	                }                                                            \n\
+	            } catch (e) {                                                    \n\
+	                var wrapped = maybeWrapAsError(e);                           \n\
+	                promise._attachExtraTrace(wrapped);                          \n\
+	                promise._reject(wrapped);                                    \n\
+	            }                                                                \n\
+	            return promise;                                                  \n\
+	        };                                                                   \n\
+	        ret.__isPromisified__ = true;                                        \n\
+	        return ret;                                                          \n\
+	        "
+	        .replace("FunctionName", callbackName)
+	        .replace("Parameters", parameterDeclaration(newParameterCount))
+	        .replace("[CodeForSwitchCase]", generateArgumentSwitchCase()))(
+	            Promise,
+	            callback,
+	            receiver,
+	            withAppended,
+	            maybeWrapAsError,
+	            nodebackForPromise,
+	            INTERNAL
+	        );
+	}
+	
+	function makeNodePromisifiedClosure(callback, receiver) {
+	    function promisified() {
+	        var _receiver = receiver;
+	        if (receiver === THIS) _receiver = this;
+	        if (typeof callback === "string") {
+	            callback = _receiver[callback];
+	        }
+	        var promise = new Promise(INTERNAL);
+	        promise._setTrace(void 0);
+	        var fn = nodebackForPromise(promise);
+	        try {
+	            callback.apply(_receiver, withAppended(arguments, fn));
+	        } catch(e) {
+	            var wrapped = maybeWrapAsError(e);
+	            promise._attachExtraTrace(wrapped);
+	            promise._reject(wrapped);
+	        }
+	        return promise;
+	    }
+	    promisified.__isPromisified__ = true;
+	    return promisified;
+	}
+	
+	var makeNodePromisified = canEvaluate
+	    ? makeNodePromisifiedEval
+	    : makeNodePromisifiedClosure;
+	
+	function promisifyAll(obj, suffix, filter, promisifier) {
+	    var suffixRegexp = new RegExp(escapeIdentRegex(suffix) + "$");
+	    var methods =
+	        promisifiableMethods(obj, suffix, suffixRegexp, filter);
+	
+	    for (var i = 0, len = methods.length; i < len; i+= 2) {
+	        var key = methods[i];
+	        var fn = methods[i+1];
+	        var promisifiedKey = key + suffix;
+	        obj[promisifiedKey] = promisifier === makeNodePromisified
+	                ? makeNodePromisified(key, THIS, key, fn, suffix)
+	                : promisifier(fn);
+	    }
+	    util.toFastProperties(obj);
+	    return obj;
+	}
+	
+	function promisify(callback, receiver) {
+	    return makeNodePromisified(callback, receiver, void 0, callback);
+	}
+	
+	Promise.promisify = function Promise$Promisify(fn, receiver) {
+	    if (typeof fn !== "function") {
+	        throw new TypeError("fn must be a function");
+	    }
+	    if (isPromisified(fn)) {
+	        return fn;
+	    }
+	    return promisify(fn, arguments.length < 2 ? THIS : receiver);
+	};
+	
+	Promise.promisifyAll = function Promise$PromisifyAll(target, options) {
+	    if (typeof target !== "function" && typeof target !== "object") {
+	        throw new TypeError("the target of promisifyAll must be an object or a function");
+	    }
+	    options = Object(options);
+	    var suffix = options.suffix;
+	    if (typeof suffix !== "string") suffix = defaultSuffix;
+	    var filter = options.filter;
+	    if (typeof filter !== "function") filter = defaultFilter;
+	    var promisifier = options.promisifier;
+	    if (typeof promisifier !== "function") promisifier = makeNodePromisified;
+	
+	    if (!util.isIdentifier(suffix)) {
+	        throw new RangeError("suffix must be a valid identifier");
+	    }
+	
+	    var keys = util.inheritedDataKeys(target, {includeHidden: true});
+	    for (var i = 0; i < keys.length; ++i) {
+	        var value = target[keys[i]];
+	        if (keys[i] !== "constructor" &&
+	            util.isClass(value)) {
+	            promisifyAll(value.prototype, suffix, filter, promisifier);
+	            promisifyAll(value, suffix, filter, promisifier);
+	        }
+	    }
+	
+	    return promisifyAll(target, suffix, filter, promisifier);
+	};
+	};
+	
+
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, PromiseArray, cast) {
+	var util = __webpack_require__(32);
+	var apiRejection = __webpack_require__(40)(Promise);
+	var isObject = util.isObject;
+	var es5 = __webpack_require__(99);
+	
+	function PropertiesPromiseArray(obj) {
+	    var keys = es5.keys(obj);
+	    var len = keys.length;
+	    var values = new Array(len * 2);
+	    for (var i = 0; i < len; ++i) {
+	        var key = keys[i];
+	        values[i] = obj[key];
+	        values[i + len] = key;
+	    }
+	    this.constructor$(values);
+	}
+	util.inherits(PropertiesPromiseArray, PromiseArray);
+	
+	PropertiesPromiseArray.prototype._init =
+	function PropertiesPromiseArray$_init() {
+	    this._init$(void 0, -3) ;
+	};
+	
+	PropertiesPromiseArray.prototype._promiseFulfilled =
+	function PropertiesPromiseArray$_promiseFulfilled(value, index) {
+	    if (this._isResolved()) return;
+	    this._values[index] = value;
+	    var totalResolved = ++this._totalResolved;
+	    if (totalResolved >= this._length) {
+	        var val = {};
+	        var keyOffset = this.length();
+	        for (var i = 0, len = this.length(); i < len; ++i) {
+	            val[this._values[i + keyOffset]] = this._values[i];
+	        }
+	        this._resolve(val);
+	    }
+	};
+	
+	PropertiesPromiseArray.prototype._promiseProgressed =
+	function PropertiesPromiseArray$_promiseProgressed(value, index) {
+	    if (this._isResolved()) return;
+	
+	    this._promise._progress({
+	        key: this._values[index + this.length()],
+	        value: value
+	    });
+	};
+	
+	PropertiesPromiseArray.prototype.shouldCopyValues =
+	function PropertiesPromiseArray$_shouldCopyValues() {
+	    return false;
+	};
+	
+	PropertiesPromiseArray.prototype.getActualLength =
+	function PropertiesPromiseArray$getActualLength(len) {
+	    return len >> 1;
+	};
+	
+	function Promise$_Props(promises) {
+	    var ret;
+	    var castValue = cast(promises, void 0);
+	
+	    if (!isObject(castValue)) {
+	        return apiRejection("cannot await properties of a non-object");
+	    } else if (castValue instanceof Promise) {
+	        ret = castValue._then(Promise.props, void 0, void 0, void 0, void 0);
+	    } else {
+	        ret = new PropertiesPromiseArray(castValue).promise();
+	    }
+	
+	    if (castValue instanceof Promise) {
+	        ret._propagateFrom(castValue, 4);
+	    }
+	    return ret;
+	}
+	
+	Promise.prototype.props = function Promise$props() {
+	    return Promise$_Props(this);
+	};
+	
+	Promise.props = function Promise$Props(promises) {
+	    return Promise$_Props(promises);
+	};
+	};
+
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, PromiseArray, apiRejection, cast, INTERNAL) {
+	var util = __webpack_require__(32);
+	var tryCatch4 = util.tryCatch4;
+	var tryCatch3 = util.tryCatch3;
+	var errorObj = util.errorObj;
+	function ReductionPromiseArray(promises, fn, accum, _each) {
+	    this.constructor$(promises);
+	    this._preservedValues = _each === INTERNAL ? [] : null;
+	    this._zerothIsAccum = (accum === void 0);
+	    this._gotAccum = false;
+	    this._reducingIndex = (this._zerothIsAccum ? 1 : 0);
+	    this._valuesPhase = undefined;
+	
+	    var maybePromise = cast(accum, void 0);
+	    var rejected = false;
+	    var isPromise = maybePromise instanceof Promise;
+	    if (isPromise) {
+	        if (maybePromise.isPending()) {
+	            maybePromise._proxyPromiseArray(this, -1);
+	        } else if (maybePromise.isFulfilled()) {
+	            accum = maybePromise.value();
+	            this._gotAccum = true;
+	        } else {
+	            maybePromise._unsetRejectionIsUnhandled();
+	            this._reject(maybePromise.reason());
+	            rejected = true;
+	        }
+	    }
+	    if (!(isPromise || this._zerothIsAccum)) this._gotAccum = true;
+	    this._callback = fn;
+	    this._accum = accum;
+	    if (!rejected) this._init$(void 0, -5);
+	}
+	util.inherits(ReductionPromiseArray, PromiseArray);
+	
+	ReductionPromiseArray.prototype._init =
+	function ReductionPromiseArray$_init() {};
+	
+	ReductionPromiseArray.prototype._resolveEmptyArray =
+	function ReductionPromiseArray$_resolveEmptyArray() {
+	    if (this._gotAccum || this._zerothIsAccum) {
+	        this._resolve(this._preservedValues !== null
+	                        ? [] : this._accum);
+	    }
+	};
+	
+	ReductionPromiseArray.prototype._promiseFulfilled =
+	function ReductionPromiseArray$_promiseFulfilled(value, index) {
+	    var values = this._values;
+	    if (values === null) return;
+	    var length = this.length();
+	    var preservedValues = this._preservedValues;
+	    var isEach = preservedValues !== null;
+	    var gotAccum = this._gotAccum;
+	    var valuesPhase = this._valuesPhase;
+	    var valuesPhaseIndex;
+	    if (!valuesPhase) {
+	        valuesPhase = this._valuesPhase = Array(length);
+	        for (valuesPhaseIndex=0; valuesPhaseIndex<length; ++valuesPhaseIndex) {
+	            valuesPhase[valuesPhaseIndex] = 0;
+	        }
+	    }
+	    valuesPhaseIndex = valuesPhase[index];
+	
+	    if (index === 0 && this._zerothIsAccum) {
+	        if (!gotAccum) {
+	            this._accum = value;
+	            this._gotAccum = gotAccum = true;
+	        }
+	        valuesPhase[index] = ((valuesPhaseIndex === 0)
+	            ? 1 : 2);
+	    } else if (index === -1) {
+	        if (!gotAccum) {
+	            this._accum = value;
+	            this._gotAccum = gotAccum = true;
+	        }
+	    } else {
+	        if (valuesPhaseIndex === 0) {
+	            valuesPhase[index] = 1;
+	        }
+	        else {
+	            valuesPhase[index] = 2;
+	            if (gotAccum) {
+	                this._accum = value;
+	            }
+	        }
+	    }
+	    if (!gotAccum) return;
+	
+	    var callback = this._callback;
+	    var receiver = this._promise._boundTo;
+	    var ret;
+	
+	    for (var i = this._reducingIndex; i < length; ++i) {
+	        valuesPhaseIndex = valuesPhase[i];
+	        if (valuesPhaseIndex === 2) {
+	            this._reducingIndex = i + 1;
+	            continue;
+	        }
+	        if (valuesPhaseIndex !== 1) return;
+	
+	        value = values[i];
+	        if (value instanceof Promise) {
+	            if (value.isFulfilled()) {
+	                value = value._settledValue;
+	            } else if (value.isPending()) {
+	                return;
+	            } else {
+	                value._unsetRejectionIsUnhandled();
+	                return this._reject(value.reason());
+	            }
+	        }
+	
+	        if (isEach) {
+	            preservedValues.push(value);
+	            ret = tryCatch3(callback, receiver, value, i, length);
+	        }
+	        else {
+	            ret = tryCatch4(callback, receiver, this._accum, value, i, length);
+	        }
+	
+	        if (ret === errorObj) return this._reject(ret.e);
+	
+	        var maybePromise = cast(ret, void 0);
+	        if (maybePromise instanceof Promise) {
+	            if (maybePromise.isPending()) {
+	                valuesPhase[i] = 4;
+	                return maybePromise._proxyPromiseArray(this, i);
+	            } else if (maybePromise.isFulfilled()) {
+	                ret = maybePromise.value();
+	            } else {
+	                maybePromise._unsetRejectionIsUnhandled();
+	                return this._reject(maybePromise.reason());
+	            }
+	        }
+	
+	        this._reducingIndex = i + 1;
+	        this._accum = ret;
+	    }
+	
+	    if (this._reducingIndex < length) return;
+	    this._resolve(isEach ? preservedValues : this._accum);
+	};
+	
+	function reduce(promises, fn, initialValue, _each) {
+	    if (typeof fn !== "function") return apiRejection("fn must be a function");
+	    var array = new ReductionPromiseArray(promises, fn, initialValue, _each);
+	    return array.promise();
+	}
+	
+	Promise.prototype.reduce = function Promise$reduce(fn, initialValue) {
+	    return reduce(this, fn, initialValue, null);
+	};
+	
+	Promise.reduce = function Promise$Reduce(promises, fn, initialValue, _each) {
+	    return reduce(promises, fn, initialValue, _each);
+	};
+	};
+
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports =
+	    function(Promise, PromiseArray) {
+	var PromiseInspection = Promise.PromiseInspection;
+	var util = __webpack_require__(32);
+	
+	function SettledPromiseArray(values) {
+	    this.constructor$(values);
+	}
+	util.inherits(SettledPromiseArray, PromiseArray);
+	
+	SettledPromiseArray.prototype._promiseResolved =
+	function SettledPromiseArray$_promiseResolved(index, inspection) {
+	    this._values[index] = inspection;
+	    var totalResolved = ++this._totalResolved;
+	    if (totalResolved >= this._length) {
+	        this._resolve(this._values);
+	    }
+	};
+	
+	SettledPromiseArray.prototype._promiseFulfilled =
+	function SettledPromiseArray$_promiseFulfilled(value, index) {
+	    if (this._isResolved()) return;
+	    var ret = new PromiseInspection();
+	    ret._bitField = 268435456;
+	    ret._settledValue = value;
+	    this._promiseResolved(index, ret);
+	};
+	SettledPromiseArray.prototype._promiseRejected =
+	function SettledPromiseArray$_promiseRejected(reason, index) {
+	    if (this._isResolved()) return;
+	    var ret = new PromiseInspection();
+	    ret._bitField = 134217728;
+	    ret._settledValue = reason;
+	    this._promiseResolved(index, ret);
+	};
+	
+	Promise.settle = function Promise$Settle(promises) {
+	    return new SettledPromiseArray(promises).promise();
+	};
+	
+	Promise.prototype.settle = function Promise$settle() {
+	    return new SettledPromiseArray(this).promise();
+	};
+	};
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports =
+	function(Promise, PromiseArray, apiRejection) {
+	var util = __webpack_require__(32);
+	var RangeError = __webpack_require__(34).RangeError;
+	var AggregateError = __webpack_require__(34).AggregateError;
+	var isArray = util.isArray;
+	
+	
+	function SomePromiseArray(values) {
+	    this.constructor$(values);
+	    this._howMany = 0;
+	    this._unwrap = false;
+	    this._initialized = false;
+	}
+	util.inherits(SomePromiseArray, PromiseArray);
+	
+	SomePromiseArray.prototype._init = function SomePromiseArray$_init() {
+	    if (!this._initialized) {
+	        return;
+	    }
+	    if (this._howMany === 0) {
+	        this._resolve([]);
+	        return;
+	    }
+	    this._init$(void 0, -5);
+	    var isArrayResolved = isArray(this._values);
+	    if (!this._isResolved() &&
+	        isArrayResolved &&
+	        this._howMany > this._canPossiblyFulfill()) {
+	        this._reject(this._getRangeError(this.length()));
+	    }
+	};
+	
+	SomePromiseArray.prototype.init = function SomePromiseArray$init() {
+	    this._initialized = true;
+	    this._init();
+	};
+	
+	SomePromiseArray.prototype.setUnwrap = function SomePromiseArray$setUnwrap() {
+	    this._unwrap = true;
+	};
+	
+	SomePromiseArray.prototype.howMany = function SomePromiseArray$howMany() {
+	    return this._howMany;
+	};
+	
+	SomePromiseArray.prototype.setHowMany =
+	function SomePromiseArray$setHowMany(count) {
+	    if (this._isResolved()) return;
+	    this._howMany = count;
+	};
+	
+	SomePromiseArray.prototype._promiseFulfilled =
+	function SomePromiseArray$_promiseFulfilled(value) {
+	    if (this._isResolved()) return;
+	    this._addFulfilled(value);
+	    if (this._fulfilled() === this.howMany()) {
+	        this._values.length = this.howMany();
+	        if (this.howMany() === 1 && this._unwrap) {
+	            this._resolve(this._values[0]);
+	        } else {
+	            this._resolve(this._values);
+	        }
+	    }
+	
+	};
+	SomePromiseArray.prototype._promiseRejected =
+	function SomePromiseArray$_promiseRejected(reason) {
+	    if (this._isResolved()) return;
+	    this._addRejected(reason);
+	    if (this.howMany() > this._canPossiblyFulfill()) {
+	        var e = new AggregateError();
+	        for (var i = this.length(); i < this._values.length; ++i) {
+	            e.push(this._values[i]);
+	        }
+	        this._reject(e);
+	    }
+	};
+	
+	SomePromiseArray.prototype._fulfilled = function SomePromiseArray$_fulfilled() {
+	    return this._totalResolved;
+	};
+	
+	SomePromiseArray.prototype._rejected = function SomePromiseArray$_rejected() {
+	    return this._values.length - this.length();
+	};
+	
+	SomePromiseArray.prototype._addRejected =
+	function SomePromiseArray$_addRejected(reason) {
+	    this._values.push(reason);
+	};
+	
+	SomePromiseArray.prototype._addFulfilled =
+	function SomePromiseArray$_addFulfilled(value) {
+	    this._values[this._totalResolved++] = value;
+	};
+	
+	SomePromiseArray.prototype._canPossiblyFulfill =
+	function SomePromiseArray$_canPossiblyFulfill() {
+	    return this.length() - this._rejected();
+	};
+	
+	SomePromiseArray.prototype._getRangeError =
+	function SomePromiseArray$_getRangeError(count) {
+	    var message = "Input array must contain at least " +
+	            this._howMany + " items but contains only " + count + " items";
+	    return new RangeError(message);
+	};
+	
+	SomePromiseArray.prototype._resolveEmptyArray =
+	function SomePromiseArray$_resolveEmptyArray() {
+	    this._reject(this._getRangeError(0));
+	};
+	
+	function Promise$_Some(promises, howMany) {
+	    if ((howMany | 0) !== howMany || howMany < 0) {
+	        return apiRejection("expecting a positive integer");
+	    }
+	    var ret = new SomePromiseArray(promises);
+	    var promise = ret.promise();
+	    if (promise.isRejected()) {
+	        return promise;
+	    }
+	    ret.setHowMany(howMany);
+	    ret.init();
+	    return promise;
+	}
+	
+	Promise.some = function Promise$Some(promises, howMany) {
+	    return Promise$_Some(promises, howMany);
+	};
+	
+	Promise.prototype.some = function Promise$some(howMany) {
+	    return Promise$_Some(this, howMany);
+	};
+	
+	Promise._SomePromiseArray = SomePromiseArray;
+	};
+
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, PromiseArray) {
+	var util = __webpack_require__(32);
+	var async = __webpack_require__(33);
+	var errors = __webpack_require__(34);
+	var tryCatch1 = util.tryCatch1;
+	var errorObj = util.errorObj;
+	
+	Promise.prototype.progressed = function Promise$progressed(handler) {
+	    return this._then(void 0, void 0, handler, void 0, void 0);
+	};
+	
+	Promise.prototype._progress = function Promise$_progress(progressValue) {
+	    if (this._isFollowingOrFulfilledOrRejected()) return;
+	    this._progressUnchecked(progressValue);
+	
+	};
+	
+	Promise.prototype._clearFirstHandlerData$Base =
+	Promise.prototype._clearFirstHandlerData;
+	Promise.prototype._clearFirstHandlerData =
+	function Promise$_clearFirstHandlerData() {
+	    this._clearFirstHandlerData$Base();
+	    this._progressHandler0 = void 0;
+	};
+	
+	Promise.prototype._progressHandlerAt =
+	function Promise$_progressHandlerAt(index) {
+	    return index === 0
+	        ? this._progressHandler0
+	        : this[(index << 2) + index - 5 + 2];
+	};
+	
+	Promise.prototype._doProgressWith =
+	function Promise$_doProgressWith(progression) {
+	    var progressValue = progression.value;
+	    var handler = progression.handler;
+	    var promise = progression.promise;
+	    var receiver = progression.receiver;
+	
+	    var ret = tryCatch1(handler, receiver, progressValue);
+	    if (ret === errorObj) {
+	        if (ret.e != null &&
+	            ret.e.name !== "StopProgressPropagation") {
+	            var trace = errors.canAttach(ret.e)
+	                ? ret.e : new Error(ret.e + "");
+	            promise._attachExtraTrace(trace);
+	            promise._progress(ret.e);
+	        }
+	    } else if (ret instanceof Promise) {
+	        ret._then(promise._progress, null, null, promise, void 0);
+	    } else {
+	        promise._progress(ret);
+	    }
+	};
+	
+	
+	Promise.prototype._progressUnchecked =
+	function Promise$_progressUnchecked(progressValue) {
+	    if (!this.isPending()) return;
+	    var len = this._length();
+	    var progress = this._progress;
+	    for (var i = 0; i < len; i++) {
+	        var handler = this._progressHandlerAt(i);
+	        var promise = this._promiseAt(i);
+	        if (!(promise instanceof Promise)) {
+	            var receiver = this._receiverAt(i);
+	            if (typeof handler === "function") {
+	                handler.call(receiver, progressValue, promise);
+	            } else if (receiver instanceof Promise && receiver._isProxied()) {
+	                receiver._progressUnchecked(progressValue);
+	            } else if (receiver instanceof PromiseArray) {
+	                receiver._promiseProgressed(progressValue, promise);
+	            }
+	            continue;
+	        }
+	
+	        if (typeof handler === "function") {
+	            async.invoke(this._doProgressWith, this, {
+	                handler: handler,
+	                promise: promise,
+	                receiver: this._receiverAt(i),
+	                value: progressValue
+	            });
+	        } else {
+	            async.invoke(progress, promise, progressValue);
+	        }
+	    }
+	};
+	};
+
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, INTERNAL) {
+	var errors = __webpack_require__(34);
+	var canAttach = errors.canAttach;
+	var async = __webpack_require__(33);
+	var CancellationError = errors.CancellationError;
+	
+	Promise.prototype._cancel = function Promise$_cancel(reason) {
+	    if (!this.isCancellable()) return this;
+	    var parent;
+	    var promiseToReject = this;
+	    while ((parent = promiseToReject._cancellationParent) !== void 0 &&
+	        parent.isCancellable()) {
+	        promiseToReject = parent;
+	    }
+	    promiseToReject._attachExtraTrace(reason);
+	    promiseToReject._rejectUnchecked(reason);
+	};
+	
+	Promise.prototype.cancel = function Promise$cancel(reason) {
+	    if (!this.isCancellable()) return this;
+	    reason = reason !== void 0
+	        ? (canAttach(reason) ? reason : new Error(reason + ""))
+	        : new CancellationError();
+	    async.invokeLater(this._cancel, this, reason);
+	    return this;
+	};
+	
+	Promise.prototype.cancellable = function Promise$cancellable() {
+	    if (this._cancellable()) return this;
+	    this._setCancellable();
+	    this._cancellationParent = void 0;
+	    return this;
+	};
+	
+	Promise.prototype.uncancellable = function Promise$uncancellable() {
+	    var ret = new Promise(INTERNAL);
+	    ret._propagateFrom(this, 2 | 4);
+	    ret._follow(this);
+	    ret._unsetCancellable();
+	    return ret;
+	};
+	
+	Promise.prototype.fork =
+	function Promise$fork(didFulfill, didReject, didProgress) {
+	    var ret = this._then(didFulfill, didReject, didProgress,
+	                         void 0, void 0);
+	
+	    ret._setCancellable();
+	    ret._cancellationParent = void 0;
+	    return ret;
+	};
+	};
+
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, INTERNAL) {
+	var PromiseMap = Promise.map;
+	
+	Promise.prototype.filter = function Promise$filter(fn, options) {
+	    return PromiseMap(this, fn, options, INTERNAL);
+	};
+	
+	Promise.filter = function Promise$Filter(promises, fn, options) {
+	    return PromiseMap(promises, fn, options, INTERNAL);
+	};
+	};
+
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise) {
+	var SomePromiseArray = Promise._SomePromiseArray;
+	function Promise$_Any(promises) {
+	    var ret = new SomePromiseArray(promises);
+	    var promise = ret.promise();
+	    if (promise.isRejected()) {
+	        return promise;
+	    }
+	    ret.setHowMany(1);
+	    ret.setUnwrap();
+	    ret.init();
+	    return promise;
+	}
+	
+	Promise.any = function Promise$Any(promises) {
+	    return Promise$_Any(promises);
+	};
+	
+	Promise.prototype.any = function Promise$any() {
+	    return Promise$_Any(this);
+	};
+	
+	};
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function(Promise, INTERNAL) {
+	var PromiseReduce = Promise.reduce;
+	
+	Promise.prototype.each = function Promise$each(fn) {
+	    return PromiseReduce(this, fn, null, INTERNAL);
+	};
+	
+	Promise.each = function Promise$Each(promises, fn) {
+	    return PromiseReduce(promises, fn, null, INTERNAL);
+	};
+	};
+
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	module.exports = function (Promise, apiRejection, cast) {
+	    var TypeError = __webpack_require__(34).TypeError;
+	    var inherits = __webpack_require__(32).inherits;
+	    var PromiseInspection = Promise.PromiseInspection;
+	
+	    function inspectionMapper(inspections) {
+	        var len = inspections.length;
+	        for (var i = 0; i < len; ++i) {
+	            var inspection = inspections[i];
+	            if (inspection.isRejected()) {
+	                return Promise.reject(inspection.error());
+	            }
+	            inspections[i] = inspection.value();
+	        }
+	        return inspections;
+	    }
+	
+	    function thrower(e) {
+	        setTimeout(function(){throw e;}, 0);
+	    }
+	
+	    function castPreservingDisposable(thenable) {
+	        var maybePromise = cast(thenable, void 0);
+	        if (maybePromise !== thenable &&
+	            typeof thenable._isDisposable === "function" &&
+	            typeof thenable._getDisposer === "function" &&
+	            thenable._isDisposable()) {
+	            maybePromise._setDisposable(thenable._getDisposer());
+	        }
+	        return maybePromise;
+	    }
+	    function dispose(resources, inspection) {
+	        var i = 0;
+	        var len = resources.length;
+	        var ret = Promise.defer();
+	        function iterator() {
+	            if (i >= len) return ret.resolve();
+	            var maybePromise = castPreservingDisposable(resources[i++]);
+	            if (maybePromise instanceof Promise &&
+	                maybePromise._isDisposable()) {
+	                try {
+	                    maybePromise = cast(maybePromise._getDisposer()
+	                                        .tryDispose(inspection), void 0);
+	                } catch (e) {
+	                    return thrower(e);
+	                }
+	                if (maybePromise instanceof Promise) {
+	                    return maybePromise._then(iterator, thrower,
+	                                              null, null, null);
+	                }
+	            }
+	            iterator();
+	        }
+	        iterator();
+	        return ret.promise;
+	    }
+	
+	    function disposerSuccess(value) {
+	        var inspection = new PromiseInspection();
+	        inspection._settledValue = value;
+	        inspection._bitField = 268435456;
+	        return dispose(this, inspection).thenReturn(value);
+	    }
+	
+	    function disposerFail(reason) {
+	        var inspection = new PromiseInspection();
+	        inspection._settledValue = reason;
+	        inspection._bitField = 134217728;
+	        return dispose(this, inspection).thenThrow(reason);
+	    }
+	
+	    function Disposer(data, promise) {
+	        this._data = data;
+	        this._promise = promise;
+	    }
+	
+	    Disposer.prototype.data = function Disposer$data() {
+	        return this._data;
+	    };
+	
+	    Disposer.prototype.promise = function Disposer$promise() {
+	        return this._promise;
+	    };
+	
+	    Disposer.prototype.resource = function Disposer$resource() {
+	        if (this.promise().isFulfilled()) {
+	            return this.promise().value();
+	        }
+	        return null;
+	    };
+	
+	    Disposer.prototype.tryDispose = function(inspection) {
+	        var resource = this.resource();
+	        var ret = resource !== null
+	            ? this.doDispose(resource, inspection) : null;
+	        this._promise._unsetDisposable();
+	        this._data = this._promise = null;
+	        return ret;
+	    };
+	
+	    Disposer.isDisposer = function Disposer$isDisposer(d) {
+	        return (d != null &&
+	                typeof d.resource === "function" &&
+	                typeof d.tryDispose === "function");
+	    };
+	
+	    function FunctionDisposer(fn, promise) {
+	        this.constructor$(fn, promise);
+	    }
+	    inherits(FunctionDisposer, Disposer);
+	
+	    FunctionDisposer.prototype.doDispose = function (resource, inspection) {
+	        var fn = this.data();
+	        return fn.call(resource, resource, inspection);
+	    };
+	
+	    Promise.using = function Promise$using() {
+	        var len = arguments.length;
+	        if (len < 2) return apiRejection(
+	                        "you must pass at least 2 arguments to Promise.using");
+	        var fn = arguments[len - 1];
+	        if (typeof fn !== "function") return apiRejection("fn must be a function");
+	        len--;
+	        var resources = new Array(len);
+	        for (var i = 0; i < len; ++i) {
+	            var resource = arguments[i];
+	            if (Disposer.isDisposer(resource)) {
+	                var disposer = resource;
+	                resource = resource.promise();
+	                resource._setDisposable(disposer);
+	            }
+	            resources[i] = resource;
+	        }
+	
+	        return Promise.settle(resources)
+	            .then(inspectionMapper)
+	            .spread(fn)
+	            ._then(disposerSuccess, disposerFail, void 0, resources, void 0);
+	    };
+	
+	    Promise.prototype._setDisposable =
+	    function Promise$_setDisposable(disposer) {
+	        this._bitField = this._bitField | 262144;
+	        this._disposer = disposer;
+	    };
+	
+	    Promise.prototype._isDisposable = function Promise$_isDisposable() {
+	        return (this._bitField & 262144) > 0;
+	    };
+	
+	    Promise.prototype._getDisposer = function Promise$_getDisposer() {
+	        return this._disposer;
+	    };
+	
+	    Promise.prototype._unsetDisposable = function Promise$_unsetDisposable() {
+	        this._bitField = this._bitField & (~262144);
+	        this._disposer = void 0;
+	    };
+	
+	    Promise.prototype.disposer = function Promise$disposer(fn) {
+	        if (typeof fn === "function") {
+	            return new FunctionDisposer(fn, this);
+	        }
+	        throw new TypeError();
+	    };
+	
+	};
+
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Check is a string starts with $ or _
+	 *
+	 * @param {String} str
+	 * @return {Boolean}
+	 */
+	
+	exports.isReserved = function (str) {
+	  var c = str.charCodeAt(0)
+	  return c === 0x24 || c === 0x5F
+	}
+	
+	/**
+	 * Guard text output, make sure undefined outputs
+	 * empty string
+	 *
+	 * @param {*} value
+	 * @return {String}
+	 */
+	
+	exports.toString = function (value) {
+	  return value == null
+	    ? ''
+	    : value.toString()
+	}
+	
+	/**
+	 * Check and convert possible numeric numbers before
+	 * setting back to data
+	 *
+	 * @param {*} value
+	 * @return {*|Number}
+	 */
+	
+	exports.toNumber = function (value) {
+	  return (
+	    isNaN(value) ||
+	    value === null ||
+	    typeof value === 'boolean'
+	  ) ? value
+	    : Number(value)
+	}
+	
+	/**
+	 * Strip quotes from a string
+	 *
+	 * @param {String} str
+	 * @return {String | false}
+	 */
+	
+	exports.stripQuotes = function (str) {
+	  var a = str.charCodeAt(0)
+	  var b = str.charCodeAt(str.length - 1)
+	  return a === b && (a === 0x22 || a === 0x27)
+	    ? str.slice(1, -1)
+	    : false
+	}
+	
+	/**
+	 * Camelize a hyphen-delmited string.
+	 *
+	 * @param {String} str
+	 * @return {String}
+	 */
+	
+	var camelRE = /(?:^|[-_])(\w)/g
+	exports.camelize = function (str) {
+	  return str.replace (camelRE, function (_, c) {
+	    return c ? c.toUpperCase () : '';
+	  })
+	}
+	
+	/**
+	 * Simple bind, faster than native
+	 *
+	 * @param {Function} fn
+	 * @param {Object} ctx
+	 * @return {Function}
+	 */
+	
+	exports.bind = function (fn, ctx) {
+	  return function () {
+	    return fn.apply(ctx, arguments)
+	  }
+	}
+	
+	/**
+	 * Convert an Array-like object to a real Array.
+	 *
+	 * @param {Array-like} list
+	 * @param {Number} [start] - start index
+	 * @return {Array}
+	 */
+	
+	exports.toArray = function (list, start) {
+	  start = start || 0
+	  var i = list.length - start
+	  var ret = new Array(i)
+	  while (i--) {
+	    ret[i] = list[i + start]
+	  }
+	  return ret
+	}
+	
+	/**
+	 * Mix properties into target object.
+	 *
+	 * @param {Object} to
+	 * @param {Object} from
+	 */
+	
+	exports.extend = function (to, from) {
+	  for (var key in from) {
+	    to[key] = from[key]
+	  }
+	}
+	
+	/**
+	 * Quick object check - this is primarily used to tell
+	 * Objects from primitive values when we know the value
+	 * is a JSON-compliant type.
+	 *
+	 * @param {*} obj
+	 * @return {Boolean}
+	 */
+	
+	exports.isObject = function (obj) {
+	  return obj && typeof obj === 'object'
+	}
+	
+	/**
+	 * Strict object type check. Only returns true
+	 * for plain JavaScript objects.
+	 *
+	 * @param {*} obj
+	 * @return {Boolean}
+	 */
+	
+	var toString = Object.prototype.toString
+	exports.isPlainObject = function (obj) {
+	  return toString.call(obj) === '[object Object]'
+	}
+	
+	/**
+	 * Array type check.
+	 *
+	 * @param {*} obj
+	 * @return {Boolean}
+	 */
+	
+	exports.isArray = function (obj) {
+	  return Array.isArray(obj)
+	}
+	
+	/**
+	 * Define a non-enumerable property
+	 *
+	 * @param {Object} obj
+	 * @param {String} key
+	 * @param {*} val
+	 * @param {Boolean} [enumerable]
+	 */
+	
+	exports.define = function (obj, key, val, enumerable) {
+	  Object.defineProperty(obj, key, {
+	    value        : val,
+	    enumerable   : !!enumerable,
+	    writable     : true,
+	    configurable : true
+	  })
+	}
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Can we use __proto__?
+	 *
+	 * @type {Boolean}
+	 */
+	
+	exports.hasProto = '__proto__' in {}
+	
+	/**
+	 * Indicates we have a window
+	 *
+	 * @type {Boolean}
+	 */
+	
+	var toString = Object.prototype.toString
+	var inBrowser = exports.inBrowser =
+	  typeof window !== 'undefined' &&
+	  toString.call(window) !== '[object Object]'
+	
+	/**
+	 * Defer a task to the start of the next event loop
+	 *
+	 * @param {Function} cb
+	 * @param {Object} ctx
+	 */
+	
+	var defer = inBrowser
+	  ? (window.requestAnimationFrame ||
+	    window.webkitRequestAnimationFrame ||
+	    setTimeout)
+	  : setTimeout
+	
+	exports.nextTick = function (cb, ctx) {
+	  if (ctx) {
+	    defer(function () { cb.call(ctx) }, 0)
+	  } else {
+	    defer(cb, 0)
+	  }
+	}
+	
+	/**
+	 * Detect if we are in IE9...
+	 *
+	 * @type {Boolean}
+	 */
+	
+	exports.isIE9 =
+	  inBrowser &&
+	  navigator.userAgent.indexOf('MSIE 9.0') > 0
+	
+	/**
+	 * Sniff transition/animation events
+	 */
+	
+	if (inBrowser && !exports.isIE9) {
+	  var isWebkitTrans =
+	    window.ontransitionend === undefined &&
+	    window.onwebkittransitionend !== undefined
+	  var isWebkitAnim =
+	    window.onanimationend === undefined &&
+	    window.onwebkitanimationend !== undefined
+	  exports.transitionProp = isWebkitTrans
+	    ? 'WebkitTransition'
+	    : 'transition'
+	  exports.transitionEndEvent = isWebkitTrans
+	    ? 'webkitTransitionEnd'
+	    : 'transitionend'
+	  exports.animationProp = isWebkitAnim
+	    ? 'WebkitAnimation'
+	    : 'animation'
+	  exports.animationEndEvent = isWebkitAnim
+	    ? 'webkitAnimationEnd'
+	    : 'animationend'
+	}
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var config = __webpack_require__(68)
+	
+	/**
+	 * Check if a node is in the document.
+	 *
+	 * @param {Node} node
+	 * @return {Boolean}
+	 */
+	
+	var doc =
+	  typeof document !== 'undefined' &&
+	  document.documentElement
+	
+	exports.inDoc = function (node) {
+	  return doc && doc.contains(node)
+	}
+	
+	/**
+	 * Extract an attribute from a node.
+	 *
+	 * @param {Node} node
+	 * @param {String} attr
+	 */
+	
+	exports.attr = function (node, attr) {
+	  attr = config.prefix + attr
+	  var val = node.getAttribute(attr)
+	  if (val !== null) {
+	    node.removeAttribute(attr)
+	  }
+	  return val
+	}
+	
+	/**
+	 * Insert el before target
+	 *
+	 * @param {Element} el
+	 * @param {Element} target 
+	 */
+	
+	exports.before = function (el, target) {
+	  target.parentNode.insertBefore(el, target)
+	}
+	
+	/**
+	 * Insert el after target
+	 *
+	 * @param {Element} el
+	 * @param {Element} target 
+	 */
+	
+	exports.after = function (el, target) {
+	  if (target.nextSibling) {
+	    exports.before(el, target.nextSibling)
+	  } else {
+	    target.parentNode.appendChild(el)
+	  }
+	}
+	
+	/**
+	 * Remove el from DOM
+	 *
+	 * @param {Element} el
+	 */
+	
+	exports.remove = function (el) {
+	  el.parentNode.removeChild(el)
+	}
+	
+	/**
+	 * Prepend el to target
+	 *
+	 * @param {Element} el
+	 * @param {Element} target 
+	 */
+	
+	exports.prepend = function (el, target) {
+	  if (target.firstChild) {
+	    exports.before(el, target.firstChild)
+	  } else {
+	    target.appendChild(el)
+	  }
+	}
+	
+	/**
+	 * Replace target with el
+	 *
+	 * @param {Element} target
+	 * @param {Element} el
+	 */
+	
+	exports.replace = function (target, el) {
+	  var parent = target.parentNode
+	  if (parent) {
+	    parent.replaceChild(el, target)
+	  }
+	}
+	
+	/**
+	 * Copy attributes from one element to another.
+	 *
+	 * @param {Element} from
+	 * @param {Element} to
+	 */
+	
+	exports.copyAttributes = function (from, to) {
+	  if (from.hasAttributes()) {
+	    var attrs = from.attributes
+	    for (var i = 0, l = attrs.length; i < l; i++) {
+	      var attr = attrs[i]
+	      to.setAttribute(attr.name, attr.value)
+	    }
+	  }
+	}
+	
+	/**
+	 * Add event listener shorthand.
+	 *
+	 * @param {Element} el
+	 * @param {String} event
+	 * @param {Function} cb
+	 */
+	
+	exports.on = function (el, event, cb) {
+	  el.addEventListener(event, cb)
+	}
+	
+	/**
+	 * Remove event listener shorthand.
+	 *
+	 * @param {Element} el
+	 * @param {String} event
+	 * @param {Function} cb
+	 */
+	
+	exports.off = function (el, event, cb) {
+	  el.removeEventListener(event, cb)
+	}
+	
+	/**
+	 * Compatibility add class for IE9
+	 *
+	 * @param {Element} el
+	 * @param {Strong} cls
+	 */
+	
+	exports.addClass = function (el, cls) {
+	  var cur = ' ' + el.className + ' '
+	  if (cur.indexOf(' ' + cls + ' ') < 0) {
+	    el.className = (cur + cls).trim()
+	  }
+	}
+	
+	/**
+	 * Compatibility remove class for IE9
+	 *
+	 * @param {Element} el
+	 * @param {Strong} cls
+	 */
+	
+	exports.removeClass = function (el, cls) {
+	  var cur = ' ' + el.className + ' '
+	  var tar = ' ' + cls + ' '
+	  while (cur.indexOf(tar) >= 0) {
+	    cur = cur.replace(tar, ' ')
+	  }
+	  el.className = cur.trim()
+	}
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(66)
+	
+	/**
+	 * Resolve read & write filters for a vm instance. The
+	 * filters descriptor Array comes from the directive parser.
+	 *
+	 * This is extracted into its own utility so it can
+	 * be used in multiple scenarios.
+	 *
+	 * @param {Vue} vm
+	 * @param {Array<Object>} filters
+	 * @param {Object} [target]
+	 * @return {Object}
+	 */
+	
+	exports.resolveFilters = function (vm, filters, target) {
+	  if (!filters) {
+	    return
+	  }
+	  var res = target || {}
+	  // var registry = vm.$options.filters
+	  filters.forEach(function (f) {
+	    var def = vm.$options.filters[f.name]
+	    _.assertAsset(def, 'filter', f.name)
+	    if (!def) return
+	    var args = f.args
+	    var reader, writer
+	    if (typeof def === 'function') {
+	      reader = def
+	    } else {
+	      reader = def.read
+	      writer = def.write
+	    }
+	    if (reader) {
+	      if (!res.read) res.read = []
+	      res.read.push(function (value) {
+	        return args
+	          ? reader.apply(vm, [value].concat(args))
+	          : reader.call(vm, value)
+	      })
+	    }
+	    if (writer) {
+	      if (!res.write) res.write = []
+	      res.write.push(function (value, oldVal) {
+	        return args
+	          ? writer.apply(vm, [value, oldVal].concat(args))
+	          : writer.call(vm, value, oldVal)
+	      })
+	    }
+	  })
+	  return res
+	}
+	
+	/**
+	 * Apply filters to a value
+	 *
+	 * @param {*} value
+	 * @param {Array} filters
+	 * @param {Vue} vm
+	 * @param {*} oldVal
+	 * @return {*}
+	 */
+	
+	exports.applyFilters = function (value, filters, vm, oldVal) {
+	  if (!filters) {
+	    return value
+	  }
+	  for (var i = 0, l = filters.length; i < l; i++) {
+	    value = filters[i].call(vm, value, oldVal)
+	  }
+	  return value
+	}
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var config = __webpack_require__(68)
+	
+	/**
+	 * Enable debug utilities. The enableDebug() function and
+	 * all _.log() & _.warn() calls will be dropped in the
+	 * minified production build.
+	 */
+	
+	enableDebug()
+	
+	function enableDebug () {
+	  var hasConsole = typeof console !== 'undefined'
+	  
+	  /**
+	   * Log a message.
+	   *
+	   * @param {String} msg
+	   */
+	
+	  exports.log = function (msg) {
+	    if (hasConsole && config.debug) {
+	      console.log('[Vue info]: ' + msg)
+	    }
+	  }
+	
+	  /**
+	   * We've got a problem here.
+	   *
+	   * @param {String} msg
+	   */
+	
+	  exports.warn = function (msg) {
+	    if (hasConsole && !config.silent) {
+	      console.warn('[Vue warn]: ' + msg)
+	      if (config.debug && console.trace) {
+	        console.trace()
+	      }
+	    }
+	  }
+	
+	  /**
+	   * Assert asset exists
+	   */
+	
+	  exports.assertAsset = function (val, type, id) {
+	    if (!val) {
+	      exports.warn('Failed to resolve ' + type + ': ' + id)
+	    }
+	  }
+	}
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
 	var extend = _.extend
 	
 	/**
@@ -10929,7 +15442,7 @@
 	}
 
 /***/ },
-/* 33 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -11007,573 +15520,13 @@
 	})
 
 /***/ },
-/* 34 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Check is a string starts with $ or _
-	 *
-	 * @param {String} str
-	 * @return {Boolean}
-	 */
-	
-	exports.isReserved = function (str) {
-	  var c = str.charCodeAt(0)
-	  return c === 0x24 || c === 0x5F
-	}
-	
-	/**
-	 * Guard text output, make sure undefined outputs
-	 * empty string
-	 *
-	 * @param {*} value
-	 * @return {String}
-	 */
-	
-	exports.toString = function (value) {
-	  return value == null
-	    ? ''
-	    : value.toString()
-	}
-	
-	/**
-	 * Check and convert possible numeric numbers before
-	 * setting back to data
-	 *
-	 * @param {*} value
-	 * @return {*|Number}
-	 */
-	
-	exports.toNumber = function (value) {
-	  return (
-	    isNaN(value) ||
-	    value === null ||
-	    typeof value === 'boolean'
-	  ) ? value
-	    : Number(value)
-	}
-	
-	/**
-	 * Strip quotes from a string
-	 *
-	 * @param {String} str
-	 * @return {String | false}
-	 */
-	
-	exports.stripQuotes = function (str) {
-	  var a = str.charCodeAt(0)
-	  var b = str.charCodeAt(str.length - 1)
-	  return a === b && (a === 0x22 || a === 0x27)
-	    ? str.slice(1, -1)
-	    : false
-	}
-	
-	/**
-	 * Camelize a hyphen-delmited string.
-	 *
-	 * @param {String} str
-	 * @return {String}
-	 */
-	
-	var camelRE = /(?:^|[-_])(\w)/g
-	exports.camelize = function (str) {
-	  return str.replace (camelRE, function (_, c) {
-	    return c ? c.toUpperCase () : '';
-	  })
-	}
-	
-	/**
-	 * Simple bind, faster than native
-	 *
-	 * @param {Function} fn
-	 * @param {Object} ctx
-	 * @return {Function}
-	 */
-	
-	exports.bind = function (fn, ctx) {
-	  return function () {
-	    return fn.apply(ctx, arguments)
-	  }
-	}
-	
-	/**
-	 * Convert an Array-like object to a real Array.
-	 *
-	 * @param {Array-like} list
-	 * @param {Number} [start] - start index
-	 * @return {Array}
-	 */
-	
-	exports.toArray = function (list, start) {
-	  start = start || 0
-	  var i = list.length - start
-	  var ret = new Array(i)
-	  while (i--) {
-	    ret[i] = list[i + start]
-	  }
-	  return ret
-	}
-	
-	/**
-	 * Mix properties into target object.
-	 *
-	 * @param {Object} to
-	 * @param {Object} from
-	 */
-	
-	exports.extend = function (to, from) {
-	  for (var key in from) {
-	    to[key] = from[key]
-	  }
-	}
-	
-	/**
-	 * Quick object check - this is primarily used to tell
-	 * Objects from primitive values when we know the value
-	 * is a JSON-compliant type.
-	 *
-	 * @param {*} obj
-	 * @return {Boolean}
-	 */
-	
-	exports.isObject = function (obj) {
-	  return obj && typeof obj === 'object'
-	}
-	
-	/**
-	 * Strict object type check. Only returns true
-	 * for plain JavaScript objects.
-	 *
-	 * @param {*} obj
-	 * @return {Boolean}
-	 */
-	
-	var toString = Object.prototype.toString
-	exports.isPlainObject = function (obj) {
-	  return toString.call(obj) === '[object Object]'
-	}
-	
-	/**
-	 * Array type check.
-	 *
-	 * @param {*} obj
-	 * @return {Boolean}
-	 */
-	
-	exports.isArray = function (obj) {
-	  return Array.isArray(obj)
-	}
-	
-	/**
-	 * Define a non-enumerable property
-	 *
-	 * @param {Object} obj
-	 * @param {String} key
-	 * @param {*} val
-	 * @param {Boolean} [enumerable]
-	 */
-	
-	exports.define = function (obj, key, val, enumerable) {
-	  Object.defineProperty(obj, key, {
-	    value        : val,
-	    enumerable   : !!enumerable,
-	    writable     : true,
-	    configurable : true
-	  })
-	}
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Can we use __proto__?
-	 *
-	 * @type {Boolean}
-	 */
-	
-	exports.hasProto = '__proto__' in {}
-	
-	/**
-	 * Indicates we have a window
-	 *
-	 * @type {Boolean}
-	 */
-	
-	var toString = Object.prototype.toString
-	var inBrowser = exports.inBrowser =
-	  typeof window !== 'undefined' &&
-	  toString.call(window) !== '[object Object]'
-	
-	/**
-	 * Defer a task to the start of the next event loop
-	 *
-	 * @param {Function} cb
-	 * @param {Object} ctx
-	 */
-	
-	var defer = inBrowser
-	  ? (window.requestAnimationFrame ||
-	    window.webkitRequestAnimationFrame ||
-	    setTimeout)
-	  : setTimeout
-	
-	exports.nextTick = function (cb, ctx) {
-	  if (ctx) {
-	    defer(function () { cb.call(ctx) }, 0)
-	  } else {
-	    defer(cb, 0)
-	  }
-	}
-	
-	/**
-	 * Detect if we are in IE9...
-	 *
-	 * @type {Boolean}
-	 */
-	
-	exports.isIE9 =
-	  inBrowser &&
-	  navigator.userAgent.indexOf('MSIE 9.0') > 0
-	
-	/**
-	 * Sniff transition/animation events
-	 */
-	
-	if (inBrowser && !exports.isIE9) {
-	  var isWebkitTrans =
-	    window.ontransitionend === undefined &&
-	    window.onwebkittransitionend !== undefined
-	  var isWebkitAnim =
-	    window.onanimationend === undefined &&
-	    window.onwebkitanimationend !== undefined
-	  exports.transitionProp = isWebkitTrans
-	    ? 'WebkitTransition'
-	    : 'transition'
-	  exports.transitionEndEvent = isWebkitTrans
-	    ? 'webkitTransitionEnd'
-	    : 'transitionend'
-	  exports.animationProp = isWebkitAnim
-	    ? 'WebkitAnimation'
-	    : 'animation'
-	  exports.animationEndEvent = isWebkitAnim
-	    ? 'webkitAnimationEnd'
-	    : 'animationend'
-	}
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var config = __webpack_require__(33)
-	
-	/**
-	 * Check if a node is in the document.
-	 *
-	 * @param {Node} node
-	 * @return {Boolean}
-	 */
-	
-	var doc =
-	  typeof document !== 'undefined' &&
-	  document.documentElement
-	
-	exports.inDoc = function (node) {
-	  return doc && doc.contains(node)
-	}
-	
-	/**
-	 * Extract an attribute from a node.
-	 *
-	 * @param {Node} node
-	 * @param {String} attr
-	 */
-	
-	exports.attr = function (node, attr) {
-	  attr = config.prefix + attr
-	  var val = node.getAttribute(attr)
-	  if (val !== null) {
-	    node.removeAttribute(attr)
-	  }
-	  return val
-	}
-	
-	/**
-	 * Insert el before target
-	 *
-	 * @param {Element} el
-	 * @param {Element} target 
-	 */
-	
-	exports.before = function (el, target) {
-	  target.parentNode.insertBefore(el, target)
-	}
-	
-	/**
-	 * Insert el after target
-	 *
-	 * @param {Element} el
-	 * @param {Element} target 
-	 */
-	
-	exports.after = function (el, target) {
-	  if (target.nextSibling) {
-	    exports.before(el, target.nextSibling)
-	  } else {
-	    target.parentNode.appendChild(el)
-	  }
-	}
-	
-	/**
-	 * Remove el from DOM
-	 *
-	 * @param {Element} el
-	 */
-	
-	exports.remove = function (el) {
-	  el.parentNode.removeChild(el)
-	}
-	
-	/**
-	 * Prepend el to target
-	 *
-	 * @param {Element} el
-	 * @param {Element} target 
-	 */
-	
-	exports.prepend = function (el, target) {
-	  if (target.firstChild) {
-	    exports.before(el, target.firstChild)
-	  } else {
-	    target.appendChild(el)
-	  }
-	}
-	
-	/**
-	 * Replace target with el
-	 *
-	 * @param {Element} target
-	 * @param {Element} el
-	 */
-	
-	exports.replace = function (target, el) {
-	  var parent = target.parentNode
-	  if (parent) {
-	    parent.replaceChild(el, target)
-	  }
-	}
-	
-	/**
-	 * Copy attributes from one element to another.
-	 *
-	 * @param {Element} from
-	 * @param {Element} to
-	 */
-	
-	exports.copyAttributes = function (from, to) {
-	  if (from.hasAttributes()) {
-	    var attrs = from.attributes
-	    for (var i = 0, l = attrs.length; i < l; i++) {
-	      var attr = attrs[i]
-	      to.setAttribute(attr.name, attr.value)
-	    }
-	  }
-	}
-	
-	/**
-	 * Add event listener shorthand.
-	 *
-	 * @param {Element} el
-	 * @param {String} event
-	 * @param {Function} cb
-	 */
-	
-	exports.on = function (el, event, cb) {
-	  el.addEventListener(event, cb)
-	}
-	
-	/**
-	 * Remove event listener shorthand.
-	 *
-	 * @param {Element} el
-	 * @param {String} event
-	 * @param {Function} cb
-	 */
-	
-	exports.off = function (el, event, cb) {
-	  el.removeEventListener(event, cb)
-	}
-	
-	/**
-	 * Compatibility add class for IE9
-	 *
-	 * @param {Element} el
-	 * @param {Strong} cls
-	 */
-	
-	exports.addClass = function (el, cls) {
-	  var cur = ' ' + el.className + ' '
-	  if (cur.indexOf(' ' + cls + ' ') < 0) {
-	    el.className = (cur + cls).trim()
-	  }
-	}
-	
-	/**
-	 * Compatibility remove class for IE9
-	 *
-	 * @param {Element} el
-	 * @param {Strong} cls
-	 */
-	
-	exports.removeClass = function (el, cls) {
-	  var cur = ' ' + el.className + ' '
-	  var tar = ' ' + cls + ' '
-	  while (cur.indexOf(tar) >= 0) {
-	    cur = cur.replace(tar, ' ')
-	  }
-	  el.className = cur.trim()
-	}
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(38)
-	
-	/**
-	 * Resolve read & write filters for a vm instance. The
-	 * filters descriptor Array comes from the directive parser.
-	 *
-	 * This is extracted into its own utility so it can
-	 * be used in multiple scenarios.
-	 *
-	 * @param {Vue} vm
-	 * @param {Array<Object>} filters
-	 * @param {Object} [target]
-	 * @return {Object}
-	 */
-	
-	exports.resolveFilters = function (vm, filters, target) {
-	  if (!filters) {
-	    return
-	  }
-	  var res = target || {}
-	  // var registry = vm.$options.filters
-	  filters.forEach(function (f) {
-	    var def = vm.$options.filters[f.name]
-	    _.assertAsset(def, 'filter', f.name)
-	    if (!def) return
-	    var args = f.args
-	    var reader, writer
-	    if (typeof def === 'function') {
-	      reader = def
-	    } else {
-	      reader = def.read
-	      writer = def.write
-	    }
-	    if (reader) {
-	      if (!res.read) res.read = []
-	      res.read.push(function (value) {
-	        return args
-	          ? reader.apply(vm, [value].concat(args))
-	          : reader.call(vm, value)
-	      })
-	    }
-	    if (writer) {
-	      if (!res.write) res.write = []
-	      res.write.push(function (value, oldVal) {
-	        return args
-	          ? writer.apply(vm, [value, oldVal].concat(args))
-	          : writer.call(vm, value, oldVal)
-	      })
-	    }
-	  })
-	  return res
-	}
-	
-	/**
-	 * Apply filters to a value
-	 *
-	 * @param {*} value
-	 * @param {Array} filters
-	 * @param {Vue} vm
-	 * @param {*} oldVal
-	 * @return {*}
-	 */
-	
-	exports.applyFilters = function (value, filters, vm, oldVal) {
-	  if (!filters) {
-	    return value
-	  }
-	  for (var i = 0, l = filters.length; i < l; i++) {
-	    value = filters[i].call(vm, value, oldVal)
-	  }
-	  return value
-	}
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var config = __webpack_require__(33)
-	
-	/**
-	 * Enable debug utilities. The enableDebug() function and
-	 * all _.log() & _.warn() calls will be dropped in the
-	 * minified production build.
-	 */
-	
-	enableDebug()
-	
-	function enableDebug () {
-	  var hasConsole = typeof console !== 'undefined'
-	  
-	  /**
-	   * Log a message.
-	   *
-	   * @param {String} msg
-	   */
-	
-	  exports.log = function (msg) {
-	    if (hasConsole && config.debug) {
-	      console.log('[Vue info]: ' + msg)
-	    }
-	  }
-	
-	  /**
-	   * We've got a problem here.
-	   *
-	   * @param {String} msg
-	   */
-	
-	  exports.warn = function (msg) {
-	    if (hasConsole && !config.silent) {
-	      console.warn('[Vue warn]: ' + msg)
-	      if (config.debug && console.trace) {
-	        console.trace()
-	      }
-	    }
-	  }
-	
-	  /**
-	   * Assert asset exists
-	   */
-	
-	  exports.assertAsset = function (val, type, id) {
-	    if (!val) {
-	      exports.warn('Failed to resolve ' + type + ': ' + id)
-	    }
-	  }
-	}
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var Observer = __webpack_require__(29)
-	var expParser = __webpack_require__(60)
-	var Batcher = __webpack_require__(98)
+	var _ = __webpack_require__(17)
+	var Observer = __webpack_require__(30)
+	var expParser = __webpack_require__(94)
+	var Batcher = __webpack_require__(102)
 	
 	var batcher = new Batcher()
 	var uid = 0
@@ -11770,10 +15723,10 @@
 	module.exports = Watcher
 
 /***/ },
-/* 40 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	
 	module.exports = {
 	
@@ -11790,11 +15743,11 @@
 	}
 
 /***/ },
-/* 41 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var templateParser = __webpack_require__(99)
+	var _ = __webpack_require__(17)
+	var templateParser = __webpack_require__(103)
 	
 	module.exports = {
 	
@@ -11832,7 +15785,7 @@
 	}
 
 /***/ },
-/* 42 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// xlink
@@ -11869,10 +15822,10 @@
 	}
 
 /***/ },
-/* 43 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var transition = __webpack_require__(62)
+	var transition = __webpack_require__(91)
 	
 	module.exports = function (value) {
 	  var el = this.el
@@ -11882,10 +15835,10 @@
 	}
 
 /***/ },
-/* 44 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	var hasClassList =
 	  typeof document !== 'undefined' &&
 	  'classList' in document.documentElement
@@ -11932,7 +15885,7 @@
 	}
 
 /***/ },
-/* 45 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -11950,10 +15903,10 @@
 	}
 
 /***/ },
-/* 46 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	
 	module.exports = {
 	
@@ -11976,10 +15929,10 @@
 	}
 
 /***/ },
-/* 47 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var config = __webpack_require__(33)
+	var config = __webpack_require__(68)
 	
 	module.exports = {
 	
@@ -11993,7 +15946,7 @@
 	}
 
 /***/ },
-/* 48 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var prefixes = ['-webkit-', '-moz-', '-ms-']
@@ -12044,12 +15997,12 @@
 	}
 
 /***/ },
-/* 49 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	var compile = __webpack_require__(96)
-	var templateParser = __webpack_require__(99)
+	var templateParser = __webpack_require__(103)
 	
 	module.exports = {
 	
@@ -12080,7 +16033,7 @@
 	}
 
 /***/ },
-/* 50 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -12097,10 +16050,10 @@
 	}
 
 /***/ },
-/* 51 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	
 	module.exports = {
 	
@@ -12162,11 +16115,11 @@
 	}
 
 /***/ },
-/* 52 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var Watcher = __webpack_require__(39)
+	var _ = __webpack_require__(17)
+	var Watcher = __webpack_require__(69)
 	
 	module.exports = {
 	
@@ -12359,17 +16312,17 @@
 	}
 
 /***/ },
-/* 53 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	var isObject = _.isObject
-	var textParser = __webpack_require__(58)
-	var expParser = __webpack_require__(60)
-	var templateParser = __webpack_require__(99)
+	var textParser = __webpack_require__(92)
+	var expParser = __webpack_require__(94)
+	var templateParser = __webpack_require__(103)
 	var compile = __webpack_require__(96)
 	var transclude = __webpack_require__(97)
-	var mergeOptions = __webpack_require__(32)
+	var mergeOptions = __webpack_require__(67)
 	var uid = 0
 	
 	module.exports = {
@@ -12855,11 +16808,11 @@
 	}
 
 /***/ },
-/* 54 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var templateParser = __webpack_require__(99)
+	var _ = __webpack_require__(17)
+	var templateParser = __webpack_require__(103)
 	
 	module.exports = {
 	
@@ -12912,11 +16865,11 @@
 	}
 
 /***/ },
-/* 55 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var Watcher = __webpack_require__(39)
+	var _ = __webpack_require__(17)
+	var Watcher = __webpack_require__(69)
 	
 	module.exports = {
 	
@@ -12964,11 +16917,11 @@
 	}
 
 /***/ },
-/* 56 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var Path = __webpack_require__(100)
+	var _ = __webpack_require__(17)
+	var Path = __webpack_require__(104)
 	
 	/**
 	 * Filter filter for v-repeat
@@ -13056,7 +17009,7 @@
 	}
 
 /***/ },
-/* 57 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var uid = 0
@@ -13112,11 +17065,500 @@
 	module.exports = Binding
 
 /***/ },
-/* 58 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Cache = __webpack_require__(102)
-	var config = __webpack_require__(33)
+	var _ = __webpack_require__(17)
+	var Watcher = __webpack_require__(69)
+	var textParser = __webpack_require__(92)
+	var expParser = __webpack_require__(94)
+	
+	/**
+	 * A directive links a DOM element with a piece of data,
+	 * which is the result of evaluating an expression.
+	 * It registers a watcher with the expression and calls
+	 * the DOM update function when a change is triggered.
+	 *
+	 * @param {String} name
+	 * @param {Node} el
+	 * @param {Vue} vm
+	 * @param {Object} descriptor
+	 *                 - {String} expression
+	 *                 - {String} [arg]
+	 *                 - {Array<Object>} [filters]
+	 * @param {Object} def - directive definition object
+	 * @param {Function} [linker] - pre-compiled linker function
+	 * @constructor
+	 */
+	
+	function Directive (name, el, vm, descriptor, def, linker) {
+	  // public
+	  this.name = name
+	  this.el = el
+	  this.vm = vm
+	  // copy descriptor props
+	  this.raw = descriptor.raw
+	  this.expression = descriptor.expression
+	  this.arg = descriptor.arg
+	  this.filters = _.resolveFilters(vm, descriptor.filters)
+	  // private
+	  this._linker = linker
+	  this._locked = false
+	  this._bound = false
+	  // init
+	  this._bind(def)
+	}
+	
+	var p = Directive.prototype
+	
+	/**
+	 * Initialize the directive, mixin definition properties,
+	 * setup the watcher, call definition bind() and update()
+	 * if present.
+	 *
+	 * @param {Object} def
+	 */
+	
+	p._bind = function (def) {
+	  if (typeof def === 'function') {
+	    this.update = def
+	  } else {
+	    _.extend(this, def)
+	  }
+	  this._watcherExp = this.expression
+	  this._checkDynamicLiteral()
+	  if (this.bind) {
+	    this.bind()
+	  }
+	  if (
+	    this.expression && this.update &&
+	    (!this.isLiteral || this._isDynamicLiteral) &&
+	    !this._checkExpFn()
+	  ) {
+	    // use raw expression as identifier because filters
+	    // make them different watchers
+	    var watcher = this.vm._watchers[this.raw]
+	    // wrapped updater for context
+	    var dir = this
+	    var update = this._update = function (val, oldVal) {
+	      if (!dir._locked) {
+	        dir.update(val, oldVal)
+	      }
+	    }
+	    if (!watcher) {
+	      watcher = this.vm._watchers[this.raw] = new Watcher(
+	        this.vm,
+	        this._watcherExp,
+	        update, // callback
+	        this.filters,
+	        this.twoWay // need setter
+	      )
+	    } else {
+	      watcher.addCb(update)
+	    }
+	    this._watcher = watcher
+	    this.update(watcher.value)
+	  }
+	  this._bound = true
+	}
+	
+	/**
+	 * check if this is a dynamic literal binding.
+	 *
+	 * e.g. v-component="{{currentView}}"
+	 */
+	
+	p._checkDynamicLiteral = function () {
+	  var expression = this.expression
+	  if (expression && this.isLiteral) {
+	    var tokens = textParser.parse(expression)
+	    if (tokens) {
+	      var exp = textParser.tokensToExp(tokens)
+	      this.expression = this.vm.$get(exp)
+	      this._watcherExp = exp
+	      this._isDynamicLiteral = true
+	    }
+	  }
+	}
+	
+	/**
+	 * Check if the directive is a function caller
+	 * and if the expression is a callable one. If both true,
+	 * we wrap up the expression and use it as the event
+	 * handler.
+	 *
+	 * e.g. v-on="click: a++"
+	 *
+	 * @return {Boolean}
+	 */
+	
+	p._checkExpFn = function () {
+	  var expression = this.expression
+	  if (
+	    expression && this.isFn &&
+	    !expParser.pathTestRE.test(expression)
+	  ) {
+	    var fn = expParser.parse(expression).get
+	    var vm = this.vm
+	    var handler = function () {
+	      fn.call(vm, vm)
+	    }
+	    if (this.filters) {
+	      handler = _.applyFilters(
+	        handler,
+	        this.filters.read,
+	        vm
+	      )
+	    }
+	    this.update(handler)
+	    return true
+	  }
+	}
+	
+	/**
+	 * Teardown the watcher and call unbind.
+	 */
+	
+	p._teardown = function () {
+	  if (this._bound) {
+	    if (this.unbind) {
+	      this.unbind()
+	    }
+	    var watcher = this._watcher
+	    if (watcher && watcher.active) {
+	      watcher.removeCb(this._update)
+	      if (!watcher.active) {
+	        this.vm._watchers[this.expression] = null
+	      }
+	    }
+	    this._bound = false
+	    this.vm = this.el = this._watcher = null
+	  }
+	}
+	
+	/**
+	 * Set the corresponding value with the setter.
+	 * This should only be used in two-way directives
+	 * e.g. v-model.
+	 *
+	 * @param {*} value
+	 * @param {Boolean} lock - prevent wrtie triggering update.
+	 * @public
+	 */
+	
+	p.set = function (value, lock) {
+	  if (this.twoWay) {
+	    if (lock) {
+	      this._locked = true
+	    }
+	    this._watcher.set(value)
+	    if (lock) {
+	      var self = this
+	      _.nextTick(function () {
+	        self._locked = false        
+	      })
+	    }
+	  }
+	}
+	
+	module.exports = Directive
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var arrayAugmentations = Object.create(Array.prototype)
+	
+	/**
+	 * Intercept mutating methods and emit events
+	 */
+	
+	;[
+	  'push',
+	  'pop',
+	  'shift',
+	  'unshift',
+	  'splice',
+	  'sort',
+	  'reverse'
+	]
+	.forEach(function (method) {
+	  // cache original method
+	  var original = Array.prototype[method]
+	  _.define(arrayAugmentations, method, function mutator () {
+	    // avoid leaking arguments:
+	    // http://jsperf.com/closure-with-arguments
+	    var i = arguments.length
+	    var args = new Array(i)
+	    while (i--) {
+	      args[i] = arguments[i]
+	    }
+	    var result = original.apply(this, args)
+	    var ob = this.__ob__
+	    var inserted
+	    switch (method) {
+	      case 'push':
+	        inserted = args
+	        break
+	      case 'unshift':
+	        inserted = args
+	        break
+	      case 'splice':
+	        inserted = args.slice(2)
+	        break
+	    }
+	    if (inserted) ob.observeArray(inserted)
+	    // notify change
+	    ob.notify()
+	    return result
+	  })
+	})
+	
+	/**
+	 * Swap the element at the given index with a new value
+	 * and emits corresponding event.
+	 *
+	 * @param {Number} index
+	 * @param {*} val
+	 * @return {*} - replaced element
+	 */
+	
+	_.define(
+	  arrayAugmentations,
+	  '$set',
+	  function $set (index, val) {
+	    if (index >= this.length) {
+	      this.length = index + 1
+	    }
+	    return this.splice(index, 1, val)[0]
+	  }
+	)
+	
+	/**
+	 * Convenience method to remove the element at given index.
+	 *
+	 * @param {Number} index
+	 * @param {*} val
+	 */
+	
+	_.define(
+	  arrayAugmentations,
+	  '$remove',
+	  function $remove (index) {
+	    if (typeof index !== 'number') {
+	      index = this.indexOf(index)
+	    }
+	    if (index > -1) {
+	      return this.splice(index, 1)[0]
+	    }
+	  }
+	)
+	
+	module.exports = arrayAugmentations
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var objectAgumentations = Object.create(Object.prototype)
+	
+	/**
+	 * Add a new property to an observed object
+	 * and emits corresponding event
+	 *
+	 * @param {String} key
+	 * @param {*} val
+	 * @public
+	 */
+	
+	_.define(
+	  objectAgumentations,
+	  '$add',
+	  function $add (key, val) {
+	    if (_.isReserved(key)) {
+	      _.warn('Refused to $add reserved key: ' + key)
+	      return
+	    }
+	    if (this.hasOwnProperty(key)) return
+	    var ob = this.__ob__
+	    ob.convert(key, val)
+	    if (ob.vms) {
+	      var i = ob.vms.length
+	      while (i--) {
+	        var vm = ob.vms[i]
+	        vm._proxy(key)
+	        vm._digest()
+	      }
+	    } else {
+	      ob.notify()
+	    }
+	  }
+	)
+	
+	/**
+	 * Deletes a property from an observed object
+	 * and emits corresponding event
+	 *
+	 * @param {String} key
+	 * @public
+	 */
+	
+	_.define(
+	  objectAgumentations,
+	  '$delete',
+	  function $delete (key) {
+	    if (_.isReserved(key)) {
+	      _.warn('Refused to $add reserved key: ' + key)
+	      return
+	    }
+	    if (!this.hasOwnProperty(key)) return
+	    delete this[key]
+	    var ob = this.__ob__
+	    if (ob.vms) {
+	      var i = ob.vms.length
+	      while (i--) {
+	        var vm = ob.vms[i]
+	        vm._unproxy(key)
+	        vm._digest()
+	      }
+	    } else {
+	      ob.notify()
+	    }
+	  }
+	)
+	
+	module.exports = objectAgumentations
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var applyCSSTransition = __webpack_require__(105)
+	var applyJSTransition = __webpack_require__(106)
+	
+	/**
+	 * Append with transition.
+	 *
+	 * @oaram {Element} el
+	 * @param {Element} target
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	exports.append = function (el, target, vm, cb) {
+	  apply(el, 1, function () {
+	    target.appendChild(el)
+	  }, vm, cb)
+	}
+	
+	/**
+	 * InsertBefore with transition.
+	 *
+	 * @oaram {Element} el
+	 * @param {Element} target
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	exports.before = function (el, target, vm, cb) {
+	  apply(el, 1, function () {
+	    _.before(el, target)
+	  }, vm, cb)
+	}
+	
+	/**
+	 * Remove with transition.
+	 *
+	 * @oaram {Element} el
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	exports.remove = function (el, vm, cb) {
+	  apply(el, -1, function () {
+	    _.remove(el)
+	  }, vm, cb)
+	}
+	
+	/**
+	 * Remove by appending to another parent with transition.
+	 * This is only used in block operations.
+	 *
+	 * @oaram {Element} el
+	 * @param {Element} target
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	exports.removeThenAppend = function (el, target, vm, cb) {
+	  apply(el, -1, function () {
+	    target.appendChild(el)
+	  }, vm, cb)
+	}
+	
+	/**
+	 * Apply transitions with an operation callback.
+	 *
+	 * @oaram {Element} el
+	 * @param {Number} direction
+	 *                  1: enter
+	 *                 -1: leave
+	 * @param {Function} op - the actual DOM operation
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	var apply = exports.apply = function (el, direction, op, vm, cb) {
+	  var transData = el.__v_trans
+	  if (
+	    !transData ||
+	    !vm._isCompiled ||
+	    // if the vm is being manipulated by a parent directive
+	    // during the parent's compilation phase, skip the
+	    // animation.
+	    (vm.$parent && !vm.$parent._isCompiled)
+	  ) {
+	    op()
+	    if (cb) cb()
+	    return
+	  }
+	  // determine the transition type on the element
+	  var jsTransition = vm.$options.transitions[transData.id]
+	  if (jsTransition) {
+	    // js
+	    applyJSTransition(
+	      el,
+	      direction,
+	      op,
+	      transData,
+	      jsTransition,
+	      cb
+	    )
+	  } else if (_.transitionEndEvent) {
+	    // css
+	    applyCSSTransition(
+	      el,
+	      direction,
+	      op,
+	      transData,
+	      cb
+	    )
+	  } else {
+	    // not applicable
+	    op()
+	    if (cb) cb()
+	  }
+	}
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Cache = __webpack_require__(107)
+	var config = __webpack_require__(68)
 	var regexEscapeRE = /[-.*+?^${}()|[\]\/\\]/g
 	var cache, tagRE, htmlRE, firstChar, lastChar
 	
@@ -13254,11 +17696,11 @@
 	}
 
 /***/ },
-/* 59 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var Cache = __webpack_require__(102)
+	var _ = __webpack_require__(17)
+	var Cache = __webpack_require__(107)
 	var cache = new Cache(1000)
 	var argRE = /^[^\{\?]+$|^'[^']*'$|^"[^"]*"$/
 	var filterTokenRE = /[^\s'"]+|'[^']+'|"[^"]+"/g
@@ -13418,12 +17860,12 @@
 	}
 
 /***/ },
-/* 60 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var Path = __webpack_require__(100)
-	var Cache = __webpack_require__(102)
+	var _ = __webpack_require__(17)
+	var Path = __webpack_require__(104)
+	var Cache = __webpack_require__(107)
 	var expressionCache = new Cache(1000)
 	
 	var keywords =
@@ -13656,16 +18098,16 @@
 	exports.pathTestRE = pathTestRE
 
 /***/ },
-/* 61 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	
 	var handlers = {
-	  text: __webpack_require__(105),
-	  radio: __webpack_require__(106),
-	  select: __webpack_require__(107),
-	  checkbox: __webpack_require__(108)
+	  text: __webpack_require__(108),
+	  radio: __webpack_require__(109),
+	  select: __webpack_require__(110),
+	  checkbox: __webpack_require__(111)
 	}
 	
 	module.exports = {
@@ -13708,4454 +18150,14 @@
 	}
 
 /***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var applyCSSTransition = __webpack_require__(103)
-	var applyJSTransition = __webpack_require__(104)
-	
-	/**
-	 * Append with transition.
-	 *
-	 * @oaram {Element} el
-	 * @param {Element} target
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	exports.append = function (el, target, vm, cb) {
-	  apply(el, 1, function () {
-	    target.appendChild(el)
-	  }, vm, cb)
-	}
-	
-	/**
-	 * InsertBefore with transition.
-	 *
-	 * @oaram {Element} el
-	 * @param {Element} target
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	exports.before = function (el, target, vm, cb) {
-	  apply(el, 1, function () {
-	    _.before(el, target)
-	  }, vm, cb)
-	}
-	
-	/**
-	 * Remove with transition.
-	 *
-	 * @oaram {Element} el
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	exports.remove = function (el, vm, cb) {
-	  apply(el, -1, function () {
-	    _.remove(el)
-	  }, vm, cb)
-	}
-	
-	/**
-	 * Remove by appending to another parent with transition.
-	 * This is only used in block operations.
-	 *
-	 * @oaram {Element} el
-	 * @param {Element} target
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	exports.removeThenAppend = function (el, target, vm, cb) {
-	  apply(el, -1, function () {
-	    target.appendChild(el)
-	  }, vm, cb)
-	}
-	
-	/**
-	 * Apply transitions with an operation callback.
-	 *
-	 * @oaram {Element} el
-	 * @param {Number} direction
-	 *                  1: enter
-	 *                 -1: leave
-	 * @param {Function} op - the actual DOM operation
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	var apply = exports.apply = function (el, direction, op, vm, cb) {
-	  var transData = el.__v_trans
-	  if (
-	    !transData ||
-	    !vm._isCompiled ||
-	    // if the vm is being manipulated by a parent directive
-	    // during the parent's compilation phase, skip the
-	    // animation.
-	    (vm.$parent && !vm.$parent._isCompiled)
-	  ) {
-	    op()
-	    if (cb) cb()
-	    return
-	  }
-	  // determine the transition type on the element
-	  var jsTransition = vm.$options.transitions[transData.id]
-	  if (jsTransition) {
-	    // js
-	    applyJSTransition(
-	      el,
-	      direction,
-	      op,
-	      transData,
-	      jsTransition,
-	      cb
-	    )
-	  } else if (_.transitionEndEvent) {
-	    // css
-	    applyCSSTransition(
-	      el,
-	      direction,
-	      op,
-	      transData,
-	      cb
-	    )
-	  } else {
-	    // not applicable
-	    op()
-	    if (cb) cb()
-	  }
-	}
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var Watcher = __webpack_require__(39)
-	var textParser = __webpack_require__(58)
-	var expParser = __webpack_require__(60)
-	
-	/**
-	 * A directive links a DOM element with a piece of data,
-	 * which is the result of evaluating an expression.
-	 * It registers a watcher with the expression and calls
-	 * the DOM update function when a change is triggered.
-	 *
-	 * @param {String} name
-	 * @param {Node} el
-	 * @param {Vue} vm
-	 * @param {Object} descriptor
-	 *                 - {String} expression
-	 *                 - {String} [arg]
-	 *                 - {Array<Object>} [filters]
-	 * @param {Object} def - directive definition object
-	 * @param {Function} [linker] - pre-compiled linker function
-	 * @constructor
-	 */
-	
-	function Directive (name, el, vm, descriptor, def, linker) {
-	  // public
-	  this.name = name
-	  this.el = el
-	  this.vm = vm
-	  // copy descriptor props
-	  this.raw = descriptor.raw
-	  this.expression = descriptor.expression
-	  this.arg = descriptor.arg
-	  this.filters = _.resolveFilters(vm, descriptor.filters)
-	  // private
-	  this._linker = linker
-	  this._locked = false
-	  this._bound = false
-	  // init
-	  this._bind(def)
-	}
-	
-	var p = Directive.prototype
-	
-	/**
-	 * Initialize the directive, mixin definition properties,
-	 * setup the watcher, call definition bind() and update()
-	 * if present.
-	 *
-	 * @param {Object} def
-	 */
-	
-	p._bind = function (def) {
-	  if (typeof def === 'function') {
-	    this.update = def
-	  } else {
-	    _.extend(this, def)
-	  }
-	  this._watcherExp = this.expression
-	  this._checkDynamicLiteral()
-	  if (this.bind) {
-	    this.bind()
-	  }
-	  if (
-	    this.expression && this.update &&
-	    (!this.isLiteral || this._isDynamicLiteral) &&
-	    !this._checkExpFn()
-	  ) {
-	    // use raw expression as identifier because filters
-	    // make them different watchers
-	    var watcher = this.vm._watchers[this.raw]
-	    // wrapped updater for context
-	    var dir = this
-	    var update = this._update = function (val, oldVal) {
-	      if (!dir._locked) {
-	        dir.update(val, oldVal)
-	      }
-	    }
-	    if (!watcher) {
-	      watcher = this.vm._watchers[this.raw] = new Watcher(
-	        this.vm,
-	        this._watcherExp,
-	        update, // callback
-	        this.filters,
-	        this.twoWay // need setter
-	      )
-	    } else {
-	      watcher.addCb(update)
-	    }
-	    this._watcher = watcher
-	    this.update(watcher.value)
-	  }
-	  this._bound = true
-	}
-	
-	/**
-	 * check if this is a dynamic literal binding.
-	 *
-	 * e.g. v-component="{{currentView}}"
-	 */
-	
-	p._checkDynamicLiteral = function () {
-	  var expression = this.expression
-	  if (expression && this.isLiteral) {
-	    var tokens = textParser.parse(expression)
-	    if (tokens) {
-	      var exp = textParser.tokensToExp(tokens)
-	      this.expression = this.vm.$get(exp)
-	      this._watcherExp = exp
-	      this._isDynamicLiteral = true
-	    }
-	  }
-	}
-	
-	/**
-	 * Check if the directive is a function caller
-	 * and if the expression is a callable one. If both true,
-	 * we wrap up the expression and use it as the event
-	 * handler.
-	 *
-	 * e.g. v-on="click: a++"
-	 *
-	 * @return {Boolean}
-	 */
-	
-	p._checkExpFn = function () {
-	  var expression = this.expression
-	  if (
-	    expression && this.isFn &&
-	    !expParser.pathTestRE.test(expression)
-	  ) {
-	    var fn = expParser.parse(expression).get
-	    var vm = this.vm
-	    var handler = function () {
-	      fn.call(vm, vm)
-	    }
-	    if (this.filters) {
-	      handler = _.applyFilters(
-	        handler,
-	        this.filters.read,
-	        vm
-	      )
-	    }
-	    this.update(handler)
-	    return true
-	  }
-	}
-	
-	/**
-	 * Teardown the watcher and call unbind.
-	 */
-	
-	p._teardown = function () {
-	  if (this._bound) {
-	    if (this.unbind) {
-	      this.unbind()
-	    }
-	    var watcher = this._watcher
-	    if (watcher && watcher.active) {
-	      watcher.removeCb(this._update)
-	      if (!watcher.active) {
-	        this.vm._watchers[this.expression] = null
-	      }
-	    }
-	    this._bound = false
-	    this.vm = this.el = this._watcher = null
-	  }
-	}
-	
-	/**
-	 * Set the corresponding value with the setter.
-	 * This should only be used in two-way directives
-	 * e.g. v-model.
-	 *
-	 * @param {*} value
-	 * @param {Boolean} lock - prevent wrtie triggering update.
-	 * @public
-	 */
-	
-	p.set = function (value, lock) {
-	  if (this.twoWay) {
-	    if (lock) {
-	      this._locked = true
-	    }
-	    this._watcher.set(value)
-	    if (lock) {
-	      var self = this
-	      _.nextTick(function () {
-	        self._locked = false        
-	      })
-	    }
-	  }
-	}
-	
-	module.exports = Directive
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var arrayAugmentations = Object.create(Array.prototype)
-	
-	/**
-	 * Intercept mutating methods and emit events
-	 */
-	
-	;[
-	  'push',
-	  'pop',
-	  'shift',
-	  'unshift',
-	  'splice',
-	  'sort',
-	  'reverse'
-	]
-	.forEach(function (method) {
-	  // cache original method
-	  var original = Array.prototype[method]
-	  _.define(arrayAugmentations, method, function mutator () {
-	    // avoid leaking arguments:
-	    // http://jsperf.com/closure-with-arguments
-	    var i = arguments.length
-	    var args = new Array(i)
-	    while (i--) {
-	      args[i] = arguments[i]
-	    }
-	    var result = original.apply(this, args)
-	    var ob = this.__ob__
-	    var inserted
-	    switch (method) {
-	      case 'push':
-	        inserted = args
-	        break
-	      case 'unshift':
-	        inserted = args
-	        break
-	      case 'splice':
-	        inserted = args.slice(2)
-	        break
-	    }
-	    if (inserted) ob.observeArray(inserted)
-	    // notify change
-	    ob.notify()
-	    return result
-	  })
-	})
-	
-	/**
-	 * Swap the element at the given index with a new value
-	 * and emits corresponding event.
-	 *
-	 * @param {Number} index
-	 * @param {*} val
-	 * @return {*} - replaced element
-	 */
-	
-	_.define(
-	  arrayAugmentations,
-	  '$set',
-	  function $set (index, val) {
-	    if (index >= this.length) {
-	      this.length = index + 1
-	    }
-	    return this.splice(index, 1, val)[0]
-	  }
-	)
-	
-	/**
-	 * Convenience method to remove the element at given index.
-	 *
-	 * @param {Number} index
-	 * @param {*} val
-	 */
-	
-	_.define(
-	  arrayAugmentations,
-	  '$remove',
-	  function $remove (index) {
-	    if (typeof index !== 'number') {
-	      index = this.indexOf(index)
-	    }
-	    if (index > -1) {
-	      return this.splice(index, 1)[0]
-	    }
-	  }
-	)
-	
-	module.exports = arrayAugmentations
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var objectAgumentations = Object.create(Object.prototype)
-	
-	/**
-	 * Add a new property to an observed object
-	 * and emits corresponding event
-	 *
-	 * @param {String} key
-	 * @param {*} val
-	 * @public
-	 */
-	
-	_.define(
-	  objectAgumentations,
-	  '$add',
-	  function $add (key, val) {
-	    if (_.isReserved(key)) {
-	      _.warn('Refused to $add reserved key: ' + key)
-	      return
-	    }
-	    if (this.hasOwnProperty(key)) return
-	    var ob = this.__ob__
-	    ob.convert(key, val)
-	    if (ob.vms) {
-	      var i = ob.vms.length
-	      while (i--) {
-	        var vm = ob.vms[i]
-	        vm._proxy(key)
-	        vm._digest()
-	      }
-	    } else {
-	      ob.notify()
-	    }
-	  }
-	)
-	
-	/**
-	 * Deletes a property from an observed object
-	 * and emits corresponding event
-	 *
-	 * @param {String} key
-	 * @public
-	 */
-	
-	_.define(
-	  objectAgumentations,
-	  '$delete',
-	  function $delete (key) {
-	    if (_.isReserved(key)) {
-	      _.warn('Refused to $add reserved key: ' + key)
-	      return
-	    }
-	    if (!this.hasOwnProperty(key)) return
-	    delete this[key]
-	    var ob = this.__ob__
-	    if (ob.vms) {
-	      var i = ob.vms.length
-	      while (i--) {
-	        var vm = ob.vms[i]
-	        vm._unproxy(key)
-	        vm._digest()
-	      }
-	    } else {
-	      ob.notify()
-	    }
-	  }
-	)
-	
-	module.exports = objectAgumentations
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var es5 = __webpack_require__(109);
-	var haveGetters = (function(){
-	    try {
-	        var o = {};
-	        es5.defineProperty(o, "f", {
-	            get: function () {
-	                return 3;
-	            }
-	        });
-	        return o.f === 3;
-	    }
-	    catch (e) {
-	        return false;
-	    }
-	
-	})();
-	var canEvaluate = typeof navigator == "undefined";
-	var errorObj = {e: {}};
-	function tryCatch1(fn, receiver, arg) {
-	    try { return fn.call(receiver, arg); }
-	    catch (e) {
-	        errorObj.e = e;
-	        return errorObj;
-	    }
-	}
-	
-	function tryCatch2(fn, receiver, arg, arg2) {
-	    try { return fn.call(receiver, arg, arg2); }
-	    catch (e) {
-	        errorObj.e = e;
-	        return errorObj;
-	    }
-	}
-	
-	function tryCatch3(fn, receiver, arg, arg2, arg3) {
-	    try { return fn.call(receiver, arg, arg2, arg3); }
-	    catch (e) {
-	        errorObj.e = e;
-	        return errorObj;
-	    }
-	}
-	
-	function tryCatch4(fn, receiver, arg, arg2, arg3, arg4) {
-	    try { return fn.call(receiver, arg, arg2, arg3, arg4); }
-	    catch (e) {
-	        errorObj.e = e;
-	        return errorObj;
-	    }
-	}
-	
-	function tryCatchApply(fn, args, receiver) {
-	    try { return fn.apply(receiver, args); }
-	    catch (e) {
-	        errorObj.e = e;
-	        return errorObj;
-	    }
-	}
-	
-	var inherits = function(Child, Parent) {
-	    var hasProp = {}.hasOwnProperty;
-	
-	    function T() {
-	        this.constructor = Child;
-	        this.constructor$ = Parent;
-	        for (var propertyName in Parent.prototype) {
-	            if (hasProp.call(Parent.prototype, propertyName) &&
-	                propertyName.charAt(propertyName.length-1) !== "$"
-	           ) {
-	                this[propertyName + "$"] = Parent.prototype[propertyName];
-	            }
-	        }
-	    }
-	    T.prototype = Parent.prototype;
-	    Child.prototype = new T();
-	    return Child.prototype;
-	};
-	
-	function asString(val) {
-	    return typeof val === "string" ? val : ("" + val);
-	}
-	
-	function isPrimitive(val) {
-	    return val == null || val === true || val === false ||
-	        typeof val === "string" || typeof val === "number";
-	
-	}
-	
-	function isObject(value) {
-	    return !isPrimitive(value);
-	}
-	
-	function maybeWrapAsError(maybeError) {
-	    if (!isPrimitive(maybeError)) return maybeError;
-	
-	    return new Error(asString(maybeError));
-	}
-	
-	function withAppended(target, appendee) {
-	    var len = target.length;
-	    var ret = new Array(len + 1);
-	    var i;
-	    for (i = 0; i < len; ++i) {
-	        ret[i] = target[i];
-	    }
-	    ret[i] = appendee;
-	    return ret;
-	}
-	
-	function getDataPropertyOrDefault(obj, key, defaultValue) {
-	    if (es5.isES5) {
-	        var desc = Object.getOwnPropertyDescriptor(obj, key);
-	        if (desc != null) {
-	            return desc.get == null && desc.set == null
-	                    ? desc.value
-	                    : defaultValue;
-	        }
-	    } else {
-	        return {}.hasOwnProperty.call(obj, key) ? obj[key] : void 0;
-	    }
-	}
-	
-	function notEnumerableProp(obj, name, value) {
-	    if (isPrimitive(obj)) return obj;
-	    var descriptor = {
-	        value: value,
-	        configurable: true,
-	        enumerable: false,
-	        writable: true
-	    };
-	    es5.defineProperty(obj, name, descriptor);
-	    return obj;
-	}
-	
-	
-	var wrapsPrimitiveReceiver = (function() {
-	    return this !== "string";
-	}).call("string");
-	
-	function thrower(r) {
-	    throw r;
-	}
-	
-	var inheritedDataKeys = (function() {
-	    if (es5.isES5) {
-	        return function(obj, opts) {
-	            var ret = [];
-	            var visitedKeys = Object.create(null);
-	            var getKeys = Object(opts).includeHidden
-	                ? Object.getOwnPropertyNames
-	                : Object.keys;
-	            while (obj != null) {
-	                var keys;
-	                try {
-	                    keys = getKeys(obj);
-	                } catch (e) {
-	                    return ret;
-	                }
-	                for (var i = 0; i < keys.length; ++i) {
-	                    var key = keys[i];
-	                    if (visitedKeys[key]) continue;
-	                    visitedKeys[key] = true;
-	                    var desc = Object.getOwnPropertyDescriptor(obj, key);
-	                    if (desc != null && desc.get == null && desc.set == null) {
-	                        ret.push(key);
-	                    }
-	                }
-	                obj = es5.getPrototypeOf(obj);
-	            }
-	            return ret;
-	        };
-	    } else {
-	        return function(obj) {
-	            var ret = [];
-	            /*jshint forin:false */
-	            for (var key in obj) {
-	                ret.push(key);
-	            }
-	            return ret;
-	        };
-	    }
-	
-	})();
-	
-	function isClass(fn) {
-	    try {
-	        if (typeof fn === "function") {
-	            var keys = es5.keys(fn.prototype);
-	            return keys.length > 0 &&
-	                   !(keys.length === 1 && keys[0] === "constructor");
-	        }
-	        return false;
-	    } catch (e) {
-	        return false;
-	    }
-	}
-	
-	function toFastProperties(obj) {
-	    /*jshint -W027*/
-	    function f() {}
-	    f.prototype = obj;
-	    return f;
-	    eval(obj);
-	}
-	
-	var rident = /^[a-z$_][a-z$_0-9]*$/i;
-	function isIdentifier(str) {
-	    return rident.test(str);
-	}
-	
-	function filledRange(count, prefix, suffix) {
-	    var ret = new Array(count);
-	    for(var i = 0; i < count; ++i) {
-	        ret[i] = prefix + i + suffix;
-	    }
-	    return ret;
-	}
-	
-	var ret = {
-	    isClass: isClass,
-	    isIdentifier: isIdentifier,
-	    inheritedDataKeys: inheritedDataKeys,
-	    getDataPropertyOrDefault: getDataPropertyOrDefault,
-	    thrower: thrower,
-	    isArray: es5.isArray,
-	    haveGetters: haveGetters,
-	    notEnumerableProp: notEnumerableProp,
-	    isPrimitive: isPrimitive,
-	    isObject: isObject,
-	    canEvaluate: canEvaluate,
-	    errorObj: errorObj,
-	    tryCatch1: tryCatch1,
-	    tryCatch2: tryCatch2,
-	    tryCatch3: tryCatch3,
-	    tryCatch4: tryCatch4,
-	    tryCatchApply: tryCatchApply,
-	    inherits: inherits,
-	    withAppended: withAppended,
-	    asString: asString,
-	    maybeWrapAsError: maybeWrapAsError,
-	    wrapsPrimitiveReceiver: wrapsPrimitiveReceiver,
-	    toFastProperties: toFastProperties,
-	    filledRange: filledRange
-	};
-	
-	module.exports = ret;
-
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var schedule = __webpack_require__(110);
-	var Queue = __webpack_require__(111);
-	var errorObj = __webpack_require__(66).errorObj;
-	var tryCatch1 = __webpack_require__(66).tryCatch1;
-	var _process = typeof process !== "undefined" ? process : void 0;
-	
-	function Async() {
-	    this._isTickUsed = false;
-	    this._schedule = schedule;
-	    this._length = 0;
-	    this._lateBuffer = new Queue(16);
-	    this._functionBuffer = new Queue(65536);
-	    var self = this;
-	    this.consumeFunctionBuffer = function Async$consumeFunctionBuffer() {
-	        self._consumeFunctionBuffer();
-	    };
-	}
-	
-	Async.prototype.haveItemsQueued = function Async$haveItemsQueued() {
-	    return this._length > 0;
-	};
-	
-	Async.prototype.invokeLater = function Async$invokeLater(fn, receiver, arg) {
-	    if (_process !== void 0 &&
-	        _process.domain != null &&
-	        !fn.domain) {
-	        fn = _process.domain.bind(fn);
-	    }
-	    this._lateBuffer.push(fn, receiver, arg);
-	    this._queueTick();
-	};
-	
-	Async.prototype.invoke = function Async$invoke(fn, receiver, arg) {
-	    if (_process !== void 0 &&
-	        _process.domain != null &&
-	        !fn.domain) {
-	        fn = _process.domain.bind(fn);
-	    }
-	    var functionBuffer = this._functionBuffer;
-	    functionBuffer.push(fn, receiver, arg);
-	    this._length = functionBuffer.length();
-	    this._queueTick();
-	};
-	
-	Async.prototype._consumeFunctionBuffer =
-	function Async$_consumeFunctionBuffer() {
-	    var functionBuffer = this._functionBuffer;
-	    while (functionBuffer.length() > 0) {
-	        var fn = functionBuffer.shift();
-	        var receiver = functionBuffer.shift();
-	        var arg = functionBuffer.shift();
-	        fn.call(receiver, arg);
-	    }
-	    this._reset();
-	    this._consumeLateBuffer();
-	};
-	
-	Async.prototype._consumeLateBuffer = function Async$_consumeLateBuffer() {
-	    var buffer = this._lateBuffer;
-	    while(buffer.length() > 0) {
-	        var fn = buffer.shift();
-	        var receiver = buffer.shift();
-	        var arg = buffer.shift();
-	        var res = tryCatch1(fn, receiver, arg);
-	        if (res === errorObj) {
-	            this._queueTick();
-	            if (fn.domain != null) {
-	                fn.domain.emit("error", res.e);
-	            } else {
-	                throw res.e;
-	            }
-	        }
-	    }
-	};
-	
-	Async.prototype._queueTick = function Async$_queue() {
-	    if (!this._isTickUsed) {
-	        this._schedule(this.consumeFunctionBuffer);
-	        this._isTickUsed = true;
-	    }
-	};
-	
-	Async.prototype._reset = function Async$_reset() {
-	    this._isTickUsed = false;
-	    this._length = 0;
-	};
-	
-	module.exports = new Async();
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(101)))
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var Objectfreeze = __webpack_require__(109).freeze;
-	var util = __webpack_require__(66);
-	var inherits = util.inherits;
-	var notEnumerableProp = util.notEnumerableProp;
-	
-	function markAsOriginatingFromRejection(e) {
-	    try {
-	        notEnumerableProp(e, "isOperational", true);
-	    }
-	    catch(ignore) {}
-	}
-	
-	function originatesFromRejection(e) {
-	    if (e == null) return false;
-	    return ((e instanceof OperationalError) ||
-	        e["isOperational"] === true);
-	}
-	
-	function isError(obj) {
-	    return obj instanceof Error;
-	}
-	
-	function canAttach(obj) {
-	    return isError(obj);
-	}
-	
-	function subError(nameProperty, defaultMessage) {
-	    function SubError(message) {
-	        if (!(this instanceof SubError)) return new SubError(message);
-	        this.message = typeof message === "string" ? message : defaultMessage;
-	        this.name = nameProperty;
-	        if (Error.captureStackTrace) {
-	            Error.captureStackTrace(this, this.constructor);
-	        }
-	    }
-	    inherits(SubError, Error);
-	    return SubError;
-	}
-	
-	var _TypeError, _RangeError;
-	var CancellationError = subError("CancellationError", "cancellation error");
-	var TimeoutError = subError("TimeoutError", "timeout error");
-	var AggregateError = subError("AggregateError", "aggregate error");
-	try {
-	    _TypeError = TypeError;
-	    _RangeError = RangeError;
-	} catch(e) {
-	    _TypeError = subError("TypeError", "type error");
-	    _RangeError = subError("RangeError", "range error");
-	}
-	
-	var methods = ("join pop push shift unshift slice filter forEach some " +
-	    "every map indexOf lastIndexOf reduce reduceRight sort reverse").split(" ");
-	
-	for (var i = 0; i < methods.length; ++i) {
-	    if (typeof Array.prototype[methods[i]] === "function") {
-	        AggregateError.prototype[methods[i]] = Array.prototype[methods[i]];
-	    }
-	}
-	
-	AggregateError.prototype.length = 0;
-	AggregateError.prototype["isOperational"] = true;
-	var level = 0;
-	AggregateError.prototype.toString = function() {
-	    var indent = Array(level * 4 + 1).join(" ");
-	    var ret = "\n" + indent + "AggregateError of:" + "\n";
-	    level++;
-	    indent = Array(level * 4 + 1).join(" ");
-	    for (var i = 0; i < this.length; ++i) {
-	        var str = this[i] === this ? "[Circular AggregateError]" : this[i] + "";
-	        var lines = str.split("\n");
-	        for (var j = 0; j < lines.length; ++j) {
-	            lines[j] = indent + lines[j];
-	        }
-	        str = lines.join("\n");
-	        ret += str + "\n";
-	    }
-	    level--;
-	    return ret;
-	};
-	
-	function OperationalError(message) {
-	    this.name = "OperationalError";
-	    this.message = message;
-	    this.cause = message;
-	    this["isOperational"] = true;
-	
-	    if (message instanceof Error) {
-	        this.message = message.message;
-	        this.stack = message.stack;
-	    } else if (Error.captureStackTrace) {
-	        Error.captureStackTrace(this, this.constructor);
-	    }
-	
-	}
-	inherits(OperationalError, Error);
-	
-	var key = "__BluebirdErrorTypes__";
-	var errorTypes = Error[key];
-	if (!errorTypes) {
-	    errorTypes = Objectfreeze({
-	        CancellationError: CancellationError,
-	        TimeoutError: TimeoutError,
-	        OperationalError: OperationalError,
-	        RejectionError: OperationalError,
-	        AggregateError: AggregateError
-	    });
-	    notEnumerableProp(Error, key, errorTypes);
-	}
-	
-	module.exports = {
-	    Error: Error,
-	    TypeError: _TypeError,
-	    RangeError: _RangeError,
-	    CancellationError: errorTypes.CancellationError,
-	    OperationalError: errorTypes.OperationalError,
-	    TimeoutError: errorTypes.TimeoutError,
-	    AggregateError: errorTypes.AggregateError,
-	    originatesFromRejection: originatesFromRejection,
-	    markAsOriginatingFromRejection: markAsOriginatingFromRejection,
-	    canAttach: canAttach
-	};
-
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, INTERNAL) {
-	var util = __webpack_require__(66);
-	var canAttach = __webpack_require__(68).canAttach;
-	var errorObj = util.errorObj;
-	var isObject = util.isObject;
-	
-	function getThen(obj) {
-	    try {
-	        return obj.then;
-	    }
-	    catch(e) {
-	        errorObj.e = e;
-	        return errorObj;
-	    }
-	}
-	
-	function Promise$_Cast(obj, originalPromise) {
-	    if (isObject(obj)) {
-	        if (obj instanceof Promise) {
-	            return obj;
-	        }
-	        else if (isAnyBluebirdPromise(obj)) {
-	            var ret = new Promise(INTERNAL);
-	            ret._setTrace(void 0);
-	            obj._then(
-	                ret._fulfillUnchecked,
-	                ret._rejectUncheckedCheckError,
-	                ret._progressUnchecked,
-	                ret,
-	                null
-	            );
-	            ret._setFollowing();
-	            return ret;
-	        }
-	        var then = getThen(obj);
-	        if (then === errorObj) {
-	            if (originalPromise !== void 0 && canAttach(then.e)) {
-	                originalPromise._attachExtraTrace(then.e);
-	            }
-	            return Promise.reject(then.e);
-	        } else if (typeof then === "function") {
-	            return Promise$_doThenable(obj, then, originalPromise);
-	        }
-	    }
-	    return obj;
-	}
-	
-	var hasProp = {}.hasOwnProperty;
-	function isAnyBluebirdPromise(obj) {
-	    return hasProp.call(obj, "_promise0");
-	}
-	
-	function Promise$_doThenable(x, then, originalPromise) {
-	    var resolver = Promise.defer();
-	    var called = false;
-	    try {
-	        then.call(
-	            x,
-	            Promise$_resolveFromThenable,
-	            Promise$_rejectFromThenable,
-	            Promise$_progressFromThenable
-	        );
-	    } catch(e) {
-	        if (!called) {
-	            called = true;
-	            var trace = canAttach(e) ? e : new Error(e + "");
-	            if (originalPromise !== void 0) {
-	                originalPromise._attachExtraTrace(trace);
-	            }
-	            resolver.promise._reject(e, trace);
-	        }
-	    }
-	    return resolver.promise;
-	
-	    function Promise$_resolveFromThenable(y) {
-	        if (called) return;
-	        called = true;
-	
-	        if (x === y) {
-	            var e = Promise._makeSelfResolutionError();
-	            if (originalPromise !== void 0) {
-	                originalPromise._attachExtraTrace(e);
-	            }
-	            resolver.promise._reject(e, void 0);
-	            return;
-	        }
-	        resolver.resolve(y);
-	    }
-	
-	    function Promise$_rejectFromThenable(r) {
-	        if (called) return;
-	        called = true;
-	        var trace = canAttach(r) ? r : new Error(r + "");
-	        if (originalPromise !== void 0) {
-	            originalPromise._attachExtraTrace(trace);
-	        }
-	        resolver.promise._reject(r, trace);
-	    }
-	
-	    function Promise$_progressFromThenable(v) {
-	        if (called) return;
-	        var promise = resolver.promise;
-	        if (typeof promise._progress === "function") {
-	            promise._progress(v);
-	        }
-	    }
-	}
-	
-	return Promise$_Cast;
-	};
-
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, INTERNAL, cast) {
-	var canAttach = __webpack_require__(68).canAttach;
-	var util = __webpack_require__(66);
-	var isArray = util.isArray;
-	
-	function toResolutionValue(val) {
-	    switch(val) {
-	    case -1: return void 0;
-	    case -2: return [];
-	    case -3: return {};
-	    }
-	}
-	
-	function PromiseArray(values) {
-	    var promise = this._promise = new Promise(INTERNAL);
-	    var parent = void 0;
-	    if (values instanceof Promise) {
-	        parent = values;
-	        promise._propagateFrom(parent, 1 | 4);
-	    }
-	    promise._setTrace(parent);
-	    this._values = values;
-	    this._length = 0;
-	    this._totalResolved = 0;
-	    this._init(void 0, -2);
-	}
-	PromiseArray.prototype.length = function PromiseArray$length() {
-	    return this._length;
-	};
-	
-	PromiseArray.prototype.promise = function PromiseArray$promise() {
-	    return this._promise;
-	};
-	
-	PromiseArray.prototype._init =
-	function PromiseArray$_init(_, resolveValueIfEmpty) {
-	    var values = cast(this._values, void 0);
-	    if (values instanceof Promise) {
-	        this._values = values;
-	        values._setBoundTo(this._promise._boundTo);
-	        if (values.isFulfilled()) {
-	            values = values._settledValue;
-	            if (!isArray(values)) {
-	                var err = new Promise.TypeError("expecting an array, a promise or a thenable");
-	                this.__hardReject__(err);
-	                return;
-	            }
-	        } else if (values.isPending()) {
-	            values._then(
-	                PromiseArray$_init,
-	                this._reject,
-	                void 0,
-	                this,
-	                resolveValueIfEmpty
-	           );
-	            return;
-	        } else {
-	            values._unsetRejectionIsUnhandled();
-	            this._reject(values._settledValue);
-	            return;
-	        }
-	    } else if (!isArray(values)) {
-	        var err = new Promise.TypeError("expecting an array, a promise or a thenable");
-	        this.__hardReject__(err);
-	        return;
-	    }
-	
-	    if (values.length === 0) {
-	        if (resolveValueIfEmpty === -5) {
-	            this._resolveEmptyArray();
-	        }
-	        else {
-	            this._resolve(toResolutionValue(resolveValueIfEmpty));
-	        }
-	        return;
-	    }
-	    var len = this.getActualLength(values.length);
-	    var newLen = len;
-	    var newValues = this.shouldCopyValues() ? new Array(len) : this._values;
-	    var isDirectScanNeeded = false;
-	    for (var i = 0; i < len; ++i) {
-	        var maybePromise = cast(values[i], void 0);
-	        if (maybePromise instanceof Promise) {
-	            if (maybePromise.isPending()) {
-	                maybePromise._proxyPromiseArray(this, i);
-	            } else {
-	                maybePromise._unsetRejectionIsUnhandled();
-	                isDirectScanNeeded = true;
-	            }
-	        } else {
-	            isDirectScanNeeded = true;
-	        }
-	        newValues[i] = maybePromise;
-	    }
-	    this._values = newValues;
-	    this._length = newLen;
-	    if (isDirectScanNeeded) {
-	        this._scanDirectValues(len);
-	    }
-	};
-	
-	PromiseArray.prototype._settlePromiseAt =
-	function PromiseArray$_settlePromiseAt(index) {
-	    var value = this._values[index];
-	    if (!(value instanceof Promise)) {
-	        this._promiseFulfilled(value, index);
-	    } else if (value.isFulfilled()) {
-	        this._promiseFulfilled(value._settledValue, index);
-	    } else if (value.isRejected()) {
-	        this._promiseRejected(value._settledValue, index);
-	    }
-	};
-	
-	PromiseArray.prototype._scanDirectValues =
-	function PromiseArray$_scanDirectValues(len) {
-	    for (var i = 0; i < len; ++i) {
-	        if (this._isResolved()) {
-	            break;
-	        }
-	        this._settlePromiseAt(i);
-	    }
-	};
-	
-	PromiseArray.prototype._isResolved = function PromiseArray$_isResolved() {
-	    return this._values === null;
-	};
-	
-	PromiseArray.prototype._resolve = function PromiseArray$_resolve(value) {
-	    this._values = null;
-	    this._promise._fulfill(value);
-	};
-	
-	PromiseArray.prototype.__hardReject__ =
-	PromiseArray.prototype._reject = function PromiseArray$_reject(reason) {
-	    this._values = null;
-	    var trace = canAttach(reason) ? reason : new Error(reason + "");
-	    this._promise._attachExtraTrace(trace);
-	    this._promise._reject(reason, trace);
-	};
-	
-	PromiseArray.prototype._promiseProgressed =
-	function PromiseArray$_promiseProgressed(progressValue, index) {
-	    if (this._isResolved()) return;
-	    this._promise._progress({
-	        index: index,
-	        value: progressValue
-	    });
-	};
-	
-	
-	PromiseArray.prototype._promiseFulfilled =
-	function PromiseArray$_promiseFulfilled(value, index) {
-	    if (this._isResolved()) return;
-	    this._values[index] = value;
-	    var totalResolved = ++this._totalResolved;
-	    if (totalResolved >= this._length) {
-	        this._resolve(this._values);
-	    }
-	};
-	
-	PromiseArray.prototype._promiseRejected =
-	function PromiseArray$_promiseRejected(reason, index) {
-	    if (this._isResolved()) return;
-	    this._totalResolved++;
-	    this._reject(reason);
-	};
-	
-	PromiseArray.prototype.shouldCopyValues =
-	function PromiseArray$_shouldCopyValues() {
-	    return true;
-	};
-	
-	PromiseArray.prototype.getActualLength =
-	function PromiseArray$getActualLength(len) {
-	    return len;
-	};
-	
-	return PromiseArray;
-	};
-
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function() {
-	var inherits = __webpack_require__(66).inherits;
-	var defineProperty = __webpack_require__(109).defineProperty;
-	
-	var rignore = new RegExp(
-	    "\\b(?:[a-zA-Z0-9.]+\\$_\\w+|" +
-	    "tryCatch(?:1|2|3|4|Apply)|new \\w*PromiseArray|" +
-	    "\\w*PromiseArray\\.\\w*PromiseArray|" +
-	    "setTimeout|CatchFilter\\$_\\w+|makeNodePromisified|processImmediate|" +
-	    "process._tickCallback|nextTick|Async\\$\\w+)\\b"
-	);
-	
-	var rtraceline = null;
-	var formatStack = null;
-	
-	function formatNonError(obj) {
-	    var str;
-	    if (typeof obj === "function") {
-	        str = "[function " +
-	            (obj.name || "anonymous") +
-	            "]";
-	    } else {
-	        str = obj.toString();
-	        var ruselessToString = /\[object [a-zA-Z0-9$_]+\]/;
-	        if (ruselessToString.test(str)) {
-	            try {
-	                var newStr = JSON.stringify(obj);
-	                str = newStr;
-	            }
-	            catch(e) {
-	
-	            }
-	        }
-	        if (str.length === 0) {
-	            str = "(empty array)";
-	        }
-	    }
-	    return ("(<" + snip(str) + ">, no stack trace)");
-	}
-	
-	function snip(str) {
-	    var maxChars = 41;
-	    if (str.length < maxChars) {
-	        return str;
-	    }
-	    return str.substr(0, maxChars - 3) + "...";
-	}
-	
-	function CapturedTrace(ignoreUntil, isTopLevel) {
-	    this.captureStackTrace(CapturedTrace, isTopLevel);
-	
-	}
-	inherits(CapturedTrace, Error);
-	
-	CapturedTrace.prototype.captureStackTrace =
-	function CapturedTrace$captureStackTrace(ignoreUntil, isTopLevel) {
-	    captureStackTrace(this, ignoreUntil, isTopLevel);
-	};
-	
-	CapturedTrace.possiblyUnhandledRejection =
-	function CapturedTrace$PossiblyUnhandledRejection(reason) {
-	    if (typeof console === "object") {
-	        var message;
-	        if (typeof reason === "object" || typeof reason === "function") {
-	            var stack = reason.stack;
-	            message = "Possibly unhandled " + formatStack(stack, reason);
-	        } else {
-	            message = "Possibly unhandled " + String(reason);
-	        }
-	        if (typeof console.error === "function" ||
-	            typeof console.error === "object") {
-	            console.error(message);
-	        } else if (typeof console.log === "function" ||
-	            typeof console.log === "object") {
-	            console.log(message);
-	        }
-	    }
-	};
-	
-	CapturedTrace.combine = function CapturedTrace$Combine(current, prev) {
-	    var curLast = current.length - 1;
-	    for (var i = prev.length - 1; i >= 0; --i) {
-	        var line = prev[i];
-	        if (current[curLast] === line) {
-	            current.pop();
-	            curLast--;
-	        } else {
-	            break;
-	        }
-	    }
-	
-	    current.push("From previous event:");
-	    var lines = current.concat(prev);
-	
-	    var ret = [];
-	
-	    for (var i = 0, len = lines.length; i < len; ++i) {
-	
-	        if (((rignore.test(lines[i]) && rtraceline.test(lines[i])) ||
-	            (i > 0 && !rtraceline.test(lines[i])) &&
-	            lines[i] !== "From previous event:")
-	       ) {
-	            continue;
-	        }
-	        ret.push(lines[i]);
-	    }
-	    return ret;
-	};
-	
-	CapturedTrace.protectErrorMessageNewlines = function(stack) {
-	    for (var i = 0; i < stack.length; ++i) {
-	        if (rtraceline.test(stack[i])) {
-	            break;
-	        }
-	    }
-	
-	    if (i <= 1) return;
-	
-	    var errorMessageLines = [];
-	    for (var j = 0; j < i; ++j) {
-	        errorMessageLines.push(stack.shift());
-	    }
-	    stack.unshift(errorMessageLines.join("\u0002\u0000\u0001"));
-	};
-	
-	CapturedTrace.isSupported = function CapturedTrace$IsSupported() {
-	    return typeof captureStackTrace === "function";
-	};
-	
-	var captureStackTrace = (function stackDetection() {
-	    if (typeof Error.stackTraceLimit === "number" &&
-	        typeof Error.captureStackTrace === "function") {
-	        rtraceline = /^\s*at\s*/;
-	        formatStack = function(stack, error) {
-	            if (typeof stack === "string") return stack;
-	
-	            if (error.name !== void 0 &&
-	                error.message !== void 0) {
-	                return error.name + ". " + error.message;
-	            }
-	            return formatNonError(error);
-	
-	
-	        };
-	        var captureStackTrace = Error.captureStackTrace;
-	        return function CapturedTrace$_captureStackTrace(
-	            receiver, ignoreUntil) {
-	            captureStackTrace(receiver, ignoreUntil);
-	        };
-	    }
-	    var err = new Error();
-	
-	    if (typeof err.stack === "string" &&
-	        typeof "".startsWith === "function" &&
-	        (err.stack.startsWith("stackDetection@")) &&
-	        stackDetection.name === "stackDetection") {
-	
-	        defineProperty(Error, "stackTraceLimit", {
-	            writable: true,
-	            enumerable: false,
-	            configurable: false,
-	            value: 25
-	        });
-	        rtraceline = /@/;
-	        var rline = /[@\n]/;
-	
-	        formatStack = function(stack, error) {
-	            if (typeof stack === "string") {
-	                return (error.name + ". " + error.message + "\n" + stack);
-	            }
-	
-	            if (error.name !== void 0 &&
-	                error.message !== void 0) {
-	                return error.name + ". " + error.message;
-	            }
-	            return formatNonError(error);
-	        };
-	
-	        return function captureStackTrace(o) {
-	            var stack = new Error().stack;
-	            var split = stack.split(rline);
-	            var len = split.length;
-	            var ret = "";
-	            for (var i = 0; i < len; i += 2) {
-	                ret += split[i];
-	                ret += "@";
-	                ret += split[i + 1];
-	                ret += "\n";
-	            }
-	            o.stack = ret;
-	        };
-	    } else {
-	        formatStack = function(stack, error) {
-	            if (typeof stack === "string") return stack;
-	
-	            if ((typeof error === "object" ||
-	                typeof error === "function") &&
-	                error.name !== void 0 &&
-	                error.message !== void 0) {
-	                return error.name + ". " + error.message;
-	            }
-	            return formatNonError(error);
-	        };
-	
-	        return null;
-	    }
-	})();
-	
-	return CapturedTrace;
-	};
-
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(NEXT_FILTER) {
-	var util = __webpack_require__(66);
-	var errors = __webpack_require__(68);
-	var tryCatch1 = util.tryCatch1;
-	var errorObj = util.errorObj;
-	var keys = __webpack_require__(109).keys;
-	var TypeError = errors.TypeError;
-	
-	function CatchFilter(instances, callback, promise) {
-	    this._instances = instances;
-	    this._callback = callback;
-	    this._promise = promise;
-	}
-	
-	function CatchFilter$_safePredicate(predicate, e) {
-	    var safeObject = {};
-	    var retfilter = tryCatch1(predicate, safeObject, e);
-	
-	    if (retfilter === errorObj) return retfilter;
-	
-	    var safeKeys = keys(safeObject);
-	    if (safeKeys.length) {
-	        errorObj.e = new TypeError(
-	            "Catch filter must inherit from Error "
-	          + "or be a simple predicate function");
-	        return errorObj;
-	    }
-	    return retfilter;
-	}
-	
-	CatchFilter.prototype.doFilter = function CatchFilter$_doFilter(e) {
-	    var cb = this._callback;
-	    var promise = this._promise;
-	    var boundTo = promise._boundTo;
-	    for (var i = 0, len = this._instances.length; i < len; ++i) {
-	        var item = this._instances[i];
-	        var itemIsErrorType = item === Error ||
-	            (item != null && item.prototype instanceof Error);
-	
-	        if (itemIsErrorType && e instanceof item) {
-	            var ret = tryCatch1(cb, boundTo, e);
-	            if (ret === errorObj) {
-	                NEXT_FILTER.e = ret.e;
-	                return NEXT_FILTER;
-	            }
-	            return ret;
-	        } else if (typeof item === "function" && !itemIsErrorType) {
-	            var shouldHandle = CatchFilter$_safePredicate(item, e);
-	            if (shouldHandle === errorObj) {
-	                var trace = errors.canAttach(errorObj.e)
-	                    ? errorObj.e
-	                    : new Error(errorObj.e + "");
-	                this._promise._attachExtraTrace(trace);
-	                e = errorObj.e;
-	                break;
-	            } else if (shouldHandle) {
-	                var ret = tryCatch1(cb, boundTo, e);
-	                if (ret === errorObj) {
-	                    NEXT_FILTER.e = ret.e;
-	                    return NEXT_FILTER;
-	                }
-	                return ret;
-	            }
-	        }
-	    }
-	    NEXT_FILTER.e = e;
-	    return NEXT_FILTER;
-	};
-	
-	return CatchFilter;
-	};
-
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var util = __webpack_require__(66);
-	var maybeWrapAsError = util.maybeWrapAsError;
-	var errors = __webpack_require__(68);
-	var TimeoutError = errors.TimeoutError;
-	var OperationalError = errors.OperationalError;
-	var async = __webpack_require__(67);
-	var haveGetters = util.haveGetters;
-	var es5 = __webpack_require__(109);
-	
-	function isUntypedError(obj) {
-	    return obj instanceof Error &&
-	        es5.getPrototypeOf(obj) === Error.prototype;
-	}
-	
-	function wrapAsOperationalError(obj) {
-	    var ret;
-	    if (isUntypedError(obj)) {
-	        ret = new OperationalError(obj);
-	    } else {
-	        ret = obj;
-	    }
-	    errors.markAsOriginatingFromRejection(ret);
-	    return ret;
-	}
-	
-	function nodebackForPromise(promise) {
-	    function PromiseResolver$_callback(err, value) {
-	        if (promise === null) return;
-	
-	        if (err) {
-	            var wrapped = wrapAsOperationalError(maybeWrapAsError(err));
-	            promise._attachExtraTrace(wrapped);
-	            promise._reject(wrapped);
-	        } else if (arguments.length > 2) {
-	            var $_len = arguments.length;var args = new Array($_len - 1); for(var $_i = 1; $_i < $_len; ++$_i) {args[$_i - 1] = arguments[$_i];}
-	            promise._fulfill(args);
-	        } else {
-	            promise._fulfill(value);
-	        }
-	
-	        promise = null;
-	    }
-	    return PromiseResolver$_callback;
-	}
-	
-	
-	var PromiseResolver;
-	if (!haveGetters) {
-	    PromiseResolver = function PromiseResolver(promise) {
-	        this.promise = promise;
-	        this.asCallback = nodebackForPromise(promise);
-	        this.callback = this.asCallback;
-	    };
-	}
-	else {
-	    PromiseResolver = function PromiseResolver(promise) {
-	        this.promise = promise;
-	    };
-	}
-	if (haveGetters) {
-	    var prop = {
-	        get: function() {
-	            return nodebackForPromise(this.promise);
-	        }
-	    };
-	    es5.defineProperty(PromiseResolver.prototype, "asCallback", prop);
-	    es5.defineProperty(PromiseResolver.prototype, "callback", prop);
-	}
-	
-	PromiseResolver._nodebackForPromise = nodebackForPromise;
-	
-	PromiseResolver.prototype.toString = function PromiseResolver$toString() {
-	    return "[object PromiseResolver]";
-	};
-	
-	PromiseResolver.prototype.resolve =
-	PromiseResolver.prototype.fulfill = function PromiseResolver$resolve(value) {
-	    if (!(this instanceof PromiseResolver)) {
-	        throw new TypeError("Illegal invocation, resolver resolve/reject must be called within a resolver context. Consider using the promise constructor instead.");
-	    }
-	
-	    var promise = this.promise;
-	    if (promise._tryFollow(value)) {
-	        return;
-	    }
-	    async.invoke(promise._fulfill, promise, value);
-	};
-	
-	PromiseResolver.prototype.reject = function PromiseResolver$reject(reason) {
-	    if (!(this instanceof PromiseResolver)) {
-	        throw new TypeError("Illegal invocation, resolver resolve/reject must be called within a resolver context. Consider using the promise constructor instead.");
-	    }
-	
-	    var promise = this.promise;
-	    errors.markAsOriginatingFromRejection(reason);
-	    var trace = errors.canAttach(reason) ? reason : new Error(reason + "");
-	    promise._attachExtraTrace(trace);
-	    async.invoke(promise._reject, promise, reason);
-	    if (trace !== reason) {
-	        async.invoke(this._setCarriedStackTrace, this, trace);
-	    }
-	};
-	
-	PromiseResolver.prototype.progress =
-	function PromiseResolver$progress(value) {
-	    if (!(this instanceof PromiseResolver)) {
-	        throw new TypeError("Illegal invocation, resolver resolve/reject must be called within a resolver context. Consider using the promise constructor instead.");
-	    }
-	    async.invoke(this.promise._progress, this.promise, value);
-	};
-	
-	PromiseResolver.prototype.cancel = function PromiseResolver$cancel() {
-	    async.invoke(this.promise.cancel, this.promise, void 0);
-	};
-	
-	PromiseResolver.prototype.timeout = function PromiseResolver$timeout() {
-	    this.reject(new TimeoutError("timeout"));
-	};
-	
-	PromiseResolver.prototype.isResolved = function PromiseResolver$isResolved() {
-	    return this.promise.isResolved();
-	};
-	
-	PromiseResolver.prototype.toJSON = function PromiseResolver$toJSON() {
-	    return this.promise.toJSON();
-	};
-	
-	PromiseResolver.prototype._setCarriedStackTrace =
-	function PromiseResolver$_setCarriedStackTrace(trace) {
-	    if (this.promise.isRejected()) {
-	        this.promise._setCarriedStackTrace(trace);
-	    }
-	};
-	
-	module.exports = PromiseResolver;
-
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise) {
-	var TypeError = __webpack_require__(68).TypeError;
-	
-	function apiRejection(msg) {
-	    var error = new TypeError(msg);
-	    var ret = Promise.rejected(error);
-	    var parent = ret._peekContext();
-	    if (parent != null) {
-	        parent._attachExtraTrace(error);
-	    }
-	    return ret;
-	}
-	
-	return apiRejection;
-	};
-
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, NEXT_FILTER, cast) {
-	var util = __webpack_require__(66);
-	var wrapsPrimitiveReceiver = util.wrapsPrimitiveReceiver;
-	var isPrimitive = util.isPrimitive;
-	var thrower = util.thrower;
-	
-	function returnThis() {
-	    return this;
-	}
-	function throwThis() {
-	    throw this;
-	}
-	function return$(r) {
-	    return function Promise$_returner() {
-	        return r;
-	    };
-	}
-	function throw$(r) {
-	    return function Promise$_thrower() {
-	        throw r;
-	    };
-	}
-	function promisedFinally(ret, reasonOrValue, isFulfilled) {
-	    var then;
-	    if (wrapsPrimitiveReceiver && isPrimitive(reasonOrValue)) {
-	        then = isFulfilled ? return$(reasonOrValue) : throw$(reasonOrValue);
-	    } else {
-	        then = isFulfilled ? returnThis : throwThis;
-	    }
-	    return ret._then(then, thrower, void 0, reasonOrValue, void 0);
-	}
-	
-	function finallyHandler(reasonOrValue) {
-	    var promise = this.promise;
-	    var handler = this.handler;
-	
-	    var ret = promise._isBound()
-	                    ? handler.call(promise._boundTo)
-	                    : handler();
-	
-	    if (ret !== void 0) {
-	        var maybePromise = cast(ret, void 0);
-	        if (maybePromise instanceof Promise) {
-	            return promisedFinally(maybePromise, reasonOrValue,
-	                                    promise.isFulfilled());
-	        }
-	    }
-	
-	    if (promise.isRejected()) {
-	        NEXT_FILTER.e = reasonOrValue;
-	        return NEXT_FILTER;
-	    } else {
-	        return reasonOrValue;
-	    }
-	}
-	
-	function tapHandler(value) {
-	    var promise = this.promise;
-	    var handler = this.handler;
-	
-	    var ret = promise._isBound()
-	                    ? handler.call(promise._boundTo, value)
-	                    : handler(value);
-	
-	    if (ret !== void 0) {
-	        var maybePromise = cast(ret, void 0);
-	        if (maybePromise instanceof Promise) {
-	            return promisedFinally(maybePromise, value, true);
-	        }
-	    }
-	    return value;
-	}
-	
-	Promise.prototype._passThroughHandler =
-	function Promise$_passThroughHandler(handler, isFinally) {
-	    if (typeof handler !== "function") return this.then();
-	
-	    var promiseAndHandler = {
-	        promise: this,
-	        handler: handler
-	    };
-	
-	    return this._then(
-	            isFinally ? finallyHandler : tapHandler,
-	            isFinally ? finallyHandler : void 0, void 0,
-	            promiseAndHandler, void 0);
-	};
-	
-	Promise.prototype.lastly =
-	Promise.prototype["finally"] = function Promise$finally(handler) {
-	    return this._passThroughHandler(handler, true);
-	};
-	
-	Promise.prototype.tap = function Promise$tap(handler) {
-	    return this._passThroughHandler(handler, false);
-	};
-	};
-
-
-/***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var util = __webpack_require__(66);
-	var isPrimitive = util.isPrimitive;
-	var wrapsPrimitiveReceiver = util.wrapsPrimitiveReceiver;
-	
-	module.exports = function(Promise) {
-	var returner = function Promise$_returner() {
-	    return this;
-	};
-	var thrower = function Promise$_thrower() {
-	    throw this;
-	};
-	
-	var wrapper = function Promise$_wrapper(value, action) {
-	    if (action === 1) {
-	        return function Promise$_thrower() {
-	            throw value;
-	        };
-	    } else if (action === 2) {
-	        return function Promise$_returner() {
-	            return value;
-	        };
-	    }
-	};
-	
-	
-	Promise.prototype["return"] =
-	Promise.prototype.thenReturn =
-	function Promise$thenReturn(value) {
-	    if (wrapsPrimitiveReceiver && isPrimitive(value)) {
-	        return this._then(
-	            wrapper(value, 2),
-	            void 0,
-	            void 0,
-	            void 0,
-	            void 0
-	       );
-	    }
-	    return this._then(returner, void 0, void 0, value, void 0);
-	};
-	
-	Promise.prototype["throw"] =
-	Promise.prototype.thenThrow =
-	function Promise$thenThrow(reason) {
-	    if (wrapsPrimitiveReceiver && isPrimitive(reason)) {
-	        return this._then(
-	            wrapper(reason, 1),
-	            void 0,
-	            void 0,
-	            void 0,
-	            void 0
-	       );
-	    }
-	    return this._then(thrower, void 0, void 0, reason, void 0);
-	};
-	};
-
-
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise) {
-	function PromiseInspection(promise) {
-	    if (promise !== void 0) {
-	        this._bitField = promise._bitField;
-	        this._settledValue = promise.isResolved()
-	            ? promise._settledValue
-	            : void 0;
-	    }
-	    else {
-	        this._bitField = 0;
-	        this._settledValue = void 0;
-	    }
-	}
-	
-	PromiseInspection.prototype.isFulfilled =
-	Promise.prototype.isFulfilled = function Promise$isFulfilled() {
-	    return (this._bitField & 268435456) > 0;
-	};
-	
-	PromiseInspection.prototype.isRejected =
-	Promise.prototype.isRejected = function Promise$isRejected() {
-	    return (this._bitField & 134217728) > 0;
-	};
-	
-	PromiseInspection.prototype.isPending =
-	Promise.prototype.isPending = function Promise$isPending() {
-	    return (this._bitField & 402653184) === 0;
-	};
-	
-	PromiseInspection.prototype.value =
-	Promise.prototype.value = function Promise$value() {
-	    if (!this.isFulfilled()) {
-	        throw new TypeError("cannot get fulfillment value of a non-fulfilled promise");
-	    }
-	    return this._settledValue;
-	};
-	
-	PromiseInspection.prototype.error =
-	PromiseInspection.prototype.reason =
-	Promise.prototype.reason = function Promise$reason() {
-	    if (!this.isRejected()) {
-	        throw new TypeError("cannot get rejection reason of a non-rejected promise");
-	    }
-	    return this._settledValue;
-	};
-	
-	PromiseInspection.prototype.isResolved =
-	Promise.prototype.isResolved = function Promise$isResolved() {
-	    return (this._bitField & 402653184) > 0;
-	};
-	
-	Promise.PromiseInspection = PromiseInspection;
-	};
-
-
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports =
-	function(Promise, PromiseArray, cast, INTERNAL) {
-	var util = __webpack_require__(66);
-	var canEvaluate = util.canEvaluate;
-	var tryCatch1 = util.tryCatch1;
-	var errorObj = util.errorObj;
-	
-	
-	if (canEvaluate) {
-	    var thenCallback = function(i) {
-	        return new Function("value", "holder", "                             \n\
-	            'use strict';                                                    \n\
-	            holder.pIndex = value;                                           \n\
-	            holder.checkFulfillment(this);                                   \n\
-	            ".replace(/Index/g, i));
-	    };
-	
-	    var caller = function(count) {
-	        var values = [];
-	        for (var i = 1; i <= count; ++i) values.push("holder.p" + i);
-	        return new Function("holder", "                                      \n\
-	            'use strict';                                                    \n\
-	            var callback = holder.fn;                                        \n\
-	            return callback(values);                                         \n\
-	            ".replace(/values/g, values.join(", ")));
-	    };
-	    var thenCallbacks = [];
-	    var callers = [void 0];
-	    for (var i = 1; i <= 5; ++i) {
-	        thenCallbacks.push(thenCallback(i));
-	        callers.push(caller(i));
-	    }
-	
-	    var Holder = function(total, fn) {
-	        this.p1 = this.p2 = this.p3 = this.p4 = this.p5 = null;
-	        this.fn = fn;
-	        this.total = total;
-	        this.now = 0;
-	    };
-	
-	    Holder.prototype.callers = callers;
-	    Holder.prototype.checkFulfillment = function(promise) {
-	        var now = this.now;
-	        now++;
-	        var total = this.total;
-	        if (now >= total) {
-	            var handler = this.callers[total];
-	            var ret = tryCatch1(handler, void 0, this);
-	            if (ret === errorObj) {
-	                promise._rejectUnchecked(ret.e);
-	            } else if (!promise._tryFollow(ret)) {
-	                promise._fulfillUnchecked(ret);
-	            }
-	        } else {
-	            this.now = now;
-	        }
-	    };
-	}
-	
-	
-	
-	
-	Promise.join = function Promise$Join() {
-	    var last = arguments.length - 1;
-	    var fn;
-	    if (last > 0 && typeof arguments[last] === "function") {
-	        fn = arguments[last];
-	        if (last < 6 && canEvaluate) {
-	            var ret = new Promise(INTERNAL);
-	            ret._setTrace(void 0);
-	            var holder = new Holder(last, fn);
-	            var reject = ret._reject;
-	            var callbacks = thenCallbacks;
-	            for (var i = 0; i < last; ++i) {
-	                var maybePromise = cast(arguments[i], void 0);
-	                if (maybePromise instanceof Promise) {
-	                    if (maybePromise.isPending()) {
-	                        maybePromise._then(callbacks[i], reject,
-	                                           void 0, ret, holder);
-	                    } else if (maybePromise.isFulfilled()) {
-	                        callbacks[i].call(ret,
-	                                          maybePromise._settledValue, holder);
-	                    } else {
-	                        ret._reject(maybePromise._settledValue);
-	                        maybePromise._unsetRejectionIsUnhandled();
-	                    }
-	                } else {
-	                    callbacks[i].call(ret, maybePromise, holder);
-	                }
-	            }
-	            return ret;
-	        }
-	    }
-	    var $_len = arguments.length;var args = new Array($_len); for(var $_i = 0; $_i < $_len; ++$_i) {args[$_i] = arguments[$_i];}
-	    var ret = new PromiseArray(args).promise();
-	    return fn !== void 0 ? ret.spread(fn) : ret;
-	};
-	
-	};
-
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var _setTimeout = function(fn, ms) {
-	    var len = arguments.length;
-	    var arg0 = arguments[2];
-	    var arg1 = arguments[3];
-	    var arg2 = len >= 5 ? arguments[4] : void 0;
-	    setTimeout(function() {
-	        fn(arg0, arg1, arg2);
-	    }, ms|0);
-	};
-	
-	module.exports = function(Promise, INTERNAL, cast) {
-	var util = __webpack_require__(66);
-	var errors = __webpack_require__(68);
-	var apiRejection = __webpack_require__(74)(Promise);
-	var TimeoutError = Promise.TimeoutError;
-	
-	var afterTimeout = function Promise$_afterTimeout(promise, message, ms) {
-	    if (!promise.isPending()) return;
-	    if (typeof message !== "string") {
-	        message = "operation timed out after" + " " + ms + " ms"
-	    }
-	    var err = new TimeoutError(message);
-	    errors.markAsOriginatingFromRejection(err);
-	    promise._attachExtraTrace(err);
-	    promise._cancel(err);
-	};
-	
-	var afterDelay = function Promise$_afterDelay(value, promise) {
-	    promise._fulfill(value);
-	};
-	
-	var delay = Promise.delay = function Promise$Delay(value, ms) {
-	    if (ms === void 0) {
-	        ms = value;
-	        value = void 0;
-	    }
-	    ms = +ms;
-	    var maybePromise = cast(value, void 0);
-	    var promise = new Promise(INTERNAL);
-	
-	    if (maybePromise instanceof Promise) {
-	        promise._propagateFrom(maybePromise, 7);
-	        promise._follow(maybePromise);
-	        return promise.then(function(value) {
-	            return Promise.delay(value, ms);
-	        });
-	    } else {
-	        promise._setTrace(void 0);
-	        _setTimeout(afterDelay, ms, value, promise);
-	    }
-	    return promise;
-	};
-	
-	Promise.prototype.delay = function Promise$delay(ms) {
-	    return delay(this, ms);
-	};
-	
-	Promise.prototype.timeout = function Promise$timeout(ms, message) {
-	    ms = +ms;
-	
-	    var ret = new Promise(INTERNAL);
-	    ret._propagateFrom(this, 7);
-	    ret._follow(this);
-	    _setTimeout(afterTimeout, ms, ret, message, ms);
-	    return ret.cancellable();
-	};
-	
-	};
-
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, INTERNAL, cast) {
-	var apiRejection = __webpack_require__(74)(Promise);
-	var isArray = __webpack_require__(66).isArray;
-	
-	var raceLater = function Promise$_raceLater(promise) {
-	    return promise.then(function(array) {
-	        return Promise$_Race(array, promise);
-	    });
-	};
-	
-	var hasOwn = {}.hasOwnProperty;
-	function Promise$_Race(promises, parent) {
-	    var maybePromise = cast(promises, void 0);
-	
-	    if (maybePromise instanceof Promise) {
-	        return raceLater(maybePromise);
-	    } else if (!isArray(promises)) {
-	        return apiRejection("expecting an array, a promise or a thenable");
-	    }
-	
-	    var ret = new Promise(INTERNAL);
-	    if (parent !== void 0) {
-	        ret._propagateFrom(parent, 7);
-	    } else {
-	        ret._setTrace(void 0);
-	    }
-	    var fulfill = ret._fulfill;
-	    var reject = ret._reject;
-	    for (var i = 0, len = promises.length; i < len; ++i) {
-	        var val = promises[i];
-	
-	        if (val === void 0 && !(hasOwn.call(promises, i))) {
-	            continue;
-	        }
-	
-	        Promise.cast(val)._then(fulfill, reject, void 0, ret, null);
-	    }
-	    return ret;
-	}
-	
-	Promise.race = function Promise$Race(promises) {
-	    return Promise$_Race(promises, void 0);
-	};
-	
-	Promise.prototype.race = function Promise$race() {
-	    return Promise$_Race(this, void 0);
-	};
-	
-	};
-
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var cr = Object.create;
-	if (cr) {
-	    var callerCache = cr(null);
-	    var getterCache = cr(null);
-	    callerCache[" size"] = getterCache[" size"] = 0;
-	}
-	
-	module.exports = function(Promise) {
-	var util = __webpack_require__(66);
-	var canEvaluate = util.canEvaluate;
-	var isIdentifier = util.isIdentifier;
-	
-	function makeMethodCaller (methodName) {
-	    return new Function("obj", "                                             \n\
-	        'use strict'                                                         \n\
-	        var len = this.length;                                               \n\
-	        switch(len) {                                                        \n\
-	            case 1: return obj.methodName(this[0]);                          \n\
-	            case 2: return obj.methodName(this[0], this[1]);                 \n\
-	            case 3: return obj.methodName(this[0], this[1], this[2]);        \n\
-	            case 0: return obj.methodName();                                 \n\
-	            default: return obj.methodName.apply(obj, this);                 \n\
-	        }                                                                    \n\
-	        ".replace(/methodName/g, methodName));
-	}
-	
-	function makeGetter (propertyName) {
-	    return new Function("obj", "                                             \n\
-	        'use strict';                                                        \n\
-	        return obj.propertyName;                                             \n\
-	        ".replace("propertyName", propertyName));
-	}
-	
-	function getCompiled(name, compiler, cache) {
-	    var ret = cache[name];
-	    if (typeof ret !== "function") {
-	        if (!isIdentifier(name)) {
-	            return null;
-	        }
-	        ret = compiler(name);
-	        cache[name] = ret;
-	        cache[" size"]++;
-	        if (cache[" size"] > 512) {
-	            var keys = Object.keys(cache);
-	            for (var i = 0; i < 256; ++i) delete cache[keys[i]];
-	            cache[" size"] = keys.length - 256;
-	        }
-	    }
-	    return ret;
-	}
-	
-	function getMethodCaller(name) {
-	    return getCompiled(name, makeMethodCaller, callerCache);
-	}
-	
-	function getGetter(name) {
-	    return getCompiled(name, makeGetter, getterCache);
-	}
-	
-	function caller(obj) {
-	    return obj[this.pop()].apply(obj, this);
-	}
-	Promise.prototype.call = function Promise$call(methodName) {
-	    var $_len = arguments.length;var args = new Array($_len - 1); for(var $_i = 1; $_i < $_len; ++$_i) {args[$_i - 1] = arguments[$_i];}
-	    if (canEvaluate) {
-	        var maybeCaller = getMethodCaller(methodName);
-	        if (maybeCaller !== null) {
-	            return this._then(maybeCaller, void 0, void 0, args, void 0);
-	        }
-	    }
-	    args.push(methodName);
-	    return this._then(caller, void 0, void 0, args, void 0);
-	};
-	
-	function namedGetter(obj) {
-	    return obj[this];
-	}
-	function indexedGetter(obj) {
-	    return obj[this];
-	}
-	Promise.prototype.get = function Promise$get(propertyName) {
-	    var isIndex = (typeof propertyName === "number");
-	    var getter;
-	    if (!isIndex) {
-	        if (canEvaluate) {
-	            var maybeGetter = getGetter(propertyName);
-	            getter = maybeGetter !== null ? maybeGetter : namedGetter;
-	        } else {
-	            getter = namedGetter;
-	        }
-	    } else {
-	        getter = indexedGetter;
-	    }
-	    return this._then(getter, void 0, void 0, propertyName, void 0);
-	};
-	};
-
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, apiRejection, INTERNAL, cast) {
-	var errors = __webpack_require__(68);
-	var TypeError = errors.TypeError;
-	var deprecated = __webpack_require__(66).deprecated;
-	var util = __webpack_require__(66);
-	var errorObj = util.errorObj;
-	var tryCatch1 = util.tryCatch1;
-	var yieldHandlers = [];
-	
-	function promiseFromYieldHandler(value, yieldHandlers) {
-	    var _errorObj = errorObj;
-	    var _Promise = Promise;
-	    var len = yieldHandlers.length;
-	    for (var i = 0; i < len; ++i) {
-	        var result = tryCatch1(yieldHandlers[i], void 0, value);
-	        if (result === _errorObj) {
-	            return _Promise.reject(_errorObj.e);
-	        }
-	        var maybePromise = cast(result, promiseFromYieldHandler);
-	        if (maybePromise instanceof _Promise) return maybePromise;
-	    }
-	    return null;
-	}
-	
-	function PromiseSpawn(generatorFunction, receiver, yieldHandler) {
-	    var promise = this._promise = new Promise(INTERNAL);
-	    promise._setTrace(void 0);
-	    this._generatorFunction = generatorFunction;
-	    this._receiver = receiver;
-	    this._generator = void 0;
-	    this._yieldHandlers = typeof yieldHandler === "function"
-	        ? [yieldHandler].concat(yieldHandlers)
-	        : yieldHandlers;
-	}
-	
-	PromiseSpawn.prototype.promise = function PromiseSpawn$promise() {
-	    return this._promise;
-	};
-	
-	PromiseSpawn.prototype._run = function PromiseSpawn$_run() {
-	    this._generator = this._generatorFunction.call(this._receiver);
-	    this._receiver =
-	        this._generatorFunction = void 0;
-	    this._next(void 0);
-	};
-	
-	PromiseSpawn.prototype._continue = function PromiseSpawn$_continue(result) {
-	    if (result === errorObj) {
-	        this._generator = void 0;
-	        var trace = errors.canAttach(result.e)
-	            ? result.e : new Error(result.e + "");
-	        this._promise._attachExtraTrace(trace);
-	        this._promise._reject(result.e, trace);
-	        return;
-	    }
-	
-	    var value = result.value;
-	    if (result.done === true) {
-	        this._generator = void 0;
-	        if (!this._promise._tryFollow(value)) {
-	            this._promise._fulfill(value);
-	        }
-	    } else {
-	        var maybePromise = cast(value, void 0);
-	        if (!(maybePromise instanceof Promise)) {
-	            maybePromise =
-	                promiseFromYieldHandler(maybePromise, this._yieldHandlers);
-	            if (maybePromise === null) {
-	                this._throw(new TypeError("A value was yielded that could not be treated as a promise"));
-	                return;
-	            }
-	        }
-	        maybePromise._then(
-	            this._next,
-	            this._throw,
-	            void 0,
-	            this,
-	            null
-	       );
-	    }
-	};
-	
-	PromiseSpawn.prototype._throw = function PromiseSpawn$_throw(reason) {
-	    if (errors.canAttach(reason))
-	        this._promise._attachExtraTrace(reason);
-	    this._continue(
-	        tryCatch1(this._generator["throw"], this._generator, reason)
-	   );
-	};
-	
-	PromiseSpawn.prototype._next = function PromiseSpawn$_next(value) {
-	    this._continue(
-	        tryCatch1(this._generator.next, this._generator, value)
-	   );
-	};
-	
-	Promise.coroutine =
-	function Promise$Coroutine(generatorFunction, options) {
-	    if (typeof generatorFunction !== "function") {
-	        throw new TypeError("generatorFunction must be a function");
-	    }
-	    var yieldHandler = Object(options).yieldHandler;
-	    var PromiseSpawn$ = PromiseSpawn;
-	    return function () {
-	        var generator = generatorFunction.apply(this, arguments);
-	        var spawn = new PromiseSpawn$(void 0, void 0, yieldHandler);
-	        spawn._generator = generator;
-	        spawn._next(void 0);
-	        return spawn.promise();
-	    };
-	};
-	
-	Promise.coroutine.addYieldHandler = function(fn) {
-	    if (typeof fn !== "function") throw new TypeError("fn must be a function");
-	    yieldHandlers.push(fn);
-	};
-	
-	Promise.spawn = function Promise$Spawn(generatorFunction) {
-	    deprecated("Promise.spawn is deprecated. Use Promise.coroutine instead.");
-	    if (typeof generatorFunction !== "function") {
-	        return apiRejection("generatorFunction must be a function");
-	    }
-	    var spawn = new PromiseSpawn(generatorFunction, this);
-	    var ret = spawn.promise();
-	    spawn._run(Promise.spawn);
-	    return ret;
-	};
-	};
-
-
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, PromiseArray, apiRejection, cast, INTERNAL) {
-	var util = __webpack_require__(66);
-	var tryCatch3 = util.tryCatch3;
-	var errorObj = util.errorObj;
-	var PENDING = {};
-	var EMPTY_ARRAY = [];
-	
-	function MappingPromiseArray(promises, fn, limit, _filter) {
-	    this.constructor$(promises);
-	    this._callback = fn;
-	    this._preservedValues = _filter === INTERNAL
-	        ? new Array(this.length())
-	        : null;
-	    this._limit = limit;
-	    this._inFlight = 0;
-	    this._queue = limit >= 1 ? [] : EMPTY_ARRAY;
-	    this._init$(void 0, -2);
-	}
-	util.inherits(MappingPromiseArray, PromiseArray);
-	
-	MappingPromiseArray.prototype._init = function MappingPromiseArray$_init() {};
-	
-	MappingPromiseArray.prototype._promiseFulfilled =
-	function MappingPromiseArray$_promiseFulfilled(value, index) {
-	    var values = this._values;
-	    if (values === null) return;
-	
-	    var length = this.length();
-	    var preservedValues = this._preservedValues;
-	    var limit = this._limit;
-	    if (values[index] === PENDING) {
-	        values[index] = value;
-	        if (limit >= 1) {
-	            this._inFlight--;
-	            this._drainQueue();
-	            if (this._isResolved()) return;
-	        }
-	    } else {
-	        if (limit >= 1 && this._inFlight >= limit) {
-	            values[index] = value;
-	            this._queue.push(index);
-	            return;
-	        }
-	        if (preservedValues !== null) preservedValues[index] = value;
-	
-	        var callback = this._callback;
-	        var receiver = this._promise._boundTo;
-	        var ret = tryCatch3(callback, receiver, value, index, length);
-	        if (ret === errorObj) return this._reject(ret.e);
-	
-	        var maybePromise = cast(ret, void 0);
-	        if (maybePromise instanceof Promise) {
-	            if (maybePromise.isPending()) {
-	                if (limit >= 1) this._inFlight++;
-	                values[index] = PENDING;
-	                return maybePromise._proxyPromiseArray(this, index);
-	            } else if (maybePromise.isFulfilled()) {
-	                ret = maybePromise.value();
-	            } else {
-	                maybePromise._unsetRejectionIsUnhandled();
-	                return this._reject(maybePromise.reason());
-	            }
-	        }
-	        values[index] = ret;
-	    }
-	    var totalResolved = ++this._totalResolved;
-	    if (totalResolved >= length) {
-	        if (preservedValues !== null) {
-	            this._filter(values, preservedValues);
-	        } else {
-	            this._resolve(values);
-	        }
-	
-	    }
-	};
-	
-	MappingPromiseArray.prototype._drainQueue =
-	function MappingPromiseArray$_drainQueue() {
-	    var queue = this._queue;
-	    var limit = this._limit;
-	    var values = this._values;
-	    while (queue.length > 0 && this._inFlight < limit) {
-	        var index = queue.pop();
-	        this._promiseFulfilled(values[index], index);
-	    }
-	};
-	
-	MappingPromiseArray.prototype._filter =
-	function MappingPromiseArray$_filter(booleans, values) {
-	    var len = values.length;
-	    var ret = new Array(len);
-	    var j = 0;
-	    for (var i = 0; i < len; ++i) {
-	        if (booleans[i]) ret[j++] = values[i];
-	    }
-	    ret.length = j;
-	    this._resolve(ret);
-	};
-	
-	MappingPromiseArray.prototype.preservedValues =
-	function MappingPromiseArray$preserveValues() {
-	    return this._preservedValues;
-	};
-	
-	function map(promises, fn, options, _filter) {
-	    var limit = typeof options === "object" && options !== null
-	        ? options.concurrency
-	        : 0;
-	    limit = typeof limit === "number" &&
-	        isFinite(limit) && limit >= 1 ? limit : 0;
-	    return new MappingPromiseArray(promises, fn, limit, _filter);
-	}
-	
-	Promise.prototype.map = function Promise$map(fn, options) {
-	    if (typeof fn !== "function") return apiRejection("fn must be a function");
-	
-	    return map(this, fn, options, null).promise();
-	};
-	
-	Promise.map = function Promise$Map(promises, fn, options, _filter) {
-	    if (typeof fn !== "function") return apiRejection("fn must be a function");
-	    return map(promises, fn, options, _filter).promise();
-	};
-	
-	
-	};
-
-
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise) {
-	var util = __webpack_require__(66);
-	var async = __webpack_require__(67);
-	var tryCatch2 = util.tryCatch2;
-	var tryCatch1 = util.tryCatch1;
-	var errorObj = util.errorObj;
-	
-	function thrower(r) {
-	    throw r;
-	}
-	
-	function Promise$_spreadAdapter(val, receiver) {
-	    if (!util.isArray(val)) return Promise$_successAdapter(val, receiver);
-	    var ret = util.tryCatchApply(this, [null].concat(val), receiver);
-	    if (ret === errorObj) {
-	        async.invokeLater(thrower, void 0, ret.e);
-	    }
-	}
-	
-	function Promise$_successAdapter(val, receiver) {
-	    var nodeback = this;
-	    var ret = val === void 0
-	        ? tryCatch1(nodeback, receiver, null)
-	        : tryCatch2(nodeback, receiver, null, val);
-	    if (ret === errorObj) {
-	        async.invokeLater(thrower, void 0, ret.e);
-	    }
-	}
-	function Promise$_errorAdapter(reason, receiver) {
-	    var nodeback = this;
-	    var ret = tryCatch1(nodeback, receiver, reason);
-	    if (ret === errorObj) {
-	        async.invokeLater(thrower, void 0, ret.e);
-	    }
-	}
-	
-	Promise.prototype.nodeify = function Promise$nodeify(nodeback, options) {
-	    if (typeof nodeback == "function") {
-	        var adapter = Promise$_successAdapter;
-	        if (options !== void 0 && Object(options).spread) {
-	            adapter = Promise$_spreadAdapter;
-	        }
-	        this._then(
-	            adapter,
-	            Promise$_errorAdapter,
-	            void 0,
-	            nodeback,
-	            this._boundTo
-	        );
-	    }
-	    return this;
-	};
-	};
-
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, INTERNAL) {
-	var THIS = {};
-	var util = __webpack_require__(66);
-	var nodebackForPromise = __webpack_require__(73)
-	    ._nodebackForPromise;
-	var withAppended = util.withAppended;
-	var maybeWrapAsError = util.maybeWrapAsError;
-	var canEvaluate = util.canEvaluate;
-	var TypeError = __webpack_require__(68).TypeError;
-	var defaultSuffix = "Async";
-	var defaultFilter = function(name, func) {
-	    return util.isIdentifier(name) &&
-	        name.charAt(0) !== "_" &&
-	        !util.isClass(func);
-	};
-	var defaultPromisified = {__isPromisified__: true};
-	
-	
-	function escapeIdentRegex(str) {
-	    return str.replace(/([$])/, "\\$");
-	}
-	
-	function isPromisified(fn) {
-	    try {
-	        return fn.__isPromisified__ === true;
-	    }
-	    catch (e) {
-	        return false;
-	    }
-	}
-	
-	function hasPromisified(obj, key, suffix) {
-	    var val = util.getDataPropertyOrDefault(obj, key + suffix,
-	                                            defaultPromisified);
-	    return val ? isPromisified(val) : false;
-	}
-	function checkValid(ret, suffix, suffixRegexp) {
-	    for (var i = 0; i < ret.length; i += 2) {
-	        var key = ret[i];
-	        if (suffixRegexp.test(key)) {
-	            var keyWithoutAsyncSuffix = key.replace(suffixRegexp, "");
-	            for (var j = 0; j < ret.length; j += 2) {
-	                if (ret[j] === keyWithoutAsyncSuffix) {
-	                    throw new TypeError("Cannot promisify an API " +
-	                        "that has normal methods with '"+suffix+"'-suffix");
-	                }
-	            }
-	        }
-	    }
-	}
-	
-	function promisifiableMethods(obj, suffix, suffixRegexp, filter) {
-	    var keys = util.inheritedDataKeys(obj);
-	    var ret = [];
-	    for (var i = 0; i < keys.length; ++i) {
-	        var key = keys[i];
-	        var value = obj[key];
-	        if (typeof value === "function" &&
-	            !isPromisified(value) &&
-	            !hasPromisified(obj, key, suffix) &&
-	            filter(key, value, obj)) {
-	            ret.push(key, value);
-	        }
-	    }
-	    checkValid(ret, suffix, suffixRegexp);
-	    return ret;
-	}
-	
-	function switchCaseArgumentOrder(likelyArgumentCount) {
-	    var ret = [likelyArgumentCount];
-	    var min = Math.max(0, likelyArgumentCount - 1 - 5);
-	    for(var i = likelyArgumentCount - 1; i >= min; --i) {
-	        if (i === likelyArgumentCount) continue;
-	        ret.push(i);
-	    }
-	    for(var i = likelyArgumentCount + 1; i <= 5; ++i) {
-	        ret.push(i);
-	    }
-	    return ret;
-	}
-	
-	function argumentSequence(argumentCount) {
-	    return util.filledRange(argumentCount, "arguments[", "]");
-	}
-	
-	function parameterDeclaration(parameterCount) {
-	    return util.filledRange(parameterCount, "_arg", "");
-	}
-	
-	function parameterCount(fn) {
-	    if (typeof fn.length === "number") {
-	        return Math.max(Math.min(fn.length, 1023 + 1), 0);
-	    }
-	    return 0;
-	}
-	
-	function generatePropertyAccess(key) {
-	    if (util.isIdentifier(key)) {
-	        return "." + key;
-	    }
-	    else return "['" + key.replace(/(['\\])/g, "\\$1") + "']";
-	}
-	
-	function makeNodePromisifiedEval(callback, receiver, originalName, fn, suffix) {
-	    var newParameterCount = Math.max(0, parameterCount(fn) - 1);
-	    var argumentOrder = switchCaseArgumentOrder(newParameterCount);
-	    var callbackName =
-	        (typeof originalName === "string" && util.isIdentifier(originalName)
-	            ? originalName + suffix
-	            : "promisified");
-	
-	    function generateCallForArgumentCount(count) {
-	        var args = argumentSequence(count).join(", ");
-	        var comma = count > 0 ? ", " : "";
-	        var ret;
-	        if (typeof callback === "string") {
-	            ret = "                                                          \n\
-	                this.method(args, fn);                                       \n\
-	                break;                                                       \n\
-	            ".replace(".method", generatePropertyAccess(callback));
-	        } else if (receiver === THIS) {
-	            ret =  "                                                         \n\
-	                callback.call(this, args, fn);                               \n\
-	                break;                                                       \n\
-	            ";
-	        } else if (receiver !== void 0) {
-	            ret =  "                                                         \n\
-	                callback.call(receiver, args, fn);                           \n\
-	                break;                                                       \n\
-	            ";
-	        } else {
-	            ret =  "                                                         \n\
-	                callback(args, fn);                                          \n\
-	                break;                                                       \n\
-	            ";
-	        }
-	        return ret.replace("args", args).replace(", ", comma);
-	    }
-	
-	    function generateArgumentSwitchCase() {
-	        var ret = "";
-	        for(var i = 0; i < argumentOrder.length; ++i) {
-	            ret += "case " + argumentOrder[i] +":" +
-	                generateCallForArgumentCount(argumentOrder[i]);
-	        }
-	        var codeForCall;
-	        if (typeof callback === "string") {
-	            codeForCall = "                                                  \n\
-	                this.property.apply(this, args);                             \n\
-	            "
-	                .replace(".property", generatePropertyAccess(callback));
-	        } else if (receiver === THIS) {
-	            codeForCall = "                                                  \n\
-	                callback.apply(this, args);                                  \n\
-	            ";
-	        } else {
-	            codeForCall = "                                                  \n\
-	                callback.apply(receiver, args);                              \n\
-	            ";
-	        }
-	
-	        ret += "                                                             \n\
-	        default:                                                             \n\
-	            var args = new Array(len + 1);                                   \n\
-	            var i = 0;                                                       \n\
-	            for (var i = 0; i < len; ++i) {                                  \n\
-	               args[i] = arguments[i];                                       \n\
-	            }                                                                \n\
-	            args[i] = fn;                                                    \n\
-	            [CodeForCall]                                                    \n\
-	            break;                                                           \n\
-	        ".replace("[CodeForCall]", codeForCall);
-	        return ret;
-	    }
-	
-	    return new Function("Promise",
-	                        "callback",
-	                        "receiver",
-	                        "withAppended",
-	                        "maybeWrapAsError",
-	                        "nodebackForPromise",
-	                        "INTERNAL","                                         \n\
-	        var ret = function FunctionName(Parameters) {                        \n\
-	            'use strict';                                                    \n\
-	            var len = arguments.length;                                      \n\
-	            var promise = new Promise(INTERNAL);                             \n\
-	            promise._setTrace(void 0);                                       \n\
-	            var fn = nodebackForPromise(promise);                            \n\
-	            try {                                                            \n\
-	                switch(len) {                                                \n\
-	                    [CodeForSwitchCase]                                      \n\
-	                }                                                            \n\
-	            } catch (e) {                                                    \n\
-	                var wrapped = maybeWrapAsError(e);                           \n\
-	                promise._attachExtraTrace(wrapped);                          \n\
-	                promise._reject(wrapped);                                    \n\
-	            }                                                                \n\
-	            return promise;                                                  \n\
-	        };                                                                   \n\
-	        ret.__isPromisified__ = true;                                        \n\
-	        return ret;                                                          \n\
-	        "
-	        .replace("FunctionName", callbackName)
-	        .replace("Parameters", parameterDeclaration(newParameterCount))
-	        .replace("[CodeForSwitchCase]", generateArgumentSwitchCase()))(
-	            Promise,
-	            callback,
-	            receiver,
-	            withAppended,
-	            maybeWrapAsError,
-	            nodebackForPromise,
-	            INTERNAL
-	        );
-	}
-	
-	function makeNodePromisifiedClosure(callback, receiver) {
-	    function promisified() {
-	        var _receiver = receiver;
-	        if (receiver === THIS) _receiver = this;
-	        if (typeof callback === "string") {
-	            callback = _receiver[callback];
-	        }
-	        var promise = new Promise(INTERNAL);
-	        promise._setTrace(void 0);
-	        var fn = nodebackForPromise(promise);
-	        try {
-	            callback.apply(_receiver, withAppended(arguments, fn));
-	        } catch(e) {
-	            var wrapped = maybeWrapAsError(e);
-	            promise._attachExtraTrace(wrapped);
-	            promise._reject(wrapped);
-	        }
-	        return promise;
-	    }
-	    promisified.__isPromisified__ = true;
-	    return promisified;
-	}
-	
-	var makeNodePromisified = canEvaluate
-	    ? makeNodePromisifiedEval
-	    : makeNodePromisifiedClosure;
-	
-	function promisifyAll(obj, suffix, filter, promisifier) {
-	    var suffixRegexp = new RegExp(escapeIdentRegex(suffix) + "$");
-	    var methods =
-	        promisifiableMethods(obj, suffix, suffixRegexp, filter);
-	
-	    for (var i = 0, len = methods.length; i < len; i+= 2) {
-	        var key = methods[i];
-	        var fn = methods[i+1];
-	        var promisifiedKey = key + suffix;
-	        obj[promisifiedKey] = promisifier === makeNodePromisified
-	                ? makeNodePromisified(key, THIS, key, fn, suffix)
-	                : promisifier(fn);
-	    }
-	    util.toFastProperties(obj);
-	    return obj;
-	}
-	
-	function promisify(callback, receiver) {
-	    return makeNodePromisified(callback, receiver, void 0, callback);
-	}
-	
-	Promise.promisify = function Promise$Promisify(fn, receiver) {
-	    if (typeof fn !== "function") {
-	        throw new TypeError("fn must be a function");
-	    }
-	    if (isPromisified(fn)) {
-	        return fn;
-	    }
-	    return promisify(fn, arguments.length < 2 ? THIS : receiver);
-	};
-	
-	Promise.promisifyAll = function Promise$PromisifyAll(target, options) {
-	    if (typeof target !== "function" && typeof target !== "object") {
-	        throw new TypeError("the target of promisifyAll must be an object or a function");
-	    }
-	    options = Object(options);
-	    var suffix = options.suffix;
-	    if (typeof suffix !== "string") suffix = defaultSuffix;
-	    var filter = options.filter;
-	    if (typeof filter !== "function") filter = defaultFilter;
-	    var promisifier = options.promisifier;
-	    if (typeof promisifier !== "function") promisifier = makeNodePromisified;
-	
-	    if (!util.isIdentifier(suffix)) {
-	        throw new RangeError("suffix must be a valid identifier");
-	    }
-	
-	    var keys = util.inheritedDataKeys(target, {includeHidden: true});
-	    for (var i = 0; i < keys.length; ++i) {
-	        var value = target[keys[i]];
-	        if (keys[i] !== "constructor" &&
-	            util.isClass(value)) {
-	            promisifyAll(value.prototype, suffix, filter, promisifier);
-	            promisifyAll(value, suffix, filter, promisifier);
-	        }
-	    }
-	
-	    return promisifyAll(target, suffix, filter, promisifier);
-	};
-	};
-	
-
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, PromiseArray, cast) {
-	var util = __webpack_require__(66);
-	var apiRejection = __webpack_require__(74)(Promise);
-	var isObject = util.isObject;
-	var es5 = __webpack_require__(109);
-	
-	function PropertiesPromiseArray(obj) {
-	    var keys = es5.keys(obj);
-	    var len = keys.length;
-	    var values = new Array(len * 2);
-	    for (var i = 0; i < len; ++i) {
-	        var key = keys[i];
-	        values[i] = obj[key];
-	        values[i + len] = key;
-	    }
-	    this.constructor$(values);
-	}
-	util.inherits(PropertiesPromiseArray, PromiseArray);
-	
-	PropertiesPromiseArray.prototype._init =
-	function PropertiesPromiseArray$_init() {
-	    this._init$(void 0, -3) ;
-	};
-	
-	PropertiesPromiseArray.prototype._promiseFulfilled =
-	function PropertiesPromiseArray$_promiseFulfilled(value, index) {
-	    if (this._isResolved()) return;
-	    this._values[index] = value;
-	    var totalResolved = ++this._totalResolved;
-	    if (totalResolved >= this._length) {
-	        var val = {};
-	        var keyOffset = this.length();
-	        for (var i = 0, len = this.length(); i < len; ++i) {
-	            val[this._values[i + keyOffset]] = this._values[i];
-	        }
-	        this._resolve(val);
-	    }
-	};
-	
-	PropertiesPromiseArray.prototype._promiseProgressed =
-	function PropertiesPromiseArray$_promiseProgressed(value, index) {
-	    if (this._isResolved()) return;
-	
-	    this._promise._progress({
-	        key: this._values[index + this.length()],
-	        value: value
-	    });
-	};
-	
-	PropertiesPromiseArray.prototype.shouldCopyValues =
-	function PropertiesPromiseArray$_shouldCopyValues() {
-	    return false;
-	};
-	
-	PropertiesPromiseArray.prototype.getActualLength =
-	function PropertiesPromiseArray$getActualLength(len) {
-	    return len >> 1;
-	};
-	
-	function Promise$_Props(promises) {
-	    var ret;
-	    var castValue = cast(promises, void 0);
-	
-	    if (!isObject(castValue)) {
-	        return apiRejection("cannot await properties of a non-object");
-	    } else if (castValue instanceof Promise) {
-	        ret = castValue._then(Promise.props, void 0, void 0, void 0, void 0);
-	    } else {
-	        ret = new PropertiesPromiseArray(castValue).promise();
-	    }
-	
-	    if (castValue instanceof Promise) {
-	        ret._propagateFrom(castValue, 4);
-	    }
-	    return ret;
-	}
-	
-	Promise.prototype.props = function Promise$props() {
-	    return Promise$_Props(this);
-	};
-	
-	Promise.props = function Promise$Props(promises) {
-	    return Promise$_Props(promises);
-	};
-	};
-
-
-/***/ },
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, PromiseArray, apiRejection, cast, INTERNAL) {
-	var util = __webpack_require__(66);
-	var tryCatch4 = util.tryCatch4;
-	var tryCatch3 = util.tryCatch3;
-	var errorObj = util.errorObj;
-	function ReductionPromiseArray(promises, fn, accum, _each) {
-	    this.constructor$(promises);
-	    this._preservedValues = _each === INTERNAL ? [] : null;
-	    this._zerothIsAccum = (accum === void 0);
-	    this._gotAccum = false;
-	    this._reducingIndex = (this._zerothIsAccum ? 1 : 0);
-	    this._valuesPhase = undefined;
-	
-	    var maybePromise = cast(accum, void 0);
-	    var rejected = false;
-	    var isPromise = maybePromise instanceof Promise;
-	    if (isPromise) {
-	        if (maybePromise.isPending()) {
-	            maybePromise._proxyPromiseArray(this, -1);
-	        } else if (maybePromise.isFulfilled()) {
-	            accum = maybePromise.value();
-	            this._gotAccum = true;
-	        } else {
-	            maybePromise._unsetRejectionIsUnhandled();
-	            this._reject(maybePromise.reason());
-	            rejected = true;
-	        }
-	    }
-	    if (!(isPromise || this._zerothIsAccum)) this._gotAccum = true;
-	    this._callback = fn;
-	    this._accum = accum;
-	    if (!rejected) this._init$(void 0, -5);
-	}
-	util.inherits(ReductionPromiseArray, PromiseArray);
-	
-	ReductionPromiseArray.prototype._init =
-	function ReductionPromiseArray$_init() {};
-	
-	ReductionPromiseArray.prototype._resolveEmptyArray =
-	function ReductionPromiseArray$_resolveEmptyArray() {
-	    if (this._gotAccum || this._zerothIsAccum) {
-	        this._resolve(this._preservedValues !== null
-	                        ? [] : this._accum);
-	    }
-	};
-	
-	ReductionPromiseArray.prototype._promiseFulfilled =
-	function ReductionPromiseArray$_promiseFulfilled(value, index) {
-	    var values = this._values;
-	    if (values === null) return;
-	    var length = this.length();
-	    var preservedValues = this._preservedValues;
-	    var isEach = preservedValues !== null;
-	    var gotAccum = this._gotAccum;
-	    var valuesPhase = this._valuesPhase;
-	    var valuesPhaseIndex;
-	    if (!valuesPhase) {
-	        valuesPhase = this._valuesPhase = Array(length);
-	        for (valuesPhaseIndex=0; valuesPhaseIndex<length; ++valuesPhaseIndex) {
-	            valuesPhase[valuesPhaseIndex] = 0;
-	        }
-	    }
-	    valuesPhaseIndex = valuesPhase[index];
-	
-	    if (index === 0 && this._zerothIsAccum) {
-	        if (!gotAccum) {
-	            this._accum = value;
-	            this._gotAccum = gotAccum = true;
-	        }
-	        valuesPhase[index] = ((valuesPhaseIndex === 0)
-	            ? 1 : 2);
-	    } else if (index === -1) {
-	        if (!gotAccum) {
-	            this._accum = value;
-	            this._gotAccum = gotAccum = true;
-	        }
-	    } else {
-	        if (valuesPhaseIndex === 0) {
-	            valuesPhase[index] = 1;
-	        }
-	        else {
-	            valuesPhase[index] = 2;
-	            if (gotAccum) {
-	                this._accum = value;
-	            }
-	        }
-	    }
-	    if (!gotAccum) return;
-	
-	    var callback = this._callback;
-	    var receiver = this._promise._boundTo;
-	    var ret;
-	
-	    for (var i = this._reducingIndex; i < length; ++i) {
-	        valuesPhaseIndex = valuesPhase[i];
-	        if (valuesPhaseIndex === 2) {
-	            this._reducingIndex = i + 1;
-	            continue;
-	        }
-	        if (valuesPhaseIndex !== 1) return;
-	
-	        value = values[i];
-	        if (value instanceof Promise) {
-	            if (value.isFulfilled()) {
-	                value = value._settledValue;
-	            } else if (value.isPending()) {
-	                return;
-	            } else {
-	                value._unsetRejectionIsUnhandled();
-	                return this._reject(value.reason());
-	            }
-	        }
-	
-	        if (isEach) {
-	            preservedValues.push(value);
-	            ret = tryCatch3(callback, receiver, value, i, length);
-	        }
-	        else {
-	            ret = tryCatch4(callback, receiver, this._accum, value, i, length);
-	        }
-	
-	        if (ret === errorObj) return this._reject(ret.e);
-	
-	        var maybePromise = cast(ret, void 0);
-	        if (maybePromise instanceof Promise) {
-	            if (maybePromise.isPending()) {
-	                valuesPhase[i] = 4;
-	                return maybePromise._proxyPromiseArray(this, i);
-	            } else if (maybePromise.isFulfilled()) {
-	                ret = maybePromise.value();
-	            } else {
-	                maybePromise._unsetRejectionIsUnhandled();
-	                return this._reject(maybePromise.reason());
-	            }
-	        }
-	
-	        this._reducingIndex = i + 1;
-	        this._accum = ret;
-	    }
-	
-	    if (this._reducingIndex < length) return;
-	    this._resolve(isEach ? preservedValues : this._accum);
-	};
-	
-	function reduce(promises, fn, initialValue, _each) {
-	    if (typeof fn !== "function") return apiRejection("fn must be a function");
-	    var array = new ReductionPromiseArray(promises, fn, initialValue, _each);
-	    return array.promise();
-	}
-	
-	Promise.prototype.reduce = function Promise$reduce(fn, initialValue) {
-	    return reduce(this, fn, initialValue, null);
-	};
-	
-	Promise.reduce = function Promise$Reduce(promises, fn, initialValue, _each) {
-	    return reduce(promises, fn, initialValue, _each);
-	};
-	};
-
-
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports =
-	    function(Promise, PromiseArray) {
-	var PromiseInspection = Promise.PromiseInspection;
-	var util = __webpack_require__(66);
-	
-	function SettledPromiseArray(values) {
-	    this.constructor$(values);
-	}
-	util.inherits(SettledPromiseArray, PromiseArray);
-	
-	SettledPromiseArray.prototype._promiseResolved =
-	function SettledPromiseArray$_promiseResolved(index, inspection) {
-	    this._values[index] = inspection;
-	    var totalResolved = ++this._totalResolved;
-	    if (totalResolved >= this._length) {
-	        this._resolve(this._values);
-	    }
-	};
-	
-	SettledPromiseArray.prototype._promiseFulfilled =
-	function SettledPromiseArray$_promiseFulfilled(value, index) {
-	    if (this._isResolved()) return;
-	    var ret = new PromiseInspection();
-	    ret._bitField = 268435456;
-	    ret._settledValue = value;
-	    this._promiseResolved(index, ret);
-	};
-	SettledPromiseArray.prototype._promiseRejected =
-	function SettledPromiseArray$_promiseRejected(reason, index) {
-	    if (this._isResolved()) return;
-	    var ret = new PromiseInspection();
-	    ret._bitField = 134217728;
-	    ret._settledValue = reason;
-	    this._promiseResolved(index, ret);
-	};
-	
-	Promise.settle = function Promise$Settle(promises) {
-	    return new SettledPromiseArray(promises).promise();
-	};
-	
-	Promise.prototype.settle = function Promise$settle() {
-	    return new SettledPromiseArray(this).promise();
-	};
-	};
-
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports =
-	function(Promise, PromiseArray, apiRejection) {
-	var util = __webpack_require__(66);
-	var RangeError = __webpack_require__(68).RangeError;
-	var AggregateError = __webpack_require__(68).AggregateError;
-	var isArray = util.isArray;
-	
-	
-	function SomePromiseArray(values) {
-	    this.constructor$(values);
-	    this._howMany = 0;
-	    this._unwrap = false;
-	    this._initialized = false;
-	}
-	util.inherits(SomePromiseArray, PromiseArray);
-	
-	SomePromiseArray.prototype._init = function SomePromiseArray$_init() {
-	    if (!this._initialized) {
-	        return;
-	    }
-	    if (this._howMany === 0) {
-	        this._resolve([]);
-	        return;
-	    }
-	    this._init$(void 0, -5);
-	    var isArrayResolved = isArray(this._values);
-	    if (!this._isResolved() &&
-	        isArrayResolved &&
-	        this._howMany > this._canPossiblyFulfill()) {
-	        this._reject(this._getRangeError(this.length()));
-	    }
-	};
-	
-	SomePromiseArray.prototype.init = function SomePromiseArray$init() {
-	    this._initialized = true;
-	    this._init();
-	};
-	
-	SomePromiseArray.prototype.setUnwrap = function SomePromiseArray$setUnwrap() {
-	    this._unwrap = true;
-	};
-	
-	SomePromiseArray.prototype.howMany = function SomePromiseArray$howMany() {
-	    return this._howMany;
-	};
-	
-	SomePromiseArray.prototype.setHowMany =
-	function SomePromiseArray$setHowMany(count) {
-	    if (this._isResolved()) return;
-	    this._howMany = count;
-	};
-	
-	SomePromiseArray.prototype._promiseFulfilled =
-	function SomePromiseArray$_promiseFulfilled(value) {
-	    if (this._isResolved()) return;
-	    this._addFulfilled(value);
-	    if (this._fulfilled() === this.howMany()) {
-	        this._values.length = this.howMany();
-	        if (this.howMany() === 1 && this._unwrap) {
-	            this._resolve(this._values[0]);
-	        } else {
-	            this._resolve(this._values);
-	        }
-	    }
-	
-	};
-	SomePromiseArray.prototype._promiseRejected =
-	function SomePromiseArray$_promiseRejected(reason) {
-	    if (this._isResolved()) return;
-	    this._addRejected(reason);
-	    if (this.howMany() > this._canPossiblyFulfill()) {
-	        var e = new AggregateError();
-	        for (var i = this.length(); i < this._values.length; ++i) {
-	            e.push(this._values[i]);
-	        }
-	        this._reject(e);
-	    }
-	};
-	
-	SomePromiseArray.prototype._fulfilled = function SomePromiseArray$_fulfilled() {
-	    return this._totalResolved;
-	};
-	
-	SomePromiseArray.prototype._rejected = function SomePromiseArray$_rejected() {
-	    return this._values.length - this.length();
-	};
-	
-	SomePromiseArray.prototype._addRejected =
-	function SomePromiseArray$_addRejected(reason) {
-	    this._values.push(reason);
-	};
-	
-	SomePromiseArray.prototype._addFulfilled =
-	function SomePromiseArray$_addFulfilled(value) {
-	    this._values[this._totalResolved++] = value;
-	};
-	
-	SomePromiseArray.prototype._canPossiblyFulfill =
-	function SomePromiseArray$_canPossiblyFulfill() {
-	    return this.length() - this._rejected();
-	};
-	
-	SomePromiseArray.prototype._getRangeError =
-	function SomePromiseArray$_getRangeError(count) {
-	    var message = "Input array must contain at least " +
-	            this._howMany + " items but contains only " + count + " items";
-	    return new RangeError(message);
-	};
-	
-	SomePromiseArray.prototype._resolveEmptyArray =
-	function SomePromiseArray$_resolveEmptyArray() {
-	    this._reject(this._getRangeError(0));
-	};
-	
-	function Promise$_Some(promises, howMany) {
-	    if ((howMany | 0) !== howMany || howMany < 0) {
-	        return apiRejection("expecting a positive integer");
-	    }
-	    var ret = new SomePromiseArray(promises);
-	    var promise = ret.promise();
-	    if (promise.isRejected()) {
-	        return promise;
-	    }
-	    ret.setHowMany(howMany);
-	    ret.init();
-	    return promise;
-	}
-	
-	Promise.some = function Promise$Some(promises, howMany) {
-	    return Promise$_Some(promises, howMany);
-	};
-	
-	Promise.prototype.some = function Promise$some(howMany) {
-	    return Promise$_Some(this, howMany);
-	};
-	
-	Promise._SomePromiseArray = SomePromiseArray;
-	};
-
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, PromiseArray) {
-	var util = __webpack_require__(66);
-	var async = __webpack_require__(67);
-	var errors = __webpack_require__(68);
-	var tryCatch1 = util.tryCatch1;
-	var errorObj = util.errorObj;
-	
-	Promise.prototype.progressed = function Promise$progressed(handler) {
-	    return this._then(void 0, void 0, handler, void 0, void 0);
-	};
-	
-	Promise.prototype._progress = function Promise$_progress(progressValue) {
-	    if (this._isFollowingOrFulfilledOrRejected()) return;
-	    this._progressUnchecked(progressValue);
-	
-	};
-	
-	Promise.prototype._clearFirstHandlerData$Base =
-	Promise.prototype._clearFirstHandlerData;
-	Promise.prototype._clearFirstHandlerData =
-	function Promise$_clearFirstHandlerData() {
-	    this._clearFirstHandlerData$Base();
-	    this._progressHandler0 = void 0;
-	};
-	
-	Promise.prototype._progressHandlerAt =
-	function Promise$_progressHandlerAt(index) {
-	    return index === 0
-	        ? this._progressHandler0
-	        : this[(index << 2) + index - 5 + 2];
-	};
-	
-	Promise.prototype._doProgressWith =
-	function Promise$_doProgressWith(progression) {
-	    var progressValue = progression.value;
-	    var handler = progression.handler;
-	    var promise = progression.promise;
-	    var receiver = progression.receiver;
-	
-	    var ret = tryCatch1(handler, receiver, progressValue);
-	    if (ret === errorObj) {
-	        if (ret.e != null &&
-	            ret.e.name !== "StopProgressPropagation") {
-	            var trace = errors.canAttach(ret.e)
-	                ? ret.e : new Error(ret.e + "");
-	            promise._attachExtraTrace(trace);
-	            promise._progress(ret.e);
-	        }
-	    } else if (ret instanceof Promise) {
-	        ret._then(promise._progress, null, null, promise, void 0);
-	    } else {
-	        promise._progress(ret);
-	    }
-	};
-	
-	
-	Promise.prototype._progressUnchecked =
-	function Promise$_progressUnchecked(progressValue) {
-	    if (!this.isPending()) return;
-	    var len = this._length();
-	    var progress = this._progress;
-	    for (var i = 0; i < len; i++) {
-	        var handler = this._progressHandlerAt(i);
-	        var promise = this._promiseAt(i);
-	        if (!(promise instanceof Promise)) {
-	            var receiver = this._receiverAt(i);
-	            if (typeof handler === "function") {
-	                handler.call(receiver, progressValue, promise);
-	            } else if (receiver instanceof Promise && receiver._isProxied()) {
-	                receiver._progressUnchecked(progressValue);
-	            } else if (receiver instanceof PromiseArray) {
-	                receiver._promiseProgressed(progressValue, promise);
-	            }
-	            continue;
-	        }
-	
-	        if (typeof handler === "function") {
-	            async.invoke(this._doProgressWith, this, {
-	                handler: handler,
-	                promise: promise,
-	                receiver: this._receiverAt(i),
-	                value: progressValue
-	            });
-	        } else {
-	            async.invoke(progress, promise, progressValue);
-	        }
-	    }
-	};
-	};
-
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, INTERNAL) {
-	var errors = __webpack_require__(68);
-	var canAttach = errors.canAttach;
-	var async = __webpack_require__(67);
-	var CancellationError = errors.CancellationError;
-	
-	Promise.prototype._cancel = function Promise$_cancel(reason) {
-	    if (!this.isCancellable()) return this;
-	    var parent;
-	    var promiseToReject = this;
-	    while ((parent = promiseToReject._cancellationParent) !== void 0 &&
-	        parent.isCancellable()) {
-	        promiseToReject = parent;
-	    }
-	    promiseToReject._attachExtraTrace(reason);
-	    promiseToReject._rejectUnchecked(reason);
-	};
-	
-	Promise.prototype.cancel = function Promise$cancel(reason) {
-	    if (!this.isCancellable()) return this;
-	    reason = reason !== void 0
-	        ? (canAttach(reason) ? reason : new Error(reason + ""))
-	        : new CancellationError();
-	    async.invokeLater(this._cancel, this, reason);
-	    return this;
-	};
-	
-	Promise.prototype.cancellable = function Promise$cancellable() {
-	    if (this._cancellable()) return this;
-	    this._setCancellable();
-	    this._cancellationParent = void 0;
-	    return this;
-	};
-	
-	Promise.prototype.uncancellable = function Promise$uncancellable() {
-	    var ret = new Promise(INTERNAL);
-	    ret._propagateFrom(this, 2 | 4);
-	    ret._follow(this);
-	    ret._unsetCancellable();
-	    return ret;
-	};
-	
-	Promise.prototype.fork =
-	function Promise$fork(didFulfill, didReject, didProgress) {
-	    var ret = this._then(didFulfill, didReject, didProgress,
-	                         void 0, void 0);
-	
-	    ret._setCancellable();
-	    ret._cancellationParent = void 0;
-	    return ret;
-	};
-	};
-
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, INTERNAL) {
-	var PromiseMap = Promise.map;
-	
-	Promise.prototype.filter = function Promise$filter(fn, options) {
-	    return PromiseMap(this, fn, options, INTERNAL);
-	};
-	
-	Promise.filter = function Promise$Filter(promises, fn, options) {
-	    return PromiseMap(promises, fn, options, INTERNAL);
-	};
-	};
-
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise) {
-	var SomePromiseArray = Promise._SomePromiseArray;
-	function Promise$_Any(promises) {
-	    var ret = new SomePromiseArray(promises);
-	    var promise = ret.promise();
-	    if (promise.isRejected()) {
-	        return promise;
-	    }
-	    ret.setHowMany(1);
-	    ret.setUnwrap();
-	    ret.init();
-	    return promise;
-	}
-	
-	Promise.any = function Promise$Any(promises) {
-	    return Promise$_Any(promises);
-	};
-	
-	Promise.prototype.any = function Promise$any() {
-	    return Promise$_Any(this);
-	};
-	
-	};
-
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function(Promise, INTERNAL) {
-	var PromiseReduce = Promise.reduce;
-	
-	Promise.prototype.each = function Promise$each(fn) {
-	    return PromiseReduce(this, fn, null, INTERNAL);
-	};
-	
-	Promise.each = function Promise$Each(promises, fn) {
-	    return PromiseReduce(promises, fn, null, INTERNAL);
-	};
-	};
-
-
-/***/ },
-/* 95 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	module.exports = function (Promise, apiRejection, cast) {
-	    var TypeError = __webpack_require__(68).TypeError;
-	    var inherits = __webpack_require__(66).inherits;
-	    var PromiseInspection = Promise.PromiseInspection;
-	
-	    function inspectionMapper(inspections) {
-	        var len = inspections.length;
-	        for (var i = 0; i < len; ++i) {
-	            var inspection = inspections[i];
-	            if (inspection.isRejected()) {
-	                return Promise.reject(inspection.error());
-	            }
-	            inspections[i] = inspection.value();
-	        }
-	        return inspections;
-	    }
-	
-	    function thrower(e) {
-	        setTimeout(function(){throw e;}, 0);
-	    }
-	
-	    function castPreservingDisposable(thenable) {
-	        var maybePromise = cast(thenable, void 0);
-	        if (maybePromise !== thenable &&
-	            typeof thenable._isDisposable === "function" &&
-	            typeof thenable._getDisposer === "function" &&
-	            thenable._isDisposable()) {
-	            maybePromise._setDisposable(thenable._getDisposer());
-	        }
-	        return maybePromise;
-	    }
-	    function dispose(resources, inspection) {
-	        var i = 0;
-	        var len = resources.length;
-	        var ret = Promise.defer();
-	        function iterator() {
-	            if (i >= len) return ret.resolve();
-	            var maybePromise = castPreservingDisposable(resources[i++]);
-	            if (maybePromise instanceof Promise &&
-	                maybePromise._isDisposable()) {
-	                try {
-	                    maybePromise = cast(maybePromise._getDisposer()
-	                                        .tryDispose(inspection), void 0);
-	                } catch (e) {
-	                    return thrower(e);
-	                }
-	                if (maybePromise instanceof Promise) {
-	                    return maybePromise._then(iterator, thrower,
-	                                              null, null, null);
-	                }
-	            }
-	            iterator();
-	        }
-	        iterator();
-	        return ret.promise;
-	    }
-	
-	    function disposerSuccess(value) {
-	        var inspection = new PromiseInspection();
-	        inspection._settledValue = value;
-	        inspection._bitField = 268435456;
-	        return dispose(this, inspection).thenReturn(value);
-	    }
-	
-	    function disposerFail(reason) {
-	        var inspection = new PromiseInspection();
-	        inspection._settledValue = reason;
-	        inspection._bitField = 134217728;
-	        return dispose(this, inspection).thenThrow(reason);
-	    }
-	
-	    function Disposer(data, promise) {
-	        this._data = data;
-	        this._promise = promise;
-	    }
-	
-	    Disposer.prototype.data = function Disposer$data() {
-	        return this._data;
-	    };
-	
-	    Disposer.prototype.promise = function Disposer$promise() {
-	        return this._promise;
-	    };
-	
-	    Disposer.prototype.resource = function Disposer$resource() {
-	        if (this.promise().isFulfilled()) {
-	            return this.promise().value();
-	        }
-	        return null;
-	    };
-	
-	    Disposer.prototype.tryDispose = function(inspection) {
-	        var resource = this.resource();
-	        var ret = resource !== null
-	            ? this.doDispose(resource, inspection) : null;
-	        this._promise._unsetDisposable();
-	        this._data = this._promise = null;
-	        return ret;
-	    };
-	
-	    Disposer.isDisposer = function Disposer$isDisposer(d) {
-	        return (d != null &&
-	                typeof d.resource === "function" &&
-	                typeof d.tryDispose === "function");
-	    };
-	
-	    function FunctionDisposer(fn, promise) {
-	        this.constructor$(fn, promise);
-	    }
-	    inherits(FunctionDisposer, Disposer);
-	
-	    FunctionDisposer.prototype.doDispose = function (resource, inspection) {
-	        var fn = this.data();
-	        return fn.call(resource, resource, inspection);
-	    };
-	
-	    Promise.using = function Promise$using() {
-	        var len = arguments.length;
-	        if (len < 2) return apiRejection(
-	                        "you must pass at least 2 arguments to Promise.using");
-	        var fn = arguments[len - 1];
-	        if (typeof fn !== "function") return apiRejection("fn must be a function");
-	        len--;
-	        var resources = new Array(len);
-	        for (var i = 0; i < len; ++i) {
-	            var resource = arguments[i];
-	            if (Disposer.isDisposer(resource)) {
-	                var disposer = resource;
-	                resource = resource.promise();
-	                resource._setDisposable(disposer);
-	            }
-	            resources[i] = resource;
-	        }
-	
-	        return Promise.settle(resources)
-	            .then(inspectionMapper)
-	            .spread(fn)
-	            ._then(disposerSuccess, disposerFail, void 0, resources, void 0);
-	    };
-	
-	    Promise.prototype._setDisposable =
-	    function Promise$_setDisposable(disposer) {
-	        this._bitField = this._bitField | 262144;
-	        this._disposer = disposer;
-	    };
-	
-	    Promise.prototype._isDisposable = function Promise$_isDisposable() {
-	        return (this._bitField & 262144) > 0;
-	    };
-	
-	    Promise.prototype._getDisposer = function Promise$_getDisposer() {
-	        return this._disposer;
-	    };
-	
-	    Promise.prototype._unsetDisposable = function Promise$_unsetDisposable() {
-	        this._bitField = this._bitField & (~262144);
-	        this._disposer = void 0;
-	    };
-	
-	    Promise.prototype.disposer = function Promise$disposer(fn) {
-	        if (typeof fn === "function") {
-	            return new FunctionDisposer(fn, this);
-	        }
-	        throw new TypeError();
-	    };
-	
-	};
-
-
-/***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var config = __webpack_require__(33)
-	var textParser = __webpack_require__(58)
-	var dirParser = __webpack_require__(59)
-	var templateParser = __webpack_require__(99)
+	var _ = __webpack_require__(17)
+	var config = __webpack_require__(68)
+	var textParser = __webpack_require__(92)
+	var dirParser = __webpack_require__(93)
+	var templateParser = __webpack_require__(103)
 	
 	function noop () {}
 	
@@ -18644,8 +18646,8 @@
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var templateParser = __webpack_require__(99)
+	var _ = __webpack_require__(17)
+	var templateParser = __webpack_require__(103)
 	
 	/**
 	 * Process an element or a DocumentFragment based on a
@@ -18806,7 +18808,358 @@
 /* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	// shim for using process in browser
+	
+	var process = module.exports = {};
+	
+	process.nextTick = (function () {
+	    var canSetImmediate = typeof window !== 'undefined'
+	    && window.setImmediate;
+	    var canPost = typeof window !== 'undefined'
+	    && window.postMessage && window.addEventListener
+	    ;
+	
+	    if (canSetImmediate) {
+	        return function (f) { return window.setImmediate(f) };
+	    }
+	
+	    if (canPost) {
+	        var queue = [];
+	        window.addEventListener('message', function (ev) {
+	            var source = ev.source;
+	            if ((source === window || source === null) && ev.data === 'process-tick') {
+	                ev.stopPropagation();
+	                if (queue.length > 0) {
+	                    var fn = queue.shift();
+	                    fn();
+	                }
+	            }
+	        }, true);
+	
+	        return function nextTick(fn) {
+	            queue.push(fn);
+	            window.postMessage('process-tick', '*');
+	        };
+	    }
+	
+	    return function nextTick(fn) {
+	        setTimeout(fn, 0);
+	    };
+	})();
+	
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	
+	function noop() {}
+	
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	}
+	
+	// TODO(shtylman)
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	var isES5 = (function(){
+	    "use strict";
+	    return this === void 0;
+	})();
+	
+	if (isES5) {
+	    module.exports = {
+	        freeze: Object.freeze,
+	        defineProperty: Object.defineProperty,
+	        keys: Object.keys,
+	        getPrototypeOf: Object.getPrototypeOf,
+	        isArray: Array.isArray,
+	        isES5: isES5
+	    };
+	} else {
+	    var has = {}.hasOwnProperty;
+	    var str = {}.toString;
+	    var proto = {}.constructor.prototype;
+	
+	    var ObjectKeys = function ObjectKeys(o) {
+	        var ret = [];
+	        for (var key in o) {
+	            if (has.call(o, key)) {
+	                ret.push(key);
+	            }
+	        }
+	        return ret;
+	    }
+	
+	    var ObjectDefineProperty = function ObjectDefineProperty(o, key, desc) {
+	        o[key] = desc.value;
+	        return o;
+	    }
+	
+	    var ObjectFreeze = function ObjectFreeze(obj) {
+	        return obj;
+	    }
+	
+	    var ObjectGetPrototypeOf = function ObjectGetPrototypeOf(obj) {
+	        try {
+	            return Object(obj).constructor.prototype;
+	        }
+	        catch (e) {
+	            return proto;
+	        }
+	    }
+	
+	    var ArrayIsArray = function ArrayIsArray(obj) {
+	        try {
+	            return str.call(obj) === "[object Array]";
+	        }
+	        catch(e) {
+	            return false;
+	        }
+	    }
+	
+	    module.exports = {
+	        isArray: ArrayIsArray,
+	        keys: ObjectKeys,
+	        defineProperty: ObjectDefineProperty,
+	        freeze: ObjectFreeze,
+	        getPrototypeOf: ObjectGetPrototypeOf,
+	        isES5: isES5
+	    };
+	}
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var schedule;
+	var _MutationObserver;
+	if (typeof process === "object" && typeof process.version === "string") {
+	    schedule = function Promise$_Scheduler(fn) {
+	        process.nextTick(fn);
+	    };
+	}
+	else if ((typeof MutationObserver !== "undefined" &&
+	         (_MutationObserver = MutationObserver)) ||
+	         (typeof WebKitMutationObserver !== "undefined" &&
+	         (_MutationObserver = WebKitMutationObserver))) {
+	    schedule = (function() {
+	        var div = document.createElement("div");
+	        var queuedFn = void 0;
+	        var observer = new _MutationObserver(
+	            function Promise$_Scheduler() {
+	                var fn = queuedFn;
+	                queuedFn = void 0;
+	                fn();
+	            }
+	       );
+	        observer.observe(div, {
+	            attributes: true
+	        });
+	        return function Promise$_Scheduler(fn) {
+	            queuedFn = fn;
+	            div.classList.toggle("foo");
+	        };
+	
+	    })();
+	}
+	else if (typeof setTimeout !== "undefined") {
+	    schedule = function Promise$_Scheduler(fn) {
+	        setTimeout(fn, 0);
+	    };
+	}
+	else throw new Error("no async scheduler available");
+	module.exports = schedule;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	function arrayCopy(src, srcIndex, dst, dstIndex, len) {
+	    for (var j = 0; j < len; ++j) {
+	        dst[j + dstIndex] = src[j + srcIndex];
+	    }
+	}
+	
+	function Queue(capacity) {
+	    this._capacity = capacity;
+	    this._length = 0;
+	    this._front = 0;
+	    this._makeCapacity();
+	}
+	
+	Queue.prototype._willBeOverCapacity =
+	function Queue$_willBeOverCapacity(size) {
+	    return this._capacity < size;
+	};
+	
+	Queue.prototype._pushOne = function Queue$_pushOne(arg) {
+	    var length = this.length();
+	    this._checkCapacity(length + 1);
+	    var i = (this._front + length) & (this._capacity - 1);
+	    this[i] = arg;
+	    this._length = length + 1;
+	};
+	
+	Queue.prototype.push = function Queue$push(fn, receiver, arg) {
+	    var length = this.length() + 3;
+	    if (this._willBeOverCapacity(length)) {
+	        this._pushOne(fn);
+	        this._pushOne(receiver);
+	        this._pushOne(arg);
+	        return;
+	    }
+	    var j = this._front + length - 3;
+	    this._checkCapacity(length);
+	    var wrapMask = this._capacity - 1;
+	    this[(j + 0) & wrapMask] = fn;
+	    this[(j + 1) & wrapMask] = receiver;
+	    this[(j + 2) & wrapMask] = arg;
+	    this._length = length;
+	};
+	
+	Queue.prototype.shift = function Queue$shift() {
+	    var front = this._front,
+	        ret = this[front];
+	
+	    this[front] = void 0;
+	    this._front = (front + 1) & (this._capacity - 1);
+	    this._length--;
+	    return ret;
+	};
+	
+	Queue.prototype.length = function Queue$length() {
+	    return this._length;
+	};
+	
+	Queue.prototype._makeCapacity = function Queue$_makeCapacity() {
+	    var len = this._capacity;
+	    for (var i = 0; i < len; ++i) {
+	        this[i] = void 0;
+	    }
+	};
+	
+	Queue.prototype._checkCapacity = function Queue$_checkCapacity(size) {
+	    if (this._capacity < size) {
+	        this._resizeTo(this._capacity << 3);
+	    }
+	};
+	
+	Queue.prototype._resizeTo = function Queue$_resizeTo(capacity) {
+	    var oldFront = this._front;
+	    var oldCapacity = this._capacity;
+	    var oldQueue = new Array(oldCapacity);
+	    var length = this.length();
+	
+	    arrayCopy(this, 0, oldQueue, 0, oldCapacity);
+	    this._capacity = capacity;
+	    this._makeCapacity();
+	    this._front = 0;
+	    if (oldFront + length <= oldCapacity) {
+	        arrayCopy(oldQueue, oldFront, this, 0, length);
+	    } else {        var lengthBeforeWrapping =
+	            length - ((oldFront + length) & (oldCapacity - 1));
+	
+	        arrayCopy(oldQueue, oldFront, this, 0, lengthBeforeWrapping);
+	        arrayCopy(oldQueue, 0, this, lengthBeforeWrapping,
+	                    length - lengthBeforeWrapping);
+	    }
+	};
+	
+	module.exports = Queue;
+
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
 	
 	/**
 	 * The Batcher maintains a job queue to be run
@@ -18882,10 +19235,10 @@
 	module.exports = Batcher
 
 /***/ },
-/* 99 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Cache = __webpack_require__(102)
+	var Cache = __webpack_require__(107)
 	var templateCache = new Cache(100)
 	
 	var map = {
@@ -19068,11 +19421,11 @@
 	}
 
 /***/ },
-/* 100 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var Cache = __webpack_require__(102)
+	var _ = __webpack_require__(17)
+	var Cache = __webpack_require__(107)
 	var pathCache = new Cache(1000)
 	var identRE = /^[$_a-zA-Z]+[\w$]*$/
 	
@@ -19390,197 +19743,11 @@
 	}
 
 /***/ },
-/* 101 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// shim for using process in browser
-	
-	var process = module.exports = {};
-	
-	process.nextTick = (function () {
-	    var canSetImmediate = typeof window !== 'undefined'
-	    && window.setImmediate;
-	    var canPost = typeof window !== 'undefined'
-	    && window.postMessage && window.addEventListener
-	    ;
-	
-	    if (canSetImmediate) {
-	        return function (f) { return window.setImmediate(f) };
-	    }
-	
-	    if (canPost) {
-	        var queue = [];
-	        window.addEventListener('message', function (ev) {
-	            var source = ev.source;
-	            if ((source === window || source === null) && ev.data === 'process-tick') {
-	                ev.stopPropagation();
-	                if (queue.length > 0) {
-	                    var fn = queue.shift();
-	                    fn();
-	                }
-	            }
-	        }, true);
-	
-	        return function nextTick(fn) {
-	            queue.push(fn);
-	            window.postMessage('process-tick', '*');
-	        };
-	    }
-	
-	    return function nextTick(fn) {
-	        setTimeout(fn, 0);
-	    };
-	})();
-	
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-	
-	function noop() {}
-	
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-	
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	}
-	
-	// TODO(shtylman)
-	process.cwd = function () { return '/' };
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-
-
-/***/ },
-/* 102 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * A doubly linked list-based Least Recently Used (LRU)
-	 * cache. Will keep most recently used items while
-	 * discarding least recently used items when its limit is
-	 * reached. This is a bare-bone version of
-	 * Rasmus Andersson's js-lru:
-	 *
-	 *   https://github.com/rsms/js-lru
-	 *
-	 * @param {Number} limit
-	 * @constructor
-	 */
-	
-	function Cache (limit) {
-	  this.size = 0
-	  this.limit = limit
-	  this.head = this.tail = undefined
-	  this._keymap = {}
-	}
-	
-	var p = Cache.prototype
-	
-	/**
-	 * Put <value> into the cache associated with <key>.
-	 * Returns the entry which was removed to make room for
-	 * the new entry. Otherwise undefined is returned.
-	 * (i.e. if there was enough room already).
-	 *
-	 * @param {String} key
-	 * @param {*} value
-	 * @return {Entry|undefined}
-	 */
-	
-	p.put = function (key, value) {
-	  var entry = {
-	    key:key,
-	    value:value
-	  }
-	  this._keymap[key] = entry
-	  if (this.tail) {
-	    this.tail.newer = entry
-	    entry.older = this.tail
-	  } else {
-	    this.head = entry
-	  }
-	  this.tail = entry
-	  if (this.size === this.limit) {
-	    return this.shift()
-	  } else {
-	    this.size++
-	  }
-	}
-	
-	/**
-	 * Purge the least recently used (oldest) entry from the
-	 * cache. Returns the removed entry or undefined if the
-	 * cache was empty.
-	 */
-	
-	p.shift = function () {
-	  var entry = this.head
-	  if (entry) {
-	    this.head = this.head.newer
-	    this.head.older = undefined
-	    entry.newer = entry.older = undefined
-	    this._keymap[entry.key] = undefined
-	  }
-	  return entry
-	}
-	
-	/**
-	 * Get and register recent use of <key>. Returns the value
-	 * associated with <key> or undefined if not in cache.
-	 *
-	 * @param {String} key
-	 * @param {Boolean} returnEntry
-	 * @return {Entry|*}
-	 */
-	
-	p.get = function (key, returnEntry) {
-	  var entry = this._keymap[key]
-	  if (entry === undefined) return
-	  if (entry === this.tail) {
-	    return returnEntry
-	      ? entry
-	      : entry.value
-	  }
-	  // HEAD--------------TAIL
-	  //   <.older   .newer>
-	  //  <--- add direction --
-	  //   A  B  C  <D>  E
-	  if (entry.newer) {
-	    if (entry === this.head) {
-	      this.head = entry.newer
-	    }
-	    entry.newer.older = entry.older // C <-- E.
-	  }
-	  if (entry.older) {
-	    entry.older.newer = entry.newer // C. --> E
-	  }
-	  entry.newer = undefined // D --x
-	  entry.older = this.tail // D. --> E
-	  if (this.tail) {
-	    this.tail.newer = entry // E. <-- D
-	  }
-	  this.tail = entry
-	  return returnEntry
-	    ? entry
-	    : entry.value
-	}
-	
-	module.exports = Cache
-
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(16)
-	var Batcher = __webpack_require__(98)
+	var _ = __webpack_require__(17)
+	var Batcher = __webpack_require__(102)
 	var batcher = new Batcher()
 	var transDurationProp = _.transitionProp + 'Duration'
 	var animDurationProp = _.animationProp + 'Duration'
@@ -19736,7 +19903,7 @@
 	}
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19783,10 +19950,127 @@
 	}
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	/**
+	 * A doubly linked list-based Least Recently Used (LRU)
+	 * cache. Will keep most recently used items while
+	 * discarding least recently used items when its limit is
+	 * reached. This is a bare-bone version of
+	 * Rasmus Andersson's js-lru:
+	 *
+	 *   https://github.com/rsms/js-lru
+	 *
+	 * @param {Number} limit
+	 * @constructor
+	 */
+	
+	function Cache (limit) {
+	  this.size = 0
+	  this.limit = limit
+	  this.head = this.tail = undefined
+	  this._keymap = {}
+	}
+	
+	var p = Cache.prototype
+	
+	/**
+	 * Put <value> into the cache associated with <key>.
+	 * Returns the entry which was removed to make room for
+	 * the new entry. Otherwise undefined is returned.
+	 * (i.e. if there was enough room already).
+	 *
+	 * @param {String} key
+	 * @param {*} value
+	 * @return {Entry|undefined}
+	 */
+	
+	p.put = function (key, value) {
+	  var entry = {
+	    key:key,
+	    value:value
+	  }
+	  this._keymap[key] = entry
+	  if (this.tail) {
+	    this.tail.newer = entry
+	    entry.older = this.tail
+	  } else {
+	    this.head = entry
+	  }
+	  this.tail = entry
+	  if (this.size === this.limit) {
+	    return this.shift()
+	  } else {
+	    this.size++
+	  }
+	}
+	
+	/**
+	 * Purge the least recently used (oldest) entry from the
+	 * cache. Returns the removed entry or undefined if the
+	 * cache was empty.
+	 */
+	
+	p.shift = function () {
+	  var entry = this.head
+	  if (entry) {
+	    this.head = this.head.newer
+	    this.head.older = undefined
+	    entry.newer = entry.older = undefined
+	    this._keymap[entry.key] = undefined
+	  }
+	  return entry
+	}
+	
+	/**
+	 * Get and register recent use of <key>. Returns the value
+	 * associated with <key> or undefined if not in cache.
+	 *
+	 * @param {String} key
+	 * @param {Boolean} returnEntry
+	 * @return {Entry|*}
+	 */
+	
+	p.get = function (key, returnEntry) {
+	  var entry = this._keymap[key]
+	  if (entry === undefined) return
+	  if (entry === this.tail) {
+	    return returnEntry
+	      ? entry
+	      : entry.value
+	  }
+	  // HEAD--------------TAIL
+	  //   <.older   .newer>
+	  //  <--- add direction --
+	  //   A  B  C  <D>  E
+	  if (entry.newer) {
+	    if (entry === this.head) {
+	      this.head = entry.newer
+	    }
+	    entry.newer.older = entry.older // C <-- E.
+	  }
+	  if (entry.older) {
+	    entry.older.newer = entry.newer // C. --> E
+	  }
+	  entry.newer = undefined // D --x
+	  entry.older = this.tail // D. --> E
+	  if (this.tail) {
+	    this.tail.newer = entry // E. <-- D
+	  }
+	  this.tail = entry
+	  return returnEntry
+	    ? entry
+	    : entry.value
+	}
+	
+	module.exports = Cache
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
 	
 	module.exports = {
 	
@@ -19905,10 +20189,10 @@
 	}
 
 /***/ },
-/* 106 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	
 	module.exports = {
 	
@@ -19937,11 +20221,11 @@
 	}
 
 /***/ },
-/* 107 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
-	var Watcher = __webpack_require__(39)
+	var _ = __webpack_require__(17)
+	var Watcher = __webpack_require__(69)
 	
 	module.exports = {
 	
@@ -20092,10 +20376,10 @@
 	}
 
 /***/ },
-/* 108 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(17)
 	
 	module.exports = {
 	
@@ -20121,288 +20405,6 @@
 	  }
 	
 	}
-
-/***/ },
-/* 109 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	var isES5 = (function(){
-	    "use strict";
-	    return this === void 0;
-	})();
-	
-	if (isES5) {
-	    module.exports = {
-	        freeze: Object.freeze,
-	        defineProperty: Object.defineProperty,
-	        keys: Object.keys,
-	        getPrototypeOf: Object.getPrototypeOf,
-	        isArray: Array.isArray,
-	        isES5: isES5
-	    };
-	} else {
-	    var has = {}.hasOwnProperty;
-	    var str = {}.toString;
-	    var proto = {}.constructor.prototype;
-	
-	    var ObjectKeys = function ObjectKeys(o) {
-	        var ret = [];
-	        for (var key in o) {
-	            if (has.call(o, key)) {
-	                ret.push(key);
-	            }
-	        }
-	        return ret;
-	    }
-	
-	    var ObjectDefineProperty = function ObjectDefineProperty(o, key, desc) {
-	        o[key] = desc.value;
-	        return o;
-	    }
-	
-	    var ObjectFreeze = function ObjectFreeze(obj) {
-	        return obj;
-	    }
-	
-	    var ObjectGetPrototypeOf = function ObjectGetPrototypeOf(obj) {
-	        try {
-	            return Object(obj).constructor.prototype;
-	        }
-	        catch (e) {
-	            return proto;
-	        }
-	    }
-	
-	    var ArrayIsArray = function ArrayIsArray(obj) {
-	        try {
-	            return str.call(obj) === "[object Array]";
-	        }
-	        catch(e) {
-	            return false;
-	        }
-	    }
-	
-	    module.exports = {
-	        isArray: ArrayIsArray,
-	        keys: ObjectKeys,
-	        defineProperty: ObjectDefineProperty,
-	        freeze: ObjectFreeze,
-	        getPrototypeOf: ObjectGetPrototypeOf,
-	        isES5: isES5
-	    };
-	}
-
-
-/***/ },
-/* 110 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var schedule;
-	var _MutationObserver;
-	if (typeof process === "object" && typeof process.version === "string") {
-	    schedule = function Promise$_Scheduler(fn) {
-	        process.nextTick(fn);
-	    };
-	}
-	else if ((typeof MutationObserver !== "undefined" &&
-	         (_MutationObserver = MutationObserver)) ||
-	         (typeof WebKitMutationObserver !== "undefined" &&
-	         (_MutationObserver = WebKitMutationObserver))) {
-	    schedule = (function() {
-	        var div = document.createElement("div");
-	        var queuedFn = void 0;
-	        var observer = new _MutationObserver(
-	            function Promise$_Scheduler() {
-	                var fn = queuedFn;
-	                queuedFn = void 0;
-	                fn();
-	            }
-	       );
-	        observer.observe(div, {
-	            attributes: true
-	        });
-	        return function Promise$_Scheduler(fn) {
-	            queuedFn = fn;
-	            div.classList.toggle("foo");
-	        };
-	
-	    })();
-	}
-	else if (typeof setTimeout !== "undefined") {
-	    schedule = function Promise$_Scheduler(fn) {
-	        setTimeout(fn, 0);
-	    };
-	}
-	else throw new Error("no async scheduler available");
-	module.exports = schedule;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(101)))
-
-/***/ },
-/* 111 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	function arrayCopy(src, srcIndex, dst, dstIndex, len) {
-	    for (var j = 0; j < len; ++j) {
-	        dst[j + dstIndex] = src[j + srcIndex];
-	    }
-	}
-	
-	function Queue(capacity) {
-	    this._capacity = capacity;
-	    this._length = 0;
-	    this._front = 0;
-	    this._makeCapacity();
-	}
-	
-	Queue.prototype._willBeOverCapacity =
-	function Queue$_willBeOverCapacity(size) {
-	    return this._capacity < size;
-	};
-	
-	Queue.prototype._pushOne = function Queue$_pushOne(arg) {
-	    var length = this.length();
-	    this._checkCapacity(length + 1);
-	    var i = (this._front + length) & (this._capacity - 1);
-	    this[i] = arg;
-	    this._length = length + 1;
-	};
-	
-	Queue.prototype.push = function Queue$push(fn, receiver, arg) {
-	    var length = this.length() + 3;
-	    if (this._willBeOverCapacity(length)) {
-	        this._pushOne(fn);
-	        this._pushOne(receiver);
-	        this._pushOne(arg);
-	        return;
-	    }
-	    var j = this._front + length - 3;
-	    this._checkCapacity(length);
-	    var wrapMask = this._capacity - 1;
-	    this[(j + 0) & wrapMask] = fn;
-	    this[(j + 1) & wrapMask] = receiver;
-	    this[(j + 2) & wrapMask] = arg;
-	    this._length = length;
-	};
-	
-	Queue.prototype.shift = function Queue$shift() {
-	    var front = this._front,
-	        ret = this[front];
-	
-	    this[front] = void 0;
-	    this._front = (front + 1) & (this._capacity - 1);
-	    this._length--;
-	    return ret;
-	};
-	
-	Queue.prototype.length = function Queue$length() {
-	    return this._length;
-	};
-	
-	Queue.prototype._makeCapacity = function Queue$_makeCapacity() {
-	    var len = this._capacity;
-	    for (var i = 0; i < len; ++i) {
-	        this[i] = void 0;
-	    }
-	};
-	
-	Queue.prototype._checkCapacity = function Queue$_checkCapacity(size) {
-	    if (this._capacity < size) {
-	        this._resizeTo(this._capacity << 3);
-	    }
-	};
-	
-	Queue.prototype._resizeTo = function Queue$_resizeTo(capacity) {
-	    var oldFront = this._front;
-	    var oldCapacity = this._capacity;
-	    var oldQueue = new Array(oldCapacity);
-	    var length = this.length();
-	
-	    arrayCopy(this, 0, oldQueue, 0, oldCapacity);
-	    this._capacity = capacity;
-	    this._makeCapacity();
-	    this._front = 0;
-	    if (oldFront + length <= oldCapacity) {
-	        arrayCopy(oldQueue, oldFront, this, 0, length);
-	    } else {        var lengthBeforeWrapping =
-	            length - ((oldFront + length) & (oldCapacity - 1));
-	
-	        arrayCopy(oldQueue, oldFront, this, 0, lengthBeforeWrapping);
-	        arrayCopy(oldQueue, 0, this, lengthBeforeWrapping,
-	                    length - lengthBeforeWrapping);
-	    }
-	};
-	
-	module.exports = Queue;
-
 
 /***/ }
 /******/ ])
