@@ -34,7 +34,6 @@ module.exports = Vue.extend({
         ajax.put("/surrogate/api/route/selected-option", {
           data: {
             name: this.$data.name,
-            handler: this.$data.selectedHandler,
             selectedOption: newSelection
           }
         });
@@ -45,7 +44,6 @@ module.exports = Vue.extend({
         ajax.put("/surrogate/api/route/selected-options", {
           data: {
             name: this.$data.name,
-            handler: this.$data.selectedHandler,
             selectedOptions: newSelections
           }
         });
