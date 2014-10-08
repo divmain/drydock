@@ -73,7 +73,7 @@
 	var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
 	  justWhitespace = /^\s*$/,
 	  _ = __webpack_require__(3),
-	  Promise = __webpack_require__(7);
+	  Promise = __webpack_require__(9);
 	
 	
 	assertSuccess = function (resolvedXhr) {
@@ -172,7 +172,7 @@
 	  _ = __webpack_require__(3),
 	  Vue = __webpack_require__(10);
 	
-	__webpack_require__(8);
+	__webpack_require__(7);
 	
 	module.exports = Vue.extend({
 	  template: tmpl,
@@ -7419,11 +7419,11 @@
 	var
 	  ajax = __webpack_require__(1),
 	  watchHash = __webpack_require__(5),
-	  tmpl = __webpack_require__(11),
+	  tmpl = __webpack_require__(12),
 	  _ = __webpack_require__(3),
 	  Vue = __webpack_require__(10);
 	
-	__webpack_require__(12);
+	__webpack_require__(13);
 	
 	module.exports = Vue.extend({
 	  template: tmpl,
@@ -7440,10 +7440,9 @@
 	
 	  watch: {
 	    "selectedHandler": function (newValue) {
-	      ajax.put("/surrogate/api/route/handler", {
+	      ajax.put("/surrogate/api/route", {
 	        data: {
-	          method: this.$data.method,
-	          path: this.$data.path,
+	          name: this.$data.name,
 	          selectedHandler: newValue
 	        }
 	      });
@@ -7452,8 +7451,7 @@
 	      if (newSelection) {
 	        ajax.put("/surrogate/api/route/selected-option", {
 	          data: {
-	            method: this.$data.method,
-	            path: this.$data.path,
+	            name: this.$data.name,
 	            handler: this.$data.selectedHandler,
 	            selectedOption: newSelection
 	          }
@@ -7464,8 +7462,7 @@
 	      if (newSelections) {
 	        ajax.put("/surrogate/api/route/selected-options", {
 	          data: {
-	            method: this.$data.method,
-	            path: this.$data.path,
+	            name: this.$data.name,
 	            handler: this.$data.selectedHandler,
 	            selectedOptions: newSelections
 	          }
@@ -7513,6 +7510,36 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(8);
+	if(typeof content === 'string') content = [module.id, content, ''];
+	// add the styles to the DOM
+	var update = __webpack_require__(11)(content);
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		module.hot.accept("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/control-panel/v-control-panel.styl", function() {
+			var newContent = require("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/control-panel/v-control-panel.styl");
+			if(typeof newContent === 'string') newContent = [module.id, newContent, ''];
+			update(newContent);
+		});
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	exports.push([module.id, ".v-control-panel {\n  padding: 16px;\n  font-family: sans-serif;\n}\n.v-control-panel button {\n  -moz-box-sizing: border-box;\n       box-sizing: border-box;\n  border: 1px solid #333;\n  margin: 4px 8px;\n  padding: 6px 14px;\n  color: #000;\n  background-color: #ccc;\n  border-radius: 4px;\n  font-weight: 600;\n  font-size: 14px;\n}\n.v-control-panel button:hover {\n  background-color: #ddd;\n}\n.v-control-panel .route button {\n  font-size: 10px;\n  padding: 4px 10px;\n  margin: -4px 0;\n}\n.v-control-panel .routes {\n  margin-bottom: 32px;\n}\n.v-control-panel .route-wrapper {\n  border-bottom: 1px dotted #666;\n}\n.v-control-panel .route {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  padding: 10px 16px;\n}\n.v-control-panel .route.header {\n  background: #555;\n  color: #fff;\n  font-weight: 600;\n}\n.v-control-panel .route .name {\n  -webkit-flex-shrink: 1;\n      -ms-flex-negative: 1;\n          flex-shrink: 1;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 220px;\n  margin-right: 12px;\n}\n.v-control-panel .route .method {\n  -webkit-flex-shrink: 0;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 100px;\n}\n.v-control-panel .route .path {\n  -webkit-flex-shrink: 1;\n      -ms-flex-negative: 1;\n          flex-shrink: 1;\n  -webkit-flex-grow: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n  display: inline-block;\n  width: 100px;\n}\n.v-control-panel .route .mutators {\n  -webkit-flex-shrink: 0;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 144px;\n}\n.v-control-panel .response-delay {\n  margin-bottom: 32px;\n}\n.v-control-panel .response-delay .delay-range {\n  width: 220px;\n}\n.v-control-panel .response-delay .delay-ms {\n  width: 70px;\n  display: inline-block;\n  text-align: right;\n}\n.v-control-panel .current textarea {\n  width: 100%;\n  height: 160px;\n  margin-top: 16px;\n  font-family: monospace;\n  font-size: 12px;\n}\n", ""]);
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * Copyright (c) 2014 Petka Antonov
 	 * 
@@ -7538,36 +7565,6 @@
 	"use strict";
 	var Promise = __webpack_require__(16)();
 	module.exports = Promise;
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(9);
-	if(typeof content === 'string') content = [module.id, content, ''];
-	// add the styles to the DOM
-	var update = __webpack_require__(14)(content);
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/control-panel/v-control-panel.styl", function() {
-			var newContent = require("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/control-panel/v-control-panel.styl");
-			if(typeof newContent === 'string') newContent = [module.id, newContent, ''];
-			update(newContent);
-		});
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	exports.push([module.id, ".v-control-panel {\n  padding: 16px;\n  font-family: sans-serif;\n}\n.v-control-panel button {\n  -moz-box-sizing: border-box;\n       box-sizing: border-box;\n  border: 1px solid #333;\n  margin: 4px 8px;\n  padding: 6px 14px;\n  color: #000;\n  background-color: #ccc;\n  border-radius: 4px;\n  font-weight: 600;\n  font-size: 14px;\n}\n.v-control-panel button:hover {\n  background-color: #ddd;\n}\n.v-control-panel .route button {\n  font-size: 10px;\n  padding: 4px 10px;\n  margin: -4px 0;\n}\n.v-control-panel .routes {\n  margin-bottom: 32px;\n}\n.v-control-panel .route-wrapper {\n  border-bottom: 1px dotted #666;\n}\n.v-control-panel .route {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  padding: 10px 16px;\n}\n.v-control-panel .route.header {\n  background: #555;\n  color: #fff;\n  font-weight: 600;\n}\n.v-control-panel .route .name {\n  -webkit-flex-shrink: 1;\n      -ms-flex-negative: 1;\n          flex-shrink: 1;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 220px;\n  margin-right: 12px;\n}\n.v-control-panel .route .method {\n  -webkit-flex-shrink: 0;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 100px;\n}\n.v-control-panel .route .path {\n  -webkit-flex-shrink: 1;\n      -ms-flex-negative: 1;\n          flex-shrink: 1;\n  -webkit-flex-grow: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n  display: inline-block;\n  width: 100px;\n}\n.v-control-panel .route .mutators {\n  -webkit-flex-shrink: 0;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 144px;\n}\n.v-control-panel .response-delay {\n  margin-bottom: 32px;\n}\n.v-control-panel .response-delay .delay-range {\n  width: 220px;\n}\n.v-control-panel .response-delay .delay-ms {\n  width: 70px;\n  display: inline-block;\n  text-align: right;\n}\n.v-control-panel .current textarea {\n  width: 100%;\n  height: 160px;\n  margin-top: 16px;\n  font-family: monospace;\n  font-size: 12px;\n}\n", ""]);
 
 /***/ },
 /* 10 */
@@ -7598,7 +7595,7 @@
 	 * Mixin global API
 	 */
 	
-	extend(Vue, __webpack_require__(20))
+	extend(Vue, __webpack_require__(18))
 	
 	/**
 	 * Vue and every constructor that extends Vue has an
@@ -7610,8 +7607,8 @@
 	 */
 	
 	Vue.options = {
-	  directives  : __webpack_require__(18),
-	  filters     : __webpack_require__(19),
+	  directives  : __webpack_require__(24),
+	  filters     : __webpack_require__(25),
 	  partials    : {},
 	  transitions : {},
 	  components  : {}
@@ -7650,11 +7647,11 @@
 	 * Mixin public API methods
 	 */
 	
+	extend(p, __webpack_require__(19))
+	extend(p, __webpack_require__(20))
 	extend(p, __webpack_require__(21))
 	extend(p, __webpack_require__(22))
 	extend(p, __webpack_require__(23))
-	extend(p, __webpack_require__(24))
-	extend(p, __webpack_require__(25))
 	
 	window.observer = __webpack_require__(30)
 	
@@ -7662,42 +7659,6 @@
 
 /***/ },
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div v-if=\"expanded\">\n  <div class=\"v-route-config\">\n\n    <div class=\"options\">\n      <h4>How would you like this route to behave?</h4>\n      <div v-repeat=\"handler: handlers\">\n        <label>\n          <input\n            type=\"radio\"\n            name=\"config-{{name}}\"\n            value=\"{{handler.name}}\"\n            v-model=\"selectedHandler\"\n          >\n          {{handler.description}}\n        </label>\n      </div>\n    </div>\n\n    <div class=\"config-panel\">\n      <h5>{{selectedHandlerObj.optionsHelperText}}</h5>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectMany'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"checkbox\"\n              name=\"config-{{description}}-selmany-{{$index}}\"\n              v-on=\"change: updateSelectedOptions(selectedHandlerObj, option)\"\n              v-attr=\"checked: isSelected(selectedHandlerObj, option)\"\n            >\n            {{option}}\n          </label>\n          <br>\n        </div>\n      </div>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectOne'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"radio\"\n              name=\"config-{{description}}-selone-{{$index}}\"\n              value=\"{{option}}\"\n              v-model=\"selectedHandlerObj.selectedOption\"\n            >\n            {{option}}\n          </label>\n          <br />\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(13);
-	if(typeof content === 'string') content = [module.id, content, ''];
-	// add the styles to the DOM
-	var update = __webpack_require__(14)(content);
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/route-config/v-route-config.styl", function() {
-			var newContent = require("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/route-config/v-route-config.styl");
-			if(typeof newContent === 'string') newContent = [module.id, newContent, ''];
-			update(newContent);
-		});
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(31)();
-	exports.push([module.id, ".v-route-config {\n  padding: 32px;\n  background-color: #ddd;\n}\n.v-route-config h4 {\n  margin-top: 0;\n}\n", ""]);
-
-/***/ },
-/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7817,6 +7778,42 @@
 	
 	}
 
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div v-if=\"expanded\">\n  <div class=\"v-route-config\">\n\n    <div class=\"options\">\n      <h4>How would you like this route to behave?</h4>\n      <div v-repeat=\"handler: handlers\">\n        <label>\n          <input\n            type=\"radio\"\n            name=\"config-{{name}}\"\n            value=\"{{handler.name}}\"\n            v-model=\"selectedHandler\"\n          >\n          {{handler.description}}\n        </label>\n      </div>\n    </div>\n\n    <div class=\"config-panel\">\n      <h5>{{selectedHandlerObj.optionsHelperText}}</h5>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectMany'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"checkbox\"\n              name=\"config-{{description}}-selmany-{{$index}}\"\n              v-on=\"change: updateSelectedOptions(selectedHandlerObj, option)\"\n              v-attr=\"checked: isSelected(selectedHandlerObj, option)\"\n            >\n            {{option}}\n          </label>\n          <br>\n        </div>\n      </div>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectOne'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"radio\"\n              name=\"config-{{description}}-selone-{{$index}}\"\n              value=\"{{option}}\"\n              v-model=\"selectedHandlerObj.selectedOption\"\n            >\n            {{option}}\n          </label>\n          <br />\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(14);
+	if(typeof content === 'string') content = [module.id, content, ''];
+	// add the styles to the DOM
+	var update = __webpack_require__(11)(content);
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		module.hot.accept("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/route-config/v-route-config.styl", function() {
+			var newContent = require("!!/Users/daleb/dev/surrogate/node_modules/css-loader/index.js!/Users/daleb/dev/surrogate/node_modules/autoprefixer-loader/index.js!/Users/daleb/dev/surrogate/node_modules/stylus-loader/index.js!/Users/daleb/dev/surrogate/frontend/views/route-config/v-route-config.styl");
+			if(typeof newContent === 'string') newContent = [module.id, newContent, ''];
+			update(newContent);
+		});
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(31)();
+	exports.push([module.id, ".v-route-config {\n  padding: 32px;\n  background-color: #ddd;\n}\n.v-route-config h4 {\n  margin-top: 0;\n}\n", ""]);
 
 /***/ },
 /* 15 */
@@ -8922,173 +8919,21 @@
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var lang   = __webpack_require__(78)
+	var lang   = __webpack_require__(62)
 	var extend = lang.extend
 	
 	extend(exports, lang)
-	extend(exports, __webpack_require__(79))
-	extend(exports, __webpack_require__(80))
-	extend(exports, __webpack_require__(81))
-	extend(exports, __webpack_require__(82))
+	extend(exports, __webpack_require__(63))
+	extend(exports, __webpack_require__(64))
+	extend(exports, __webpack_require__(65))
+	extend(exports, __webpack_require__(66))
 
 /***/ },
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// manipulation directives
-	exports.text       = __webpack_require__(62)
-	exports.html       = __webpack_require__(63)
-	exports.attr       = __webpack_require__(64)
-	exports.show       = __webpack_require__(65)
-	exports['class']   = __webpack_require__(66)
-	exports.el         = __webpack_require__(67)
-	exports.ref        = __webpack_require__(68)
-	exports.cloak      = __webpack_require__(69)
-	exports.style      = __webpack_require__(70)
-	exports.partial    = __webpack_require__(71)
-	exports.transition = __webpack_require__(72)
-	
-	// event listener directives
-	exports.on         = __webpack_require__(73)
-	exports.model      = __webpack_require__(87)
-	
-	// child vm directives
-	exports.component  = __webpack_require__(74)
-	exports.repeat     = __webpack_require__(75)
-	exports['if']      = __webpack_require__(76)
-	exports['with']    = __webpack_require__(77)
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var _ = __webpack_require__(17)
-	
-	/**
-	 * Stringify value.
-	 *
-	 * @param {Number} indent
-	 */
-	
-	exports.json = function (value, indent) {
-	  return JSON.stringify(value, null, Number(indent) || 2)
-	}
-	
-	/**
-	 * 'abc' => 'Abc'
-	 */
-	
-	exports.capitalize = function (value) {
-	  if (!value && value !== 0) return ''
-	  value = value.toString()
-	  return value.charAt(0).toUpperCase() + value.slice(1)
-	}
-	
-	/**
-	 * 'abc' => 'ABC'
-	 */
-	
-	exports.uppercase = function (value) {
-	  return (value || value === 0)
-	    ? value.toString().toUpperCase()
-	    : ''
-	}
-	
-	/**
-	 * 'AbC' => 'abc'
-	 */
-	
-	exports.lowercase = function (value) {
-	  return (value || value === 0)
-	    ? value.toString().toLowerCase()
-	    : ''
-	}
-	
-	/**
-	 * 12345 => $12,345.00
-	 *
-	 * @param {String} sign
-	 */
-	
-	var digitsRE = /(\d{3})(?=\d)/g
-	
-	exports.currency = function (value, sign) {
-	  value = parseFloat(value)
-	  if (!value && value !== 0) return ''
-	  sign = sign || '$'
-	  var s = Math.floor(value).toString(),
-	    i = s.length % 3,
-	    h = i > 0
-	      ? (s.slice(0, i) + (s.length > 3 ? ',' : ''))
-	      : '',
-	    f = '.' + value.toFixed(2).slice(-2)
-	  return sign + h + s.slice(i).replace(digitsRE, '$1,') + f
-	}
-	
-	/**
-	 * 'item' => 'items'
-	 *
-	 * @params
-	 *  an array of strings corresponding to
-	 *  the single, double, triple ... forms of the word to
-	 *  be pluralized. When the number to be pluralized
-	 *  exceeds the length of the args, it will use the last
-	 *  entry in the array.
-	 *
-	 *  e.g. ['single', 'double', 'triple', 'multiple']
-	 */
-	
-	exports.pluralize = function (value) {
-	  var args = _.toArray(arguments, 1)
-	  return args.length > 1
-	    ? (args[value % 10 - 1] || args[args.length - 1])
-	    : (args[0] + (value === 1 ? '' : 's'))
-	}
-	
-	/**
-	 * A special filter that takes a handler function,
-	 * wraps it so it only gets triggered on specific
-	 * keypresses. v-on only.
-	 *
-	 * @param {String} key
-	 */
-	
-	var keyCodes = {
-	  enter    : 13,
-	  tab      : 9,
-	  'delete' : 46,
-	  up       : 38,
-	  left     : 37,
-	  right    : 39,
-	  down     : 40,
-	  esc      : 27
-	}
-	
-	exports.key = function (handler, key) {
-	  if (!handler) return
-	  var code = keyCodes[key]
-	  if (!code) {
-	    code = parseInt(key, 10)
-	  }
-	  return function (e) {
-	    if (e.keyCode === code) {
-	      return handler.call(this, e)
-	    }
-	  }
-	}
-	
-	/**
-	 * Install special array filters
-	 */
-	
-	_.extend(exports, __webpack_require__(85))
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var mergeOptions = __webpack_require__(83)
+	var mergeOptions = __webpack_require__(67)
 	
 	/**
 	 * Expose useful internals
@@ -9096,7 +8941,7 @@
 	
 	exports.util       = _
 	exports.nextTick   = _.nextTick
-	exports.config     = __webpack_require__(84)
+	exports.config     = __webpack_require__(68)
 	
 	/**
 	 * Each instance constructor, including Vue, has a unique
@@ -9223,14 +9068,14 @@
 	createAssetRegisters(exports)
 
 /***/ },
-/* 21 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(86)
-	var textParser = __webpack_require__(88)
-	var dirParser = __webpack_require__(89)
-	var expParser = __webpack_require__(90)
+	var Watcher = __webpack_require__(69)
+	var textParser = __webpack_require__(91)
+	var dirParser = __webpack_require__(92)
+	var expParser = __webpack_require__(93)
 	var filterRE = /[^|]\|[^|]/
 	
 	/**
@@ -9383,11 +9228,11 @@
 	}
 
 /***/ },
-/* 22 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var transition = __webpack_require__(91)
+	var transition = __webpack_require__(94)
 	
 	/**
 	 * Append instance to target
@@ -9591,7 +9436,7 @@
 	}
 
 /***/ },
-/* 23 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -9764,7 +9609,7 @@
 	}
 
 /***/ },
-/* 24 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -9817,7 +9662,7 @@
 	}
 
 /***/ },
-/* 25 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -9935,10 +9780,162 @@
 	}
 
 /***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// manipulation directives
+	exports.text       = __webpack_require__(70)
+	exports.html       = __webpack_require__(71)
+	exports.attr       = __webpack_require__(72)
+	exports.show       = __webpack_require__(73)
+	exports['class']   = __webpack_require__(74)
+	exports.el         = __webpack_require__(75)
+	exports.ref        = __webpack_require__(76)
+	exports.cloak      = __webpack_require__(77)
+	exports.style      = __webpack_require__(78)
+	exports.partial    = __webpack_require__(79)
+	exports.transition = __webpack_require__(80)
+	
+	// event listener directives
+	exports.on         = __webpack_require__(81)
+	exports.model      = __webpack_require__(95)
+	
+	// child vm directives
+	exports.component  = __webpack_require__(82)
+	exports.repeat     = __webpack_require__(83)
+	exports['if']      = __webpack_require__(84)
+	exports['with']    = __webpack_require__(85)
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	
+	/**
+	 * Stringify value.
+	 *
+	 * @param {Number} indent
+	 */
+	
+	exports.json = function (value, indent) {
+	  return JSON.stringify(value, null, Number(indent) || 2)
+	}
+	
+	/**
+	 * 'abc' => 'Abc'
+	 */
+	
+	exports.capitalize = function (value) {
+	  if (!value && value !== 0) return ''
+	  value = value.toString()
+	  return value.charAt(0).toUpperCase() + value.slice(1)
+	}
+	
+	/**
+	 * 'abc' => 'ABC'
+	 */
+	
+	exports.uppercase = function (value) {
+	  return (value || value === 0)
+	    ? value.toString().toUpperCase()
+	    : ''
+	}
+	
+	/**
+	 * 'AbC' => 'abc'
+	 */
+	
+	exports.lowercase = function (value) {
+	  return (value || value === 0)
+	    ? value.toString().toLowerCase()
+	    : ''
+	}
+	
+	/**
+	 * 12345 => $12,345.00
+	 *
+	 * @param {String} sign
+	 */
+	
+	var digitsRE = /(\d{3})(?=\d)/g
+	
+	exports.currency = function (value, sign) {
+	  value = parseFloat(value)
+	  if (!value && value !== 0) return ''
+	  sign = sign || '$'
+	  var s = Math.floor(value).toString(),
+	    i = s.length % 3,
+	    h = i > 0
+	      ? (s.slice(0, i) + (s.length > 3 ? ',' : ''))
+	      : '',
+	    f = '.' + value.toFixed(2).slice(-2)
+	  return sign + h + s.slice(i).replace(digitsRE, '$1,') + f
+	}
+	
+	/**
+	 * 'item' => 'items'
+	 *
+	 * @params
+	 *  an array of strings corresponding to
+	 *  the single, double, triple ... forms of the word to
+	 *  be pluralized. When the number to be pluralized
+	 *  exceeds the length of the args, it will use the last
+	 *  entry in the array.
+	 *
+	 *  e.g. ['single', 'double', 'triple', 'multiple']
+	 */
+	
+	exports.pluralize = function (value) {
+	  var args = _.toArray(arguments, 1)
+	  return args.length > 1
+	    ? (args[value % 10 - 1] || args[args.length - 1])
+	    : (args[0] + (value === 1 ? '' : 's'))
+	}
+	
+	/**
+	 * A special filter that takes a handler function,
+	 * wraps it so it only gets triggered on specific
+	 * keypresses. v-on only.
+	 *
+	 * @param {String} key
+	 */
+	
+	var keyCodes = {
+	  enter    : 13,
+	  tab      : 9,
+	  'delete' : 46,
+	  up       : 38,
+	  left     : 37,
+	  right    : 39,
+	  down     : 40,
+	  esc      : 27
+	}
+	
+	exports.key = function (handler, key) {
+	  if (!handler) return
+	  var code = keyCodes[key]
+	  if (!code) {
+	    code = parseInt(key, 10)
+	  }
+	  return function (e) {
+	    if (e.keyCode === code) {
+	      return handler.call(this, e)
+	    }
+	  }
+	}
+	
+	/**
+	 * Install special array filters
+	 */
+	
+	_.extend(exports, __webpack_require__(86))
+
+/***/ },
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mergeOptions = __webpack_require__(83)
+	var mergeOptions = __webpack_require__(67)
 	
 	/**
 	 * The main init sequence. This is called for every
@@ -10146,7 +10143,7 @@
 
 	var _ = __webpack_require__(17)
 	var Observer = __webpack_require__(30)
-	var Binding = __webpack_require__(92)
+	var Binding = __webpack_require__(87)
 	
 	/**
 	 * Setup the scope of an instance, which contains:
@@ -10366,7 +10363,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Directive = __webpack_require__(93)
+	var Directive = __webpack_require__(88)
 	var compile = __webpack_require__(96)
 	var transclude = __webpack_require__(97)
 	
@@ -10442,10 +10439,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var config = __webpack_require__(84)
-	var Binding = __webpack_require__(92)
-	var arrayAugmentations = __webpack_require__(94)
-	var objectAugmentations = __webpack_require__(95)
+	var config = __webpack_require__(68)
+	var Binding = __webpack_require__(87)
+	var arrayAugmentations = __webpack_require__(89)
+	var objectAugmentations = __webpack_require__(90)
 	var arrayKeys = Object.getOwnPropertyNames(arrayAugmentations)
 	var objectKeys = Object.getOwnPropertyNames(objectAugmentations)
 	
@@ -10727,7 +10724,7 @@
 	 * 
 	 */
 	"use strict";
-	var es5 = __webpack_require__(101);
+	var es5 = __webpack_require__(99);
 	var haveGetters = (function(){
 	    try {
 	        var o = {};
@@ -11001,8 +10998,8 @@
 	 * 
 	 */
 	"use strict";
-	var schedule = __webpack_require__(99);
-	var Queue = __webpack_require__(100);
+	var schedule = __webpack_require__(100);
+	var Queue = __webpack_require__(101);
 	var errorObj = __webpack_require__(32).errorObj;
 	var tryCatch1 = __webpack_require__(32).tryCatch1;
 	var _process = typeof process !== "undefined" ? process : void 0;
@@ -11119,7 +11116,7 @@
 	 * 
 	 */
 	"use strict";
-	var Objectfreeze = __webpack_require__(101).freeze;
+	var Objectfreeze = __webpack_require__(99).freeze;
 	var util = __webpack_require__(32);
 	var inherits = util.inherits;
 	var notEnumerableProp = util.notEnumerableProp;
@@ -11619,7 +11616,7 @@
 	"use strict";
 	module.exports = function() {
 	var inherits = __webpack_require__(32).inherits;
-	var defineProperty = __webpack_require__(101).defineProperty;
+	var defineProperty = __webpack_require__(99).defineProperty;
 	
 	var rignore = new RegExp(
 	    "\\b(?:[a-zA-Z0-9.]+\\$_\\w+|" +
@@ -11861,7 +11858,7 @@
 	var errors = __webpack_require__(34);
 	var tryCatch1 = util.tryCatch1;
 	var errorObj = util.errorObj;
-	var keys = __webpack_require__(101).keys;
+	var keys = __webpack_require__(99).keys;
 	var TypeError = errors.TypeError;
 	
 	function CatchFilter(instances, callback, promise) {
@@ -11963,7 +11960,7 @@
 	var OperationalError = errors.OperationalError;
 	var async = __webpack_require__(33);
 	var haveGetters = util.haveGetters;
-	var es5 = __webpack_require__(101);
+	var es5 = __webpack_require__(99);
 	
 	function isUntypedError(obj) {
 	    return obj instanceof Error &&
@@ -13614,7 +13611,7 @@
 	var util = __webpack_require__(32);
 	var apiRejection = __webpack_require__(40)(Promise);
 	var isObject = util.isObject;
-	var es5 = __webpack_require__(101);
+	var es5 = __webpack_require__(99);
 	
 	function PropertiesPromiseArray(obj) {
 	    var keys = es5.keys(obj);
@@ -14655,6 +14652,1080 @@
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Check is a string starts with $ or _
+	 *
+	 * @param {String} str
+	 * @return {Boolean}
+	 */
+	
+	exports.isReserved = function (str) {
+	  var c = str.charCodeAt(0)
+	  return c === 0x24 || c === 0x5F
+	}
+	
+	/**
+	 * Guard text output, make sure undefined outputs
+	 * empty string
+	 *
+	 * @param {*} value
+	 * @return {String}
+	 */
+	
+	exports.toString = function (value) {
+	  return value == null
+	    ? ''
+	    : value.toString()
+	}
+	
+	/**
+	 * Check and convert possible numeric numbers before
+	 * setting back to data
+	 *
+	 * @param {*} value
+	 * @return {*|Number}
+	 */
+	
+	exports.toNumber = function (value) {
+	  return (
+	    isNaN(value) ||
+	    value === null ||
+	    typeof value === 'boolean'
+	  ) ? value
+	    : Number(value)
+	}
+	
+	/**
+	 * Strip quotes from a string
+	 *
+	 * @param {String} str
+	 * @return {String | false}
+	 */
+	
+	exports.stripQuotes = function (str) {
+	  var a = str.charCodeAt(0)
+	  var b = str.charCodeAt(str.length - 1)
+	  return a === b && (a === 0x22 || a === 0x27)
+	    ? str.slice(1, -1)
+	    : false
+	}
+	
+	/**
+	 * Camelize a hyphen-delmited string.
+	 *
+	 * @param {String} str
+	 * @return {String}
+	 */
+	
+	var camelRE = /(?:^|[-_])(\w)/g
+	exports.camelize = function (str) {
+	  return str.replace (camelRE, function (_, c) {
+	    return c ? c.toUpperCase () : '';
+	  })
+	}
+	
+	/**
+	 * Simple bind, faster than native
+	 *
+	 * @param {Function} fn
+	 * @param {Object} ctx
+	 * @return {Function}
+	 */
+	
+	exports.bind = function (fn, ctx) {
+	  return function () {
+	    return fn.apply(ctx, arguments)
+	  }
+	}
+	
+	/**
+	 * Convert an Array-like object to a real Array.
+	 *
+	 * @param {Array-like} list
+	 * @param {Number} [start] - start index
+	 * @return {Array}
+	 */
+	
+	exports.toArray = function (list, start) {
+	  start = start || 0
+	  var i = list.length - start
+	  var ret = new Array(i)
+	  while (i--) {
+	    ret[i] = list[i + start]
+	  }
+	  return ret
+	}
+	
+	/**
+	 * Mix properties into target object.
+	 *
+	 * @param {Object} to
+	 * @param {Object} from
+	 */
+	
+	exports.extend = function (to, from) {
+	  for (var key in from) {
+	    to[key] = from[key]
+	  }
+	}
+	
+	/**
+	 * Quick object check - this is primarily used to tell
+	 * Objects from primitive values when we know the value
+	 * is a JSON-compliant type.
+	 *
+	 * @param {*} obj
+	 * @return {Boolean}
+	 */
+	
+	exports.isObject = function (obj) {
+	  return obj && typeof obj === 'object'
+	}
+	
+	/**
+	 * Strict object type check. Only returns true
+	 * for plain JavaScript objects.
+	 *
+	 * @param {*} obj
+	 * @return {Boolean}
+	 */
+	
+	var toString = Object.prototype.toString
+	exports.isPlainObject = function (obj) {
+	  return toString.call(obj) === '[object Object]'
+	}
+	
+	/**
+	 * Array type check.
+	 *
+	 * @param {*} obj
+	 * @return {Boolean}
+	 */
+	
+	exports.isArray = function (obj) {
+	  return Array.isArray(obj)
+	}
+	
+	/**
+	 * Define a non-enumerable property
+	 *
+	 * @param {Object} obj
+	 * @param {String} key
+	 * @param {*} val
+	 * @param {Boolean} [enumerable]
+	 */
+	
+	exports.define = function (obj, key, val, enumerable) {
+	  Object.defineProperty(obj, key, {
+	    value        : val,
+	    enumerable   : !!enumerable,
+	    writable     : true,
+	    configurable : true
+	  })
+	}
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Can we use __proto__?
+	 *
+	 * @type {Boolean}
+	 */
+	
+	exports.hasProto = '__proto__' in {}
+	
+	/**
+	 * Indicates we have a window
+	 *
+	 * @type {Boolean}
+	 */
+	
+	var toString = Object.prototype.toString
+	var inBrowser = exports.inBrowser =
+	  typeof window !== 'undefined' &&
+	  toString.call(window) !== '[object Object]'
+	
+	/**
+	 * Defer a task to the start of the next event loop
+	 *
+	 * @param {Function} cb
+	 * @param {Object} ctx
+	 */
+	
+	var defer = inBrowser
+	  ? (window.requestAnimationFrame ||
+	    window.webkitRequestAnimationFrame ||
+	    setTimeout)
+	  : setTimeout
+	
+	exports.nextTick = function (cb, ctx) {
+	  if (ctx) {
+	    defer(function () { cb.call(ctx) }, 0)
+	  } else {
+	    defer(cb, 0)
+	  }
+	}
+	
+	/**
+	 * Detect if we are in IE9...
+	 *
+	 * @type {Boolean}
+	 */
+	
+	exports.isIE9 =
+	  inBrowser &&
+	  navigator.userAgent.indexOf('MSIE 9.0') > 0
+	
+	/**
+	 * Sniff transition/animation events
+	 */
+	
+	if (inBrowser && !exports.isIE9) {
+	  var isWebkitTrans =
+	    window.ontransitionend === undefined &&
+	    window.onwebkittransitionend !== undefined
+	  var isWebkitAnim =
+	    window.onanimationend === undefined &&
+	    window.onwebkitanimationend !== undefined
+	  exports.transitionProp = isWebkitTrans
+	    ? 'WebkitTransition'
+	    : 'transition'
+	  exports.transitionEndEvent = isWebkitTrans
+	    ? 'webkitTransitionEnd'
+	    : 'transitionend'
+	  exports.animationProp = isWebkitAnim
+	    ? 'WebkitAnimation'
+	    : 'animation'
+	  exports.animationEndEvent = isWebkitAnim
+	    ? 'webkitAnimationEnd'
+	    : 'animationend'
+	}
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var config = __webpack_require__(68)
+	
+	/**
+	 * Check if a node is in the document.
+	 *
+	 * @param {Node} node
+	 * @return {Boolean}
+	 */
+	
+	var doc =
+	  typeof document !== 'undefined' &&
+	  document.documentElement
+	
+	exports.inDoc = function (node) {
+	  return doc && doc.contains(node)
+	}
+	
+	/**
+	 * Extract an attribute from a node.
+	 *
+	 * @param {Node} node
+	 * @param {String} attr
+	 */
+	
+	exports.attr = function (node, attr) {
+	  attr = config.prefix + attr
+	  var val = node.getAttribute(attr)
+	  if (val !== null) {
+	    node.removeAttribute(attr)
+	  }
+	  return val
+	}
+	
+	/**
+	 * Insert el before target
+	 *
+	 * @param {Element} el
+	 * @param {Element} target 
+	 */
+	
+	exports.before = function (el, target) {
+	  target.parentNode.insertBefore(el, target)
+	}
+	
+	/**
+	 * Insert el after target
+	 *
+	 * @param {Element} el
+	 * @param {Element} target 
+	 */
+	
+	exports.after = function (el, target) {
+	  if (target.nextSibling) {
+	    exports.before(el, target.nextSibling)
+	  } else {
+	    target.parentNode.appendChild(el)
+	  }
+	}
+	
+	/**
+	 * Remove el from DOM
+	 *
+	 * @param {Element} el
+	 */
+	
+	exports.remove = function (el) {
+	  el.parentNode.removeChild(el)
+	}
+	
+	/**
+	 * Prepend el to target
+	 *
+	 * @param {Element} el
+	 * @param {Element} target 
+	 */
+	
+	exports.prepend = function (el, target) {
+	  if (target.firstChild) {
+	    exports.before(el, target.firstChild)
+	  } else {
+	    target.appendChild(el)
+	  }
+	}
+	
+	/**
+	 * Replace target with el
+	 *
+	 * @param {Element} target
+	 * @param {Element} el
+	 */
+	
+	exports.replace = function (target, el) {
+	  var parent = target.parentNode
+	  if (parent) {
+	    parent.replaceChild(el, target)
+	  }
+	}
+	
+	/**
+	 * Copy attributes from one element to another.
+	 *
+	 * @param {Element} from
+	 * @param {Element} to
+	 */
+	
+	exports.copyAttributes = function (from, to) {
+	  if (from.hasAttributes()) {
+	    var attrs = from.attributes
+	    for (var i = 0, l = attrs.length; i < l; i++) {
+	      var attr = attrs[i]
+	      to.setAttribute(attr.name, attr.value)
+	    }
+	  }
+	}
+	
+	/**
+	 * Add event listener shorthand.
+	 *
+	 * @param {Element} el
+	 * @param {String} event
+	 * @param {Function} cb
+	 */
+	
+	exports.on = function (el, event, cb) {
+	  el.addEventListener(event, cb)
+	}
+	
+	/**
+	 * Remove event listener shorthand.
+	 *
+	 * @param {Element} el
+	 * @param {String} event
+	 * @param {Function} cb
+	 */
+	
+	exports.off = function (el, event, cb) {
+	  el.removeEventListener(event, cb)
+	}
+	
+	/**
+	 * Compatibility add class for IE9
+	 *
+	 * @param {Element} el
+	 * @param {Strong} cls
+	 */
+	
+	exports.addClass = function (el, cls) {
+	  var cur = ' ' + el.className + ' '
+	  if (cur.indexOf(' ' + cls + ' ') < 0) {
+	    el.className = (cur + cls).trim()
+	  }
+	}
+	
+	/**
+	 * Compatibility remove class for IE9
+	 *
+	 * @param {Element} el
+	 * @param {Strong} cls
+	 */
+	
+	exports.removeClass = function (el, cls) {
+	  var cur = ' ' + el.className + ' '
+	  var tar = ' ' + cls + ' '
+	  while (cur.indexOf(tar) >= 0) {
+	    cur = cur.replace(tar, ' ')
+	  }
+	  el.className = cur.trim()
+	}
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(66)
+	
+	/**
+	 * Resolve read & write filters for a vm instance. The
+	 * filters descriptor Array comes from the directive parser.
+	 *
+	 * This is extracted into its own utility so it can
+	 * be used in multiple scenarios.
+	 *
+	 * @param {Vue} vm
+	 * @param {Array<Object>} filters
+	 * @param {Object} [target]
+	 * @return {Object}
+	 */
+	
+	exports.resolveFilters = function (vm, filters, target) {
+	  if (!filters) {
+	    return
+	  }
+	  var res = target || {}
+	  // var registry = vm.$options.filters
+	  filters.forEach(function (f) {
+	    var def = vm.$options.filters[f.name]
+	    _.assertAsset(def, 'filter', f.name)
+	    if (!def) return
+	    var args = f.args
+	    var reader, writer
+	    if (typeof def === 'function') {
+	      reader = def
+	    } else {
+	      reader = def.read
+	      writer = def.write
+	    }
+	    if (reader) {
+	      if (!res.read) res.read = []
+	      res.read.push(function (value) {
+	        return args
+	          ? reader.apply(vm, [value].concat(args))
+	          : reader.call(vm, value)
+	      })
+	    }
+	    if (writer) {
+	      if (!res.write) res.write = []
+	      res.write.push(function (value, oldVal) {
+	        return args
+	          ? writer.apply(vm, [value, oldVal].concat(args))
+	          : writer.call(vm, value, oldVal)
+	      })
+	    }
+	  })
+	  return res
+	}
+	
+	/**
+	 * Apply filters to a value
+	 *
+	 * @param {*} value
+	 * @param {Array} filters
+	 * @param {Vue} vm
+	 * @param {*} oldVal
+	 * @return {*}
+	 */
+	
+	exports.applyFilters = function (value, filters, vm, oldVal) {
+	  if (!filters) {
+	    return value
+	  }
+	  for (var i = 0, l = filters.length; i < l; i++) {
+	    value = filters[i].call(vm, value, oldVal)
+	  }
+	  return value
+	}
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var config = __webpack_require__(68)
+	
+	/**
+	 * Enable debug utilities. The enableDebug() function and
+	 * all _.log() & _.warn() calls will be dropped in the
+	 * minified production build.
+	 */
+	
+	enableDebug()
+	
+	function enableDebug () {
+	  var hasConsole = typeof console !== 'undefined'
+	  
+	  /**
+	   * Log a message.
+	   *
+	   * @param {String} msg
+	   */
+	
+	  exports.log = function (msg) {
+	    if (hasConsole && config.debug) {
+	      console.log('[Vue info]: ' + msg)
+	    }
+	  }
+	
+	  /**
+	   * We've got a problem here.
+	   *
+	   * @param {String} msg
+	   */
+	
+	  exports.warn = function (msg) {
+	    if (hasConsole && !config.silent) {
+	      console.warn('[Vue warn]: ' + msg)
+	      if (config.debug && console.trace) {
+	        console.trace()
+	      }
+	    }
+	  }
+	
+	  /**
+	   * Assert asset exists
+	   */
+	
+	  exports.assertAsset = function (val, type, id) {
+	    if (!val) {
+	      exports.warn('Failed to resolve ' + type + ': ' + id)
+	    }
+	  }
+	}
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var extend = _.extend
+	
+	/**
+	 * Option overwriting strategies are functions that handle
+	 * how to merge a parent option value and a child option
+	 * value into the final value.
+	 *
+	 * All strategy functions follow the same signature:
+	 *
+	 * @param {*} parentVal
+	 * @param {*} childVal
+	 * @param {Vue} [vm]
+	 */
+	
+	var strats = {}
+	
+	/**
+	 * Data
+	 */
+	
+	strats.data = function (parentVal, childVal, vm) {
+	  // in a class merge, both should be functions
+	  // so we just return child if it exists
+	  if (!vm) {
+	    if (childVal && typeof childVal !== 'function') {
+	      _.warn(
+	        'The "data" option should be a function ' +
+	        'that returns a per-instance value in component ' +
+	        'definitions.'
+	      )
+	      return
+	    }
+	    return childVal || parentVal
+	  }
+	  var instanceData = typeof childVal === 'function'
+	    ? childVal()
+	    : childVal
+	  var defaultData = typeof parentVal === 'function'
+	    ? parentVal()
+	    : undefined
+	  if (instanceData) {
+	    // mix default data into instance data
+	    for (var key in defaultData) {
+	      if (!instanceData.hasOwnProperty(key)) {
+	        instanceData[key] = defaultData[key]
+	      }
+	    }
+	    return instanceData
+	  } else {
+	    return defaultData
+	  }
+	}
+	
+	/**
+	 * El
+	 */
+	
+	strats.el = function (parentVal, childVal, vm) {
+	  if (!vm && childVal && typeof childVal !== 'function') {
+	    _.warn(
+	      'The "el" option should be a function ' +
+	      'that returns a per-instance value in component ' +
+	      'definitions.'
+	    )
+	    return
+	  }
+	  var ret = childVal || parentVal
+	  // invoke the element factory if this is instance merge
+	  return vm && typeof ret === 'function'
+	    ? ret()
+	    : ret
+	}
+	
+	/**
+	 * Hooks and param attributes are merged as arrays.
+	 */
+	
+	strats.created =
+	strats.ready =
+	strats.attached =
+	strats.detached =
+	strats.beforeCompile =
+	strats.compiled =
+	strats.beforeDestroy =
+	strats.destroyed =
+	strats.paramAttributes = function (parentVal, childVal) {
+	  return childVal
+	    ? parentVal
+	      ? parentVal.concat(childVal)
+	      : _.isArray(childVal)
+	        ? childVal
+	        : [childVal]
+	    : parentVal
+	}
+	
+	/**
+	 * Assets
+	 *
+	 * When a vm is present (instance creation), we need to do
+	 * a three-way merge between constructor options, instance
+	 * options and parent options.
+	 */
+	
+	strats.directives =
+	strats.filters =
+	strats.partials =
+	strats.transitions =
+	strats.components = function (parentVal, childVal, vm, key) {
+	  var ret = Object.create(
+	    vm && vm.$parent
+	      ? vm.$parent.$options[key]
+	      : _.Vue.options[key]
+	  )
+	  if (parentVal) {
+	    var keys = Object.keys(parentVal)
+	    var i = keys.length
+	    var field
+	    while (i--) {
+	      field = keys[i]
+	      ret[field] = parentVal[field]
+	    }
+	  }
+	  if (childVal) extend(ret, childVal)
+	  return ret
+	}
+	
+	/**
+	 * Events
+	 *
+	 * Events should not overwrite one another, so we merge
+	 * them as arrays.
+	 */
+	
+	strats.events = function (parentVal, childVal) {
+	  if (!childVal) return parentVal
+	  if (!parentVal) return childVal
+	  var ret = {}
+	  extend(ret, parentVal)
+	  for (var key in childVal) {
+	    var parent = ret[key]
+	    var child = childVal[key]
+	    ret[key] = parent
+	      ? parent.concat(child)
+	      : [child]
+	  }
+	  return ret
+	}
+	
+	/**
+	 * Other object hashes.
+	 */
+	
+	strats.methods =
+	strats.computed = function (parentVal, childVal) {
+	  if (!childVal) return parentVal
+	  if (!parentVal) return childVal
+	  var ret = Object.create(parentVal)
+	  extend(ret, childVal)
+	  return ret
+	}
+	
+	/**
+	 * Default strategy.
+	 */
+	
+	var defaultStrat = function (parentVal, childVal) {
+	  return childVal === undefined
+	    ? parentVal
+	    : childVal
+	}
+	
+	/**
+	 * Make sure component options get converted to actual
+	 * constructors.
+	 *
+	 * @param {Object} components
+	 */
+	
+	function guardComponents (components) {
+	  if (components) {
+	    var def
+	    for (var key in components) {
+	      def = components[key]
+	      if (_.isPlainObject(def)) {
+	        def.name = key
+	        components[key] = _.Vue.extend(def)
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Merge two option objects into a new one.
+	 * Core utility used in both instantiation and inheritance.
+	 *
+	 * @param {Object} parent
+	 * @param {Object} child
+	 * @param {Vue} [vm] - if vm is present, indicates this is
+	 *                     an instantiation merge.
+	 */
+	
+	module.exports = function mergeOptions (parent, child, vm) {
+	  guardComponents(child.components)
+	  var options = {}
+	  var key
+	  for (key in parent) {
+	    merge(parent[key], child[key], key)
+	  }
+	  for (key in child) {
+	    if (!(parent.hasOwnProperty(key))) {
+	      merge(parent[key], child[key], key)
+	    }
+	  }
+	  var mixins = child.mixins
+	  if (mixins) {
+	    for (var i = 0, l = mixins.length; i < l; i++) {
+	      for (key in mixins[i]) {
+	        merge(options[key], mixins[i][key], key)
+	      }
+	    }
+	  }
+	  function merge (parentVal, childVal, key) {
+	    var strat = strats[key] || defaultStrat
+	    options[key] = strat(parentVal, childVal, vm, key)
+	  }
+	  return options
+	}
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	
+	  /**
+	   * The prefix to look for when parsing directives.
+	   *
+	   * @type {String}
+	   */
+	
+	  prefix: 'v-',
+	
+	  /**
+	   * Whether to print debug messages.
+	   * Also enables stack trace for warnings.
+	   *
+	   * @type {Boolean}
+	   */
+	
+	  debug: false,
+	
+	  /**
+	   * Whether to suppress warnings.
+	   *
+	   * @type {Boolean}
+	   */
+	
+	  silent: false,
+	
+	  /**
+	   * Whether allow observer to alter data objects'
+	   * __proto__.
+	   *
+	   * @type {Boolean}
+	   */
+	
+	  proto: true,
+	
+	  /**
+	   * Whether to parse mustache tags in templates.
+	   *
+	   * @type {Boolean}
+	   */
+	
+	  interpolate: true,
+	
+	  /**
+	   * Internal flag to indicate the delimiters have been
+	   * changed.
+	   *
+	   * @type {Boolean}
+	   */
+	
+	  _delimitersChanged: true
+	
+	}
+	
+	/**
+	 * Interpolation delimiters.
+	 * We need to mark the changed flag so that the text parser
+	 * knows it needs to recompile the regex.
+	 *
+	 * @type {Array<String>}
+	 */
+	
+	var delimiters = ['{{', '}}']
+	Object.defineProperty(module.exports, 'delimiters', {
+	  get: function () {
+	    return delimiters
+	  },
+	  set: function (val) {
+	    delimiters = val
+	    this._delimitersChanged = true
+	  }
+	})
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var Observer = __webpack_require__(30)
+	var expParser = __webpack_require__(93)
+	var Batcher = __webpack_require__(102)
+	
+	var batcher = new Batcher()
+	var uid = 0
+	
+	/**
+	 * A watcher parses an expression, collects dependencies,
+	 * and fires callback when the expression value changes.
+	 * This is used for both the $watch() api and directives.
+	 *
+	 * @param {Vue} vm
+	 * @param {String} expression
+	 * @param {Function} cb
+	 * @param {Array} [filters]
+	 * @param {Boolean} [needSet]
+	 * @param {Boolean} [deep]
+	 * @constructor
+	 */
+	
+	function Watcher (vm, expression, cb, filters, needSet, deep) {
+	  this.vm = vm
+	  vm._watcherList.push(this)
+	  this.expression = expression
+	  this.cbs = [cb]
+	  this.id = ++uid // uid for batching
+	  this.active = true
+	  this.deep = deep
+	  this.deps = Object.create(null)
+	  // setup filters if any.
+	  // We delegate directive filters here to the watcher
+	  // because they need to be included in the dependency
+	  // collection process.
+	  this.readFilters = filters && filters.read
+	  this.writeFilters = filters && filters.write
+	  // parse expression for getter/setter
+	  var res = expParser.parse(expression, needSet)
+	  this.getter = res.get
+	  this.setter = res.set
+	  this.value = this.get()
+	}
+	
+	var p = Watcher.prototype
+	
+	/**
+	 * Add a binding dependency to this directive.
+	 *
+	 * @param {Binding} binding
+	 */
+	
+	p.addDep = function (binding) {
+	  var id = binding.id
+	  if (!this.newDeps[id]) {
+	    this.newDeps[id] = binding
+	    if (!this.deps[id]) {
+	      this.deps[id] = binding
+	      binding.addSub(this)
+	    }
+	  }
+	}
+	
+	/**
+	 * Evaluate the getter, and re-collect dependencies.
+	 */
+	
+	p.get = function () {
+	  this.beforeGet()
+	  var vm = this.vm
+	  var value = this.getter.call(vm, vm)
+	  // use JSON.stringify to "touch" every property
+	  // so they are all tracked as dependencies for
+	  // deep watching
+	  if (this.deep) JSON.stringify(value)
+	  value = _.applyFilters(value, this.readFilters, vm)
+	  this.afterGet()
+	  return value
+	}
+	
+	/**
+	 * Set the corresponding value with the setter.
+	 *
+	 * @param {*} value
+	 */
+	
+	p.set = function (value) {
+	  var vm = this.vm
+	  value = _.applyFilters(
+	    value, this.writeFilters, vm, this.value
+	  )
+	  this.setter.call(vm, vm, value)
+	}
+	
+	/**
+	 * Prepare for dependency collection.
+	 */
+	
+	p.beforeGet = function () {
+	  Observer.target = this
+	  this.newDeps = {}
+	}
+	
+	/**
+	 * Clean up for dependency collection.
+	 */
+	
+	p.afterGet = function () {
+	  Observer.target = null
+	  for (var id in this.deps) {
+	    if (!this.newDeps[id]) {
+	      this.deps[id].removeSub(this)
+	    }
+	  }
+	  this.deps = this.newDeps
+	}
+	
+	/**
+	 * Subscriber interface.
+	 * Will be called when a dependency changes.
+	 */
+	
+	p.update = function () {
+	  batcher.push(this)
+	}
+	
+	/**
+	 * Batcher job interface.
+	 * Will be called by the batcher.
+	 */
+	
+	p.run = function () {
+	  if (this.active) {
+	    var value = this.get()
+	    if (
+	      (typeof value === 'object' && value !== null) ||
+	      value !== this.value
+	    ) {
+	      var oldValue = this.value
+	      this.value = value
+	      var cbs = this.cbs
+	      for (var i = 0, l = cbs.length; i < l; i++) {
+	        cbs[i](value, oldValue)
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Add a callback.
+	 *
+	 * @param {Function} cb
+	 */
+	
+	p.addCb = function (cb) {
+	  this.cbs.push(cb)
+	}
+	
+	/**
+	 * Remove a callback.
+	 *
+	 * @param {Function} cb
+	 */
+	
+	p.removeCb = function (cb) {
+	  var cbs = this.cbs
+	  if (cbs.length > 1) {
+	    var i = cbs.indexOf(cb)
+	    if (i > -1) {
+	      cbs.splice(i, 1)
+	    }
+	  } else if (cb === cbs[0]) {
+	    this.teardown()
+	  }
+	}
+	
+	/**
+	 * Remove self from all dependencies' subcriber list.
+	 */
+	
+	p.teardown = function () {
+	  if (this.active) {
+	    // remove self from vm's watcher list
+	    // we can skip this if the vm if being destroyed
+	    // which can improve teardown performance.
+	    if (!this.vm._isBeingDestroyed) {
+	      var list = this.vm._watcherList
+	      list.splice(list.indexOf(this))
+	    }
+	    for (var id in this.deps) {
+	      this.deps[id].removeSub(this)
+	    }
+	    this.active = false
+	    this.vm = this.cbs = this.value = null
+	  }
+	}
+	
+	module.exports = Watcher
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var _ = __webpack_require__(17)
 	
 	module.exports = {
@@ -14672,11 +15743,11 @@
 	}
 
 /***/ },
-/* 63 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var templateParser = __webpack_require__(102)
+	var templateParser = __webpack_require__(103)
 	
 	module.exports = {
 	
@@ -14714,7 +15785,7 @@
 	}
 
 /***/ },
-/* 64 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// xlink
@@ -14751,10 +15822,10 @@
 	}
 
 /***/ },
-/* 65 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var transition = __webpack_require__(91)
+	var transition = __webpack_require__(94)
 	
 	module.exports = function (value) {
 	  var el = this.el
@@ -14764,7 +15835,7 @@
 	}
 
 /***/ },
-/* 66 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -14814,7 +15885,7 @@
 	}
 
 /***/ },
-/* 67 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -14832,7 +15903,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -14858,10 +15929,10 @@
 	}
 
 /***/ },
-/* 69 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var config = __webpack_require__(84)
+	var config = __webpack_require__(68)
 	
 	module.exports = {
 	
@@ -14875,7 +15946,7 @@
 	}
 
 /***/ },
-/* 70 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var prefixes = ['-webkit-', '-moz-', '-ms-']
@@ -14926,12 +15997,12 @@
 	}
 
 /***/ },
-/* 71 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
 	var compile = __webpack_require__(96)
-	var templateParser = __webpack_require__(102)
+	var templateParser = __webpack_require__(103)
 	
 	module.exports = {
 	
@@ -14962,7 +16033,7 @@
 	}
 
 /***/ },
-/* 72 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -14979,7 +16050,7 @@
 	}
 
 /***/ },
-/* 73 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -15044,11 +16115,11 @@
 	}
 
 /***/ },
-/* 74 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(86)
+	var Watcher = __webpack_require__(69)
 	
 	module.exports = {
 	
@@ -15241,17 +16312,17 @@
 	}
 
 /***/ },
-/* 75 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
 	var isObject = _.isObject
-	var textParser = __webpack_require__(88)
-	var expParser = __webpack_require__(90)
-	var templateParser = __webpack_require__(102)
+	var textParser = __webpack_require__(91)
+	var expParser = __webpack_require__(93)
+	var templateParser = __webpack_require__(103)
 	var compile = __webpack_require__(96)
 	var transclude = __webpack_require__(97)
-	var mergeOptions = __webpack_require__(83)
+	var mergeOptions = __webpack_require__(67)
 	var uid = 0
 	
 	module.exports = {
@@ -15737,11 +16808,11 @@
 	}
 
 /***/ },
-/* 76 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var templateParser = __webpack_require__(102)
+	var templateParser = __webpack_require__(103)
 	
 	module.exports = {
 	
@@ -15794,11 +16865,11 @@
 	}
 
 /***/ },
-/* 77 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(86)
+	var Watcher = __webpack_require__(69)
 	
 	module.exports = {
 	
@@ -15846,882 +16917,11 @@
 	}
 
 /***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Check is a string starts with $ or _
-	 *
-	 * @param {String} str
-	 * @return {Boolean}
-	 */
-	
-	exports.isReserved = function (str) {
-	  var c = str.charCodeAt(0)
-	  return c === 0x24 || c === 0x5F
-	}
-	
-	/**
-	 * Guard text output, make sure undefined outputs
-	 * empty string
-	 *
-	 * @param {*} value
-	 * @return {String}
-	 */
-	
-	exports.toString = function (value) {
-	  return value == null
-	    ? ''
-	    : value.toString()
-	}
-	
-	/**
-	 * Check and convert possible numeric numbers before
-	 * setting back to data
-	 *
-	 * @param {*} value
-	 * @return {*|Number}
-	 */
-	
-	exports.toNumber = function (value) {
-	  return (
-	    isNaN(value) ||
-	    value === null ||
-	    typeof value === 'boolean'
-	  ) ? value
-	    : Number(value)
-	}
-	
-	/**
-	 * Strip quotes from a string
-	 *
-	 * @param {String} str
-	 * @return {String | false}
-	 */
-	
-	exports.stripQuotes = function (str) {
-	  var a = str.charCodeAt(0)
-	  var b = str.charCodeAt(str.length - 1)
-	  return a === b && (a === 0x22 || a === 0x27)
-	    ? str.slice(1, -1)
-	    : false
-	}
-	
-	/**
-	 * Camelize a hyphen-delmited string.
-	 *
-	 * @param {String} str
-	 * @return {String}
-	 */
-	
-	var camelRE = /(?:^|[-_])(\w)/g
-	exports.camelize = function (str) {
-	  return str.replace (camelRE, function (_, c) {
-	    return c ? c.toUpperCase () : '';
-	  })
-	}
-	
-	/**
-	 * Simple bind, faster than native
-	 *
-	 * @param {Function} fn
-	 * @param {Object} ctx
-	 * @return {Function}
-	 */
-	
-	exports.bind = function (fn, ctx) {
-	  return function () {
-	    return fn.apply(ctx, arguments)
-	  }
-	}
-	
-	/**
-	 * Convert an Array-like object to a real Array.
-	 *
-	 * @param {Array-like} list
-	 * @param {Number} [start] - start index
-	 * @return {Array}
-	 */
-	
-	exports.toArray = function (list, start) {
-	  start = start || 0
-	  var i = list.length - start
-	  var ret = new Array(i)
-	  while (i--) {
-	    ret[i] = list[i + start]
-	  }
-	  return ret
-	}
-	
-	/**
-	 * Mix properties into target object.
-	 *
-	 * @param {Object} to
-	 * @param {Object} from
-	 */
-	
-	exports.extend = function (to, from) {
-	  for (var key in from) {
-	    to[key] = from[key]
-	  }
-	}
-	
-	/**
-	 * Quick object check - this is primarily used to tell
-	 * Objects from primitive values when we know the value
-	 * is a JSON-compliant type.
-	 *
-	 * @param {*} obj
-	 * @return {Boolean}
-	 */
-	
-	exports.isObject = function (obj) {
-	  return obj && typeof obj === 'object'
-	}
-	
-	/**
-	 * Strict object type check. Only returns true
-	 * for plain JavaScript objects.
-	 *
-	 * @param {*} obj
-	 * @return {Boolean}
-	 */
-	
-	var toString = Object.prototype.toString
-	exports.isPlainObject = function (obj) {
-	  return toString.call(obj) === '[object Object]'
-	}
-	
-	/**
-	 * Array type check.
-	 *
-	 * @param {*} obj
-	 * @return {Boolean}
-	 */
-	
-	exports.isArray = function (obj) {
-	  return Array.isArray(obj)
-	}
-	
-	/**
-	 * Define a non-enumerable property
-	 *
-	 * @param {Object} obj
-	 * @param {String} key
-	 * @param {*} val
-	 * @param {Boolean} [enumerable]
-	 */
-	
-	exports.define = function (obj, key, val, enumerable) {
-	  Object.defineProperty(obj, key, {
-	    value        : val,
-	    enumerable   : !!enumerable,
-	    writable     : true,
-	    configurable : true
-	  })
-	}
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Can we use __proto__?
-	 *
-	 * @type {Boolean}
-	 */
-	
-	exports.hasProto = '__proto__' in {}
-	
-	/**
-	 * Indicates we have a window
-	 *
-	 * @type {Boolean}
-	 */
-	
-	var toString = Object.prototype.toString
-	var inBrowser = exports.inBrowser =
-	  typeof window !== 'undefined' &&
-	  toString.call(window) !== '[object Object]'
-	
-	/**
-	 * Defer a task to the start of the next event loop
-	 *
-	 * @param {Function} cb
-	 * @param {Object} ctx
-	 */
-	
-	var defer = inBrowser
-	  ? (window.requestAnimationFrame ||
-	    window.webkitRequestAnimationFrame ||
-	    setTimeout)
-	  : setTimeout
-	
-	exports.nextTick = function (cb, ctx) {
-	  if (ctx) {
-	    defer(function () { cb.call(ctx) }, 0)
-	  } else {
-	    defer(cb, 0)
-	  }
-	}
-	
-	/**
-	 * Detect if we are in IE9...
-	 *
-	 * @type {Boolean}
-	 */
-	
-	exports.isIE9 =
-	  inBrowser &&
-	  navigator.userAgent.indexOf('MSIE 9.0') > 0
-	
-	/**
-	 * Sniff transition/animation events
-	 */
-	
-	if (inBrowser && !exports.isIE9) {
-	  var isWebkitTrans =
-	    window.ontransitionend === undefined &&
-	    window.onwebkittransitionend !== undefined
-	  var isWebkitAnim =
-	    window.onanimationend === undefined &&
-	    window.onwebkitanimationend !== undefined
-	  exports.transitionProp = isWebkitTrans
-	    ? 'WebkitTransition'
-	    : 'transition'
-	  exports.transitionEndEvent = isWebkitTrans
-	    ? 'webkitTransitionEnd'
-	    : 'transitionend'
-	  exports.animationProp = isWebkitAnim
-	    ? 'WebkitAnimation'
-	    : 'animation'
-	  exports.animationEndEvent = isWebkitAnim
-	    ? 'webkitAnimationEnd'
-	    : 'animationend'
-	}
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var config = __webpack_require__(84)
-	
-	/**
-	 * Check if a node is in the document.
-	 *
-	 * @param {Node} node
-	 * @return {Boolean}
-	 */
-	
-	var doc =
-	  typeof document !== 'undefined' &&
-	  document.documentElement
-	
-	exports.inDoc = function (node) {
-	  return doc && doc.contains(node)
-	}
-	
-	/**
-	 * Extract an attribute from a node.
-	 *
-	 * @param {Node} node
-	 * @param {String} attr
-	 */
-	
-	exports.attr = function (node, attr) {
-	  attr = config.prefix + attr
-	  var val = node.getAttribute(attr)
-	  if (val !== null) {
-	    node.removeAttribute(attr)
-	  }
-	  return val
-	}
-	
-	/**
-	 * Insert el before target
-	 *
-	 * @param {Element} el
-	 * @param {Element} target 
-	 */
-	
-	exports.before = function (el, target) {
-	  target.parentNode.insertBefore(el, target)
-	}
-	
-	/**
-	 * Insert el after target
-	 *
-	 * @param {Element} el
-	 * @param {Element} target 
-	 */
-	
-	exports.after = function (el, target) {
-	  if (target.nextSibling) {
-	    exports.before(el, target.nextSibling)
-	  } else {
-	    target.parentNode.appendChild(el)
-	  }
-	}
-	
-	/**
-	 * Remove el from DOM
-	 *
-	 * @param {Element} el
-	 */
-	
-	exports.remove = function (el) {
-	  el.parentNode.removeChild(el)
-	}
-	
-	/**
-	 * Prepend el to target
-	 *
-	 * @param {Element} el
-	 * @param {Element} target 
-	 */
-	
-	exports.prepend = function (el, target) {
-	  if (target.firstChild) {
-	    exports.before(el, target.firstChild)
-	  } else {
-	    target.appendChild(el)
-	  }
-	}
-	
-	/**
-	 * Replace target with el
-	 *
-	 * @param {Element} target
-	 * @param {Element} el
-	 */
-	
-	exports.replace = function (target, el) {
-	  var parent = target.parentNode
-	  if (parent) {
-	    parent.replaceChild(el, target)
-	  }
-	}
-	
-	/**
-	 * Copy attributes from one element to another.
-	 *
-	 * @param {Element} from
-	 * @param {Element} to
-	 */
-	
-	exports.copyAttributes = function (from, to) {
-	  if (from.hasAttributes()) {
-	    var attrs = from.attributes
-	    for (var i = 0, l = attrs.length; i < l; i++) {
-	      var attr = attrs[i]
-	      to.setAttribute(attr.name, attr.value)
-	    }
-	  }
-	}
-	
-	/**
-	 * Add event listener shorthand.
-	 *
-	 * @param {Element} el
-	 * @param {String} event
-	 * @param {Function} cb
-	 */
-	
-	exports.on = function (el, event, cb) {
-	  el.addEventListener(event, cb)
-	}
-	
-	/**
-	 * Remove event listener shorthand.
-	 *
-	 * @param {Element} el
-	 * @param {String} event
-	 * @param {Function} cb
-	 */
-	
-	exports.off = function (el, event, cb) {
-	  el.removeEventListener(event, cb)
-	}
-	
-	/**
-	 * Compatibility add class for IE9
-	 *
-	 * @param {Element} el
-	 * @param {Strong} cls
-	 */
-	
-	exports.addClass = function (el, cls) {
-	  var cur = ' ' + el.className + ' '
-	  if (cur.indexOf(' ' + cls + ' ') < 0) {
-	    el.className = (cur + cls).trim()
-	  }
-	}
-	
-	/**
-	 * Compatibility remove class for IE9
-	 *
-	 * @param {Element} el
-	 * @param {Strong} cls
-	 */
-	
-	exports.removeClass = function (el, cls) {
-	  var cur = ' ' + el.className + ' '
-	  var tar = ' ' + cls + ' '
-	  while (cur.indexOf(tar) >= 0) {
-	    cur = cur.replace(tar, ' ')
-	  }
-	  el.className = cur.trim()
-	}
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(82)
-	
-	/**
-	 * Resolve read & write filters for a vm instance. The
-	 * filters descriptor Array comes from the directive parser.
-	 *
-	 * This is extracted into its own utility so it can
-	 * be used in multiple scenarios.
-	 *
-	 * @param {Vue} vm
-	 * @param {Array<Object>} filters
-	 * @param {Object} [target]
-	 * @return {Object}
-	 */
-	
-	exports.resolveFilters = function (vm, filters, target) {
-	  if (!filters) {
-	    return
-	  }
-	  var res = target || {}
-	  // var registry = vm.$options.filters
-	  filters.forEach(function (f) {
-	    var def = vm.$options.filters[f.name]
-	    _.assertAsset(def, 'filter', f.name)
-	    if (!def) return
-	    var args = f.args
-	    var reader, writer
-	    if (typeof def === 'function') {
-	      reader = def
-	    } else {
-	      reader = def.read
-	      writer = def.write
-	    }
-	    if (reader) {
-	      if (!res.read) res.read = []
-	      res.read.push(function (value) {
-	        return args
-	          ? reader.apply(vm, [value].concat(args))
-	          : reader.call(vm, value)
-	      })
-	    }
-	    if (writer) {
-	      if (!res.write) res.write = []
-	      res.write.push(function (value, oldVal) {
-	        return args
-	          ? writer.apply(vm, [value, oldVal].concat(args))
-	          : writer.call(vm, value, oldVal)
-	      })
-	    }
-	  })
-	  return res
-	}
-	
-	/**
-	 * Apply filters to a value
-	 *
-	 * @param {*} value
-	 * @param {Array} filters
-	 * @param {Vue} vm
-	 * @param {*} oldVal
-	 * @return {*}
-	 */
-	
-	exports.applyFilters = function (value, filters, vm, oldVal) {
-	  if (!filters) {
-	    return value
-	  }
-	  for (var i = 0, l = filters.length; i < l; i++) {
-	    value = filters[i].call(vm, value, oldVal)
-	  }
-	  return value
-	}
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var config = __webpack_require__(84)
-	
-	/**
-	 * Enable debug utilities. The enableDebug() function and
-	 * all _.log() & _.warn() calls will be dropped in the
-	 * minified production build.
-	 */
-	
-	enableDebug()
-	
-	function enableDebug () {
-	  var hasConsole = typeof console !== 'undefined'
-	  
-	  /**
-	   * Log a message.
-	   *
-	   * @param {String} msg
-	   */
-	
-	  exports.log = function (msg) {
-	    if (hasConsole && config.debug) {
-	      console.log('[Vue info]: ' + msg)
-	    }
-	  }
-	
-	  /**
-	   * We've got a problem here.
-	   *
-	   * @param {String} msg
-	   */
-	
-	  exports.warn = function (msg) {
-	    if (hasConsole && !config.silent) {
-	      console.warn('[Vue warn]: ' + msg)
-	      if (config.debug && console.trace) {
-	        console.trace()
-	      }
-	    }
-	  }
-	
-	  /**
-	   * Assert asset exists
-	   */
-	
-	  exports.assertAsset = function (val, type, id) {
-	    if (!val) {
-	      exports.warn('Failed to resolve ' + type + ': ' + id)
-	    }
-	  }
-	}
-
-/***/ },
-/* 83 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var extend = _.extend
-	
-	/**
-	 * Option overwriting strategies are functions that handle
-	 * how to merge a parent option value and a child option
-	 * value into the final value.
-	 *
-	 * All strategy functions follow the same signature:
-	 *
-	 * @param {*} parentVal
-	 * @param {*} childVal
-	 * @param {Vue} [vm]
-	 */
-	
-	var strats = {}
-	
-	/**
-	 * Data
-	 */
-	
-	strats.data = function (parentVal, childVal, vm) {
-	  // in a class merge, both should be functions
-	  // so we just return child if it exists
-	  if (!vm) {
-	    if (childVal && typeof childVal !== 'function') {
-	      _.warn(
-	        'The "data" option should be a function ' +
-	        'that returns a per-instance value in component ' +
-	        'definitions.'
-	      )
-	      return
-	    }
-	    return childVal || parentVal
-	  }
-	  var instanceData = typeof childVal === 'function'
-	    ? childVal()
-	    : childVal
-	  var defaultData = typeof parentVal === 'function'
-	    ? parentVal()
-	    : undefined
-	  if (instanceData) {
-	    // mix default data into instance data
-	    for (var key in defaultData) {
-	      if (!instanceData.hasOwnProperty(key)) {
-	        instanceData[key] = defaultData[key]
-	      }
-	    }
-	    return instanceData
-	  } else {
-	    return defaultData
-	  }
-	}
-	
-	/**
-	 * El
-	 */
-	
-	strats.el = function (parentVal, childVal, vm) {
-	  if (!vm && childVal && typeof childVal !== 'function') {
-	    _.warn(
-	      'The "el" option should be a function ' +
-	      'that returns a per-instance value in component ' +
-	      'definitions.'
-	    )
-	    return
-	  }
-	  var ret = childVal || parentVal
-	  // invoke the element factory if this is instance merge
-	  return vm && typeof ret === 'function'
-	    ? ret()
-	    : ret
-	}
-	
-	/**
-	 * Hooks and param attributes are merged as arrays.
-	 */
-	
-	strats.created =
-	strats.ready =
-	strats.attached =
-	strats.detached =
-	strats.beforeCompile =
-	strats.compiled =
-	strats.beforeDestroy =
-	strats.destroyed =
-	strats.paramAttributes = function (parentVal, childVal) {
-	  return childVal
-	    ? parentVal
-	      ? parentVal.concat(childVal)
-	      : _.isArray(childVal)
-	        ? childVal
-	        : [childVal]
-	    : parentVal
-	}
-	
-	/**
-	 * Assets
-	 *
-	 * When a vm is present (instance creation), we need to do
-	 * a three-way merge between constructor options, instance
-	 * options and parent options.
-	 */
-	
-	strats.directives =
-	strats.filters =
-	strats.partials =
-	strats.transitions =
-	strats.components = function (parentVal, childVal, vm, key) {
-	  var ret = Object.create(
-	    vm && vm.$parent
-	      ? vm.$parent.$options[key]
-	      : _.Vue.options[key]
-	  )
-	  if (parentVal) {
-	    var keys = Object.keys(parentVal)
-	    var i = keys.length
-	    var field
-	    while (i--) {
-	      field = keys[i]
-	      ret[field] = parentVal[field]
-	    }
-	  }
-	  if (childVal) extend(ret, childVal)
-	  return ret
-	}
-	
-	/**
-	 * Events
-	 *
-	 * Events should not overwrite one another, so we merge
-	 * them as arrays.
-	 */
-	
-	strats.events = function (parentVal, childVal) {
-	  if (!childVal) return parentVal
-	  if (!parentVal) return childVal
-	  var ret = {}
-	  extend(ret, parentVal)
-	  for (var key in childVal) {
-	    var parent = ret[key]
-	    var child = childVal[key]
-	    ret[key] = parent
-	      ? parent.concat(child)
-	      : [child]
-	  }
-	  return ret
-	}
-	
-	/**
-	 * Other object hashes.
-	 */
-	
-	strats.methods =
-	strats.computed = function (parentVal, childVal) {
-	  if (!childVal) return parentVal
-	  if (!parentVal) return childVal
-	  var ret = Object.create(parentVal)
-	  extend(ret, childVal)
-	  return ret
-	}
-	
-	/**
-	 * Default strategy.
-	 */
-	
-	var defaultStrat = function (parentVal, childVal) {
-	  return childVal === undefined
-	    ? parentVal
-	    : childVal
-	}
-	
-	/**
-	 * Make sure component options get converted to actual
-	 * constructors.
-	 *
-	 * @param {Object} components
-	 */
-	
-	function guardComponents (components) {
-	  if (components) {
-	    var def
-	    for (var key in components) {
-	      def = components[key]
-	      if (_.isPlainObject(def)) {
-	        def.name = key
-	        components[key] = _.Vue.extend(def)
-	      }
-	    }
-	  }
-	}
-	
-	/**
-	 * Merge two option objects into a new one.
-	 * Core utility used in both instantiation and inheritance.
-	 *
-	 * @param {Object} parent
-	 * @param {Object} child
-	 * @param {Vue} [vm] - if vm is present, indicates this is
-	 *                     an instantiation merge.
-	 */
-	
-	module.exports = function mergeOptions (parent, child, vm) {
-	  guardComponents(child.components)
-	  var options = {}
-	  var key
-	  for (key in parent) {
-	    merge(parent[key], child[key], key)
-	  }
-	  for (key in child) {
-	    if (!(parent.hasOwnProperty(key))) {
-	      merge(parent[key], child[key], key)
-	    }
-	  }
-	  var mixins = child.mixins
-	  if (mixins) {
-	    for (var i = 0, l = mixins.length; i < l; i++) {
-	      for (key in mixins[i]) {
-	        merge(options[key], mixins[i][key], key)
-	      }
-	    }
-	  }
-	  function merge (parentVal, childVal, key) {
-	    var strat = strats[key] || defaultStrat
-	    options[key] = strat(parentVal, childVal, vm, key)
-	  }
-	  return options
-	}
-
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	
-	  /**
-	   * The prefix to look for when parsing directives.
-	   *
-	   * @type {String}
-	   */
-	
-	  prefix: 'v-',
-	
-	  /**
-	   * Whether to print debug messages.
-	   * Also enables stack trace for warnings.
-	   *
-	   * @type {Boolean}
-	   */
-	
-	  debug: false,
-	
-	  /**
-	   * Whether to suppress warnings.
-	   *
-	   * @type {Boolean}
-	   */
-	
-	  silent: false,
-	
-	  /**
-	   * Whether allow observer to alter data objects'
-	   * __proto__.
-	   *
-	   * @type {Boolean}
-	   */
-	
-	  proto: true,
-	
-	  /**
-	   * Whether to parse mustache tags in templates.
-	   *
-	   * @type {Boolean}
-	   */
-	
-	  interpolate: true,
-	
-	  /**
-	   * Internal flag to indicate the delimiters have been
-	   * changed.
-	   *
-	   * @type {Boolean}
-	   */
-	
-	  _delimitersChanged: true
-	
-	}
-	
-	/**
-	 * Interpolation delimiters.
-	 * We need to mark the changed flag so that the text parser
-	 * knows it needs to recompile the regex.
-	 *
-	 * @type {Array<String>}
-	 */
-	
-	var delimiters = ['{{', '}}']
-	Object.defineProperty(module.exports, 'delimiters', {
-	  get: function () {
-	    return delimiters
-	  },
-	  set: function (val) {
-	    delimiters = val
-	    this._delimitersChanged = true
-	  }
-	})
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var Path = __webpack_require__(103)
+	var Path = __webpack_require__(104)
 	
 	/**
 	 * Filter filter for v-repeat
@@ -16809,266 +17009,434 @@
 	}
 
 /***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var Observer = __webpack_require__(30)
-	var expParser = __webpack_require__(90)
-	var Batcher = __webpack_require__(104)
-	
-	var batcher = new Batcher()
-	var uid = 0
-	
-	/**
-	 * A watcher parses an expression, collects dependencies,
-	 * and fires callback when the expression value changes.
-	 * This is used for both the $watch() api and directives.
-	 *
-	 * @param {Vue} vm
-	 * @param {String} expression
-	 * @param {Function} cb
-	 * @param {Array} [filters]
-	 * @param {Boolean} [needSet]
-	 * @param {Boolean} [deep]
-	 * @constructor
-	 */
-	
-	function Watcher (vm, expression, cb, filters, needSet, deep) {
-	  this.vm = vm
-	  vm._watcherList.push(this)
-	  this.expression = expression
-	  this.cbs = [cb]
-	  this.id = ++uid // uid for batching
-	  this.active = true
-	  this.deep = deep
-	  this.deps = Object.create(null)
-	  // setup filters if any.
-	  // We delegate directive filters here to the watcher
-	  // because they need to be included in the dependency
-	  // collection process.
-	  this.readFilters = filters && filters.read
-	  this.writeFilters = filters && filters.write
-	  // parse expression for getter/setter
-	  var res = expParser.parse(expression, needSet)
-	  this.getter = res.get
-	  this.setter = res.set
-	  this.value = this.get()
-	}
-	
-	var p = Watcher.prototype
-	
-	/**
-	 * Add a binding dependency to this directive.
-	 *
-	 * @param {Binding} binding
-	 */
-	
-	p.addDep = function (binding) {
-	  var id = binding.id
-	  if (!this.newDeps[id]) {
-	    this.newDeps[id] = binding
-	    if (!this.deps[id]) {
-	      this.deps[id] = binding
-	      binding.addSub(this)
-	    }
-	  }
-	}
-	
-	/**
-	 * Evaluate the getter, and re-collect dependencies.
-	 */
-	
-	p.get = function () {
-	  this.beforeGet()
-	  var vm = this.vm
-	  var value = this.getter.call(vm, vm)
-	  // use JSON.stringify to "touch" every property
-	  // so they are all tracked as dependencies for
-	  // deep watching
-	  if (this.deep) JSON.stringify(value)
-	  value = _.applyFilters(value, this.readFilters, vm)
-	  this.afterGet()
-	  return value
-	}
-	
-	/**
-	 * Set the corresponding value with the setter.
-	 *
-	 * @param {*} value
-	 */
-	
-	p.set = function (value) {
-	  var vm = this.vm
-	  value = _.applyFilters(
-	    value, this.writeFilters, vm, this.value
-	  )
-	  this.setter.call(vm, vm, value)
-	}
-	
-	/**
-	 * Prepare for dependency collection.
-	 */
-	
-	p.beforeGet = function () {
-	  Observer.target = this
-	  this.newDeps = {}
-	}
-	
-	/**
-	 * Clean up for dependency collection.
-	 */
-	
-	p.afterGet = function () {
-	  Observer.target = null
-	  for (var id in this.deps) {
-	    if (!this.newDeps[id]) {
-	      this.deps[id].removeSub(this)
-	    }
-	  }
-	  this.deps = this.newDeps
-	}
-	
-	/**
-	 * Subscriber interface.
-	 * Will be called when a dependency changes.
-	 */
-	
-	p.update = function () {
-	  batcher.push(this)
-	}
-	
-	/**
-	 * Batcher job interface.
-	 * Will be called by the batcher.
-	 */
-	
-	p.run = function () {
-	  if (this.active) {
-	    var value = this.get()
-	    if (
-	      (typeof value === 'object' && value !== null) ||
-	      value !== this.value
-	    ) {
-	      var oldValue = this.value
-	      this.value = value
-	      var cbs = this.cbs
-	      for (var i = 0, l = cbs.length; i < l; i++) {
-	        cbs[i](value, oldValue)
-	      }
-	    }
-	  }
-	}
-	
-	/**
-	 * Add a callback.
-	 *
-	 * @param {Function} cb
-	 */
-	
-	p.addCb = function (cb) {
-	  this.cbs.push(cb)
-	}
-	
-	/**
-	 * Remove a callback.
-	 *
-	 * @param {Function} cb
-	 */
-	
-	p.removeCb = function (cb) {
-	  var cbs = this.cbs
-	  if (cbs.length > 1) {
-	    var i = cbs.indexOf(cb)
-	    if (i > -1) {
-	      cbs.splice(i, 1)
-	    }
-	  } else if (cb === cbs[0]) {
-	    this.teardown()
-	  }
-	}
-	
-	/**
-	 * Remove self from all dependencies' subcriber list.
-	 */
-	
-	p.teardown = function () {
-	  if (this.active) {
-	    // remove self from vm's watcher list
-	    // we can skip this if the vm if being destroyed
-	    // which can improve teardown performance.
-	    if (!this.vm._isBeingDestroyed) {
-	      var list = this.vm._watcherList
-	      list.splice(list.indexOf(this))
-	    }
-	    for (var id in this.deps) {
-	      this.deps[id].removeSub(this)
-	    }
-	    this.active = false
-	    this.vm = this.cbs = this.value = null
-	  }
-	}
-	
-	module.exports = Watcher
-
-/***/ },
 /* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(17)
+	var uid = 0
 	
-	var handlers = {
-	  text: __webpack_require__(105),
-	  radio: __webpack_require__(106),
-	  select: __webpack_require__(107),
-	  checkbox: __webpack_require__(108)
+	/**
+	 * A binding is an observable that can have multiple
+	 * directives subscribing to it.
+	 *
+	 * @constructor
+	 */
+	
+	function Binding () {
+	  this.id = ++uid
+	  this.subs = []
 	}
 	
-	module.exports = {
+	var p = Binding.prototype
 	
-	  priority: 800,
-	  twoWay: true,
-	  handlers: handlers,
+	/**
+	 * Add a directive subscriber.
+	 *
+	 * @param {Directive} sub
+	 */
 	
-	  /**
-	   * Possible elements:
-	   *   <select>
-	   *   <textarea>
-	   *   <input type="*">
-	   *     - text
-	   *     - checkbox
-	   *     - radio
-	   *     - number
-	   *     - TODO: more types may be supplied as a plugin
-	   */
+	p.addSub = function (sub) {
+	  this.subs.push(sub)
+	}
 	
-	  bind: function () {
-	    var el = this.el
-	    var tag = el.tagName
-	    var handler
-	    if (tag === 'INPUT') {
-	      handler = handlers[el.type] || handlers.text
-	    } else if (tag === 'SELECT') {
-	      handler = handlers.select
-	    } else if (tag === 'TEXTAREA') {
-	      handler = handlers.text
-	    } else {
-	      _.warn("v-model doesn't support element type: " + tag)
-	      return
-	    }
-	    handler.bind.call(this)
-	    this.update = handler.update
-	    this.unbind = handler.unbind
+	/**
+	 * Remove a directive subscriber.
+	 *
+	 * @param {Directive} sub
+	 */
+	
+	p.removeSub = function (sub) {
+	  if (this.subs.length) {
+	    var i = this.subs.indexOf(sub)
+	    if (i > -1) this.subs.splice(i, 1)
 	  }
-	
 	}
+	
+	/**
+	 * Notify all subscribers of a new value.
+	 */
+	
+	p.notify = function () {
+	  var i = this.subs.length
+	  while (i--) {
+	    this.subs[i].update()
+	  }
+	}
+	
+	module.exports = Binding
 
 /***/ },
 /* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Cache = __webpack_require__(109)
-	var config = __webpack_require__(84)
+	var _ = __webpack_require__(17)
+	var Watcher = __webpack_require__(69)
+	var textParser = __webpack_require__(91)
+	var expParser = __webpack_require__(93)
+	
+	/**
+	 * A directive links a DOM element with a piece of data,
+	 * which is the result of evaluating an expression.
+	 * It registers a watcher with the expression and calls
+	 * the DOM update function when a change is triggered.
+	 *
+	 * @param {String} name
+	 * @param {Node} el
+	 * @param {Vue} vm
+	 * @param {Object} descriptor
+	 *                 - {String} expression
+	 *                 - {String} [arg]
+	 *                 - {Array<Object>} [filters]
+	 * @param {Object} def - directive definition object
+	 * @param {Function} [linker] - pre-compiled linker function
+	 * @constructor
+	 */
+	
+	function Directive (name, el, vm, descriptor, def, linker) {
+	  // public
+	  this.name = name
+	  this.el = el
+	  this.vm = vm
+	  // copy descriptor props
+	  this.raw = descriptor.raw
+	  this.expression = descriptor.expression
+	  this.arg = descriptor.arg
+	  this.filters = _.resolveFilters(vm, descriptor.filters)
+	  // private
+	  this._linker = linker
+	  this._locked = false
+	  this._bound = false
+	  // init
+	  this._bind(def)
+	}
+	
+	var p = Directive.prototype
+	
+	/**
+	 * Initialize the directive, mixin definition properties,
+	 * setup the watcher, call definition bind() and update()
+	 * if present.
+	 *
+	 * @param {Object} def
+	 */
+	
+	p._bind = function (def) {
+	  if (typeof def === 'function') {
+	    this.update = def
+	  } else {
+	    _.extend(this, def)
+	  }
+	  this._watcherExp = this.expression
+	  this._checkDynamicLiteral()
+	  if (this.bind) {
+	    this.bind()
+	  }
+	  if (
+	    this.expression && this.update &&
+	    (!this.isLiteral || this._isDynamicLiteral) &&
+	    !this._checkExpFn()
+	  ) {
+	    // use raw expression as identifier because filters
+	    // make them different watchers
+	    var watcher = this.vm._watchers[this.raw]
+	    // wrapped updater for context
+	    var dir = this
+	    var update = this._update = function (val, oldVal) {
+	      if (!dir._locked) {
+	        dir.update(val, oldVal)
+	      }
+	    }
+	    if (!watcher) {
+	      watcher = this.vm._watchers[this.raw] = new Watcher(
+	        this.vm,
+	        this._watcherExp,
+	        update, // callback
+	        this.filters,
+	        this.twoWay // need setter
+	      )
+	    } else {
+	      watcher.addCb(update)
+	    }
+	    this._watcher = watcher
+	    this.update(watcher.value)
+	  }
+	  this._bound = true
+	}
+	
+	/**
+	 * check if this is a dynamic literal binding.
+	 *
+	 * e.g. v-component="{{currentView}}"
+	 */
+	
+	p._checkDynamicLiteral = function () {
+	  var expression = this.expression
+	  if (expression && this.isLiteral) {
+	    var tokens = textParser.parse(expression)
+	    if (tokens) {
+	      var exp = textParser.tokensToExp(tokens)
+	      this.expression = this.vm.$get(exp)
+	      this._watcherExp = exp
+	      this._isDynamicLiteral = true
+	    }
+	  }
+	}
+	
+	/**
+	 * Check if the directive is a function caller
+	 * and if the expression is a callable one. If both true,
+	 * we wrap up the expression and use it as the event
+	 * handler.
+	 *
+	 * e.g. v-on="click: a++"
+	 *
+	 * @return {Boolean}
+	 */
+	
+	p._checkExpFn = function () {
+	  var expression = this.expression
+	  if (
+	    expression && this.isFn &&
+	    !expParser.pathTestRE.test(expression)
+	  ) {
+	    var fn = expParser.parse(expression).get
+	    var vm = this.vm
+	    var handler = function () {
+	      fn.call(vm, vm)
+	    }
+	    if (this.filters) {
+	      handler = _.applyFilters(
+	        handler,
+	        this.filters.read,
+	        vm
+	      )
+	    }
+	    this.update(handler)
+	    return true
+	  }
+	}
+	
+	/**
+	 * Teardown the watcher and call unbind.
+	 */
+	
+	p._teardown = function () {
+	  if (this._bound) {
+	    if (this.unbind) {
+	      this.unbind()
+	    }
+	    var watcher = this._watcher
+	    if (watcher && watcher.active) {
+	      watcher.removeCb(this._update)
+	      if (!watcher.active) {
+	        this.vm._watchers[this.expression] = null
+	      }
+	    }
+	    this._bound = false
+	    this.vm = this.el = this._watcher = null
+	  }
+	}
+	
+	/**
+	 * Set the corresponding value with the setter.
+	 * This should only be used in two-way directives
+	 * e.g. v-model.
+	 *
+	 * @param {*} value
+	 * @param {Boolean} lock - prevent wrtie triggering update.
+	 * @public
+	 */
+	
+	p.set = function (value, lock) {
+	  if (this.twoWay) {
+	    if (lock) {
+	      this._locked = true
+	    }
+	    this._watcher.set(value)
+	    if (lock) {
+	      var self = this
+	      _.nextTick(function () {
+	        self._locked = false        
+	      })
+	    }
+	  }
+	}
+	
+	module.exports = Directive
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var arrayAugmentations = Object.create(Array.prototype)
+	
+	/**
+	 * Intercept mutating methods and emit events
+	 */
+	
+	;[
+	  'push',
+	  'pop',
+	  'shift',
+	  'unshift',
+	  'splice',
+	  'sort',
+	  'reverse'
+	]
+	.forEach(function (method) {
+	  // cache original method
+	  var original = Array.prototype[method]
+	  _.define(arrayAugmentations, method, function mutator () {
+	    // avoid leaking arguments:
+	    // http://jsperf.com/closure-with-arguments
+	    var i = arguments.length
+	    var args = new Array(i)
+	    while (i--) {
+	      args[i] = arguments[i]
+	    }
+	    var result = original.apply(this, args)
+	    var ob = this.__ob__
+	    var inserted
+	    switch (method) {
+	      case 'push':
+	        inserted = args
+	        break
+	      case 'unshift':
+	        inserted = args
+	        break
+	      case 'splice':
+	        inserted = args.slice(2)
+	        break
+	    }
+	    if (inserted) ob.observeArray(inserted)
+	    // notify change
+	    ob.notify()
+	    return result
+	  })
+	})
+	
+	/**
+	 * Swap the element at the given index with a new value
+	 * and emits corresponding event.
+	 *
+	 * @param {Number} index
+	 * @param {*} val
+	 * @return {*} - replaced element
+	 */
+	
+	_.define(
+	  arrayAugmentations,
+	  '$set',
+	  function $set (index, val) {
+	    if (index >= this.length) {
+	      this.length = index + 1
+	    }
+	    return this.splice(index, 1, val)[0]
+	  }
+	)
+	
+	/**
+	 * Convenience method to remove the element at given index.
+	 *
+	 * @param {Number} index
+	 * @param {*} val
+	 */
+	
+	_.define(
+	  arrayAugmentations,
+	  '$remove',
+	  function $remove (index) {
+	    if (typeof index !== 'number') {
+	      index = this.indexOf(index)
+	    }
+	    if (index > -1) {
+	      return this.splice(index, 1)[0]
+	    }
+	  }
+	)
+	
+	module.exports = arrayAugmentations
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var objectAgumentations = Object.create(Object.prototype)
+	
+	/**
+	 * Add a new property to an observed object
+	 * and emits corresponding event
+	 *
+	 * @param {String} key
+	 * @param {*} val
+	 * @public
+	 */
+	
+	_.define(
+	  objectAgumentations,
+	  '$add',
+	  function $add (key, val) {
+	    if (_.isReserved(key)) {
+	      _.warn('Refused to $add reserved key: ' + key)
+	      return
+	    }
+	    if (this.hasOwnProperty(key)) return
+	    var ob = this.__ob__
+	    ob.convert(key, val)
+	    if (ob.vms) {
+	      var i = ob.vms.length
+	      while (i--) {
+	        var vm = ob.vms[i]
+	        vm._proxy(key)
+	        vm._digest()
+	      }
+	    } else {
+	      ob.notify()
+	    }
+	  }
+	)
+	
+	/**
+	 * Deletes a property from an observed object
+	 * and emits corresponding event
+	 *
+	 * @param {String} key
+	 * @public
+	 */
+	
+	_.define(
+	  objectAgumentations,
+	  '$delete',
+	  function $delete (key) {
+	    if (_.isReserved(key)) {
+	      _.warn('Refused to $add reserved key: ' + key)
+	      return
+	    }
+	    if (!this.hasOwnProperty(key)) return
+	    delete this[key]
+	    var ob = this.__ob__
+	    if (ob.vms) {
+	      var i = ob.vms.length
+	      while (i--) {
+	        var vm = ob.vms[i]
+	        vm._unproxy(key)
+	        vm._digest()
+	      }
+	    } else {
+	      ob.notify()
+	    }
+	  }
+	)
+	
+	module.exports = objectAgumentations
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Cache = __webpack_require__(105)
+	var config = __webpack_require__(68)
 	var regexEscapeRE = /[-.*+?^${}()|[\]\/\\]/g
 	var cache, tagRE, htmlRE, firstChar, lastChar
 	
@@ -17206,11 +17574,11 @@
 	}
 
 /***/ },
-/* 89 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Cache = __webpack_require__(109)
+	var Cache = __webpack_require__(105)
 	var cache = new Cache(1000)
 	var argRE = /^[^\{\?]+$|^'[^']*'$|^"[^"]*"$/
 	var filterTokenRE = /[^\s'"]+|'[^']+'|"[^"]+"/g
@@ -17370,12 +17738,12 @@
 	}
 
 /***/ },
-/* 90 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Path = __webpack_require__(103)
-	var Cache = __webpack_require__(109)
+	var Path = __webpack_require__(104)
+	var Cache = __webpack_require__(105)
 	var expressionCache = new Cache(1000)
 	
 	var keywords =
@@ -17608,12 +17976,12 @@
 	exports.pathTestRE = pathTestRE
 
 /***/ },
-/* 91 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var applyCSSTransition = __webpack_require__(110)
-	var applyJSTransition = __webpack_require__(111)
+	var applyCSSTransition = __webpack_require__(106)
+	var applyJSTransition = __webpack_require__(107)
 	
 	/**
 	 * Append with transition.
@@ -17730,437 +18098,66 @@
 	}
 
 /***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var uid = 0
-	
-	/**
-	 * A binding is an observable that can have multiple
-	 * directives subscribing to it.
-	 *
-	 * @constructor
-	 */
-	
-	function Binding () {
-	  this.id = ++uid
-	  this.subs = []
-	}
-	
-	var p = Binding.prototype
-	
-	/**
-	 * Add a directive subscriber.
-	 *
-	 * @param {Directive} sub
-	 */
-	
-	p.addSub = function (sub) {
-	  this.subs.push(sub)
-	}
-	
-	/**
-	 * Remove a directive subscriber.
-	 *
-	 * @param {Directive} sub
-	 */
-	
-	p.removeSub = function (sub) {
-	  if (this.subs.length) {
-	    var i = this.subs.indexOf(sub)
-	    if (i > -1) this.subs.splice(i, 1)
-	  }
-	}
-	
-	/**
-	 * Notify all subscribers of a new value.
-	 */
-	
-	p.notify = function () {
-	  var i = this.subs.length
-	  while (i--) {
-	    this.subs[i].update()
-	  }
-	}
-	
-	module.exports = Binding
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(86)
-	var textParser = __webpack_require__(88)
-	var expParser = __webpack_require__(90)
-	
-	/**
-	 * A directive links a DOM element with a piece of data,
-	 * which is the result of evaluating an expression.
-	 * It registers a watcher with the expression and calls
-	 * the DOM update function when a change is triggered.
-	 *
-	 * @param {String} name
-	 * @param {Node} el
-	 * @param {Vue} vm
-	 * @param {Object} descriptor
-	 *                 - {String} expression
-	 *                 - {String} [arg]
-	 *                 - {Array<Object>} [filters]
-	 * @param {Object} def - directive definition object
-	 * @param {Function} [linker] - pre-compiled linker function
-	 * @constructor
-	 */
-	
-	function Directive (name, el, vm, descriptor, def, linker) {
-	  // public
-	  this.name = name
-	  this.el = el
-	  this.vm = vm
-	  // copy descriptor props
-	  this.raw = descriptor.raw
-	  this.expression = descriptor.expression
-	  this.arg = descriptor.arg
-	  this.filters = _.resolveFilters(vm, descriptor.filters)
-	  // private
-	  this._linker = linker
-	  this._locked = false
-	  this._bound = false
-	  // init
-	  this._bind(def)
-	}
-	
-	var p = Directive.prototype
-	
-	/**
-	 * Initialize the directive, mixin definition properties,
-	 * setup the watcher, call definition bind() and update()
-	 * if present.
-	 *
-	 * @param {Object} def
-	 */
-	
-	p._bind = function (def) {
-	  if (typeof def === 'function') {
-	    this.update = def
-	  } else {
-	    _.extend(this, def)
-	  }
-	  this._watcherExp = this.expression
-	  this._checkDynamicLiteral()
-	  if (this.bind) {
-	    this.bind()
-	  }
-	  if (
-	    this.expression && this.update &&
-	    (!this.isLiteral || this._isDynamicLiteral) &&
-	    !this._checkExpFn()
-	  ) {
-	    // use raw expression as identifier because filters
-	    // make them different watchers
-	    var watcher = this.vm._watchers[this.raw]
-	    // wrapped updater for context
-	    var dir = this
-	    var update = this._update = function (val, oldVal) {
-	      if (!dir._locked) {
-	        dir.update(val, oldVal)
-	      }
-	    }
-	    if (!watcher) {
-	      watcher = this.vm._watchers[this.raw] = new Watcher(
-	        this.vm,
-	        this._watcherExp,
-	        update, // callback
-	        this.filters,
-	        this.twoWay // need setter
-	      )
-	    } else {
-	      watcher.addCb(update)
-	    }
-	    this._watcher = watcher
-	    this.update(watcher.value)
-	  }
-	  this._bound = true
-	}
-	
-	/**
-	 * check if this is a dynamic literal binding.
-	 *
-	 * e.g. v-component="{{currentView}}"
-	 */
-	
-	p._checkDynamicLiteral = function () {
-	  var expression = this.expression
-	  if (expression && this.isLiteral) {
-	    var tokens = textParser.parse(expression)
-	    if (tokens) {
-	      var exp = textParser.tokensToExp(tokens)
-	      this.expression = this.vm.$get(exp)
-	      this._watcherExp = exp
-	      this._isDynamicLiteral = true
-	    }
-	  }
-	}
-	
-	/**
-	 * Check if the directive is a function caller
-	 * and if the expression is a callable one. If both true,
-	 * we wrap up the expression and use it as the event
-	 * handler.
-	 *
-	 * e.g. v-on="click: a++"
-	 *
-	 * @return {Boolean}
-	 */
-	
-	p._checkExpFn = function () {
-	  var expression = this.expression
-	  if (
-	    expression && this.isFn &&
-	    !expParser.pathTestRE.test(expression)
-	  ) {
-	    var fn = expParser.parse(expression).get
-	    var vm = this.vm
-	    var handler = function () {
-	      fn.call(vm, vm)
-	    }
-	    if (this.filters) {
-	      handler = _.applyFilters(
-	        handler,
-	        this.filters.read,
-	        vm
-	      )
-	    }
-	    this.update(handler)
-	    return true
-	  }
-	}
-	
-	/**
-	 * Teardown the watcher and call unbind.
-	 */
-	
-	p._teardown = function () {
-	  if (this._bound) {
-	    if (this.unbind) {
-	      this.unbind()
-	    }
-	    var watcher = this._watcher
-	    if (watcher && watcher.active) {
-	      watcher.removeCb(this._update)
-	      if (!watcher.active) {
-	        this.vm._watchers[this.expression] = null
-	      }
-	    }
-	    this._bound = false
-	    this.vm = this.el = this._watcher = null
-	  }
-	}
-	
-	/**
-	 * Set the corresponding value with the setter.
-	 * This should only be used in two-way directives
-	 * e.g. v-model.
-	 *
-	 * @param {*} value
-	 * @param {Boolean} lock - prevent wrtie triggering update.
-	 * @public
-	 */
-	
-	p.set = function (value, lock) {
-	  if (this.twoWay) {
-	    if (lock) {
-	      this._locked = true
-	    }
-	    this._watcher.set(value)
-	    if (lock) {
-	      var self = this
-	      _.nextTick(function () {
-	        self._locked = false        
-	      })
-	    }
-	  }
-	}
-	
-	module.exports = Directive
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var arrayAugmentations = Object.create(Array.prototype)
-	
-	/**
-	 * Intercept mutating methods and emit events
-	 */
-	
-	;[
-	  'push',
-	  'pop',
-	  'shift',
-	  'unshift',
-	  'splice',
-	  'sort',
-	  'reverse'
-	]
-	.forEach(function (method) {
-	  // cache original method
-	  var original = Array.prototype[method]
-	  _.define(arrayAugmentations, method, function mutator () {
-	    // avoid leaking arguments:
-	    // http://jsperf.com/closure-with-arguments
-	    var i = arguments.length
-	    var args = new Array(i)
-	    while (i--) {
-	      args[i] = arguments[i]
-	    }
-	    var result = original.apply(this, args)
-	    var ob = this.__ob__
-	    var inserted
-	    switch (method) {
-	      case 'push':
-	        inserted = args
-	        break
-	      case 'unshift':
-	        inserted = args
-	        break
-	      case 'splice':
-	        inserted = args.slice(2)
-	        break
-	    }
-	    if (inserted) ob.observeArray(inserted)
-	    // notify change
-	    ob.notify()
-	    return result
-	  })
-	})
-	
-	/**
-	 * Swap the element at the given index with a new value
-	 * and emits corresponding event.
-	 *
-	 * @param {Number} index
-	 * @param {*} val
-	 * @return {*} - replaced element
-	 */
-	
-	_.define(
-	  arrayAugmentations,
-	  '$set',
-	  function $set (index, val) {
-	    if (index >= this.length) {
-	      this.length = index + 1
-	    }
-	    return this.splice(index, 1, val)[0]
-	  }
-	)
-	
-	/**
-	 * Convenience method to remove the element at given index.
-	 *
-	 * @param {Number} index
-	 * @param {*} val
-	 */
-	
-	_.define(
-	  arrayAugmentations,
-	  '$remove',
-	  function $remove (index) {
-	    if (typeof index !== 'number') {
-	      index = this.indexOf(index)
-	    }
-	    if (index > -1) {
-	      return this.splice(index, 1)[0]
-	    }
-	  }
-	)
-	
-	module.exports = arrayAugmentations
-
-/***/ },
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var objectAgumentations = Object.create(Object.prototype)
 	
-	/**
-	 * Add a new property to an observed object
-	 * and emits corresponding event
-	 *
-	 * @param {String} key
-	 * @param {*} val
-	 * @public
-	 */
+	var handlers = {
+	  text: __webpack_require__(108),
+	  radio: __webpack_require__(109),
+	  select: __webpack_require__(110),
+	  checkbox: __webpack_require__(111)
+	}
 	
-	_.define(
-	  objectAgumentations,
-	  '$add',
-	  function $add (key, val) {
-	    if (_.isReserved(key)) {
-	      _.warn('Refused to $add reserved key: ' + key)
+	module.exports = {
+	
+	  priority: 800,
+	  twoWay: true,
+	  handlers: handlers,
+	
+	  /**
+	   * Possible elements:
+	   *   <select>
+	   *   <textarea>
+	   *   <input type="*">
+	   *     - text
+	   *     - checkbox
+	   *     - radio
+	   *     - number
+	   *     - TODO: more types may be supplied as a plugin
+	   */
+	
+	  bind: function () {
+	    var el = this.el
+	    var tag = el.tagName
+	    var handler
+	    if (tag === 'INPUT') {
+	      handler = handlers[el.type] || handlers.text
+	    } else if (tag === 'SELECT') {
+	      handler = handlers.select
+	    } else if (tag === 'TEXTAREA') {
+	      handler = handlers.text
+	    } else {
+	      _.warn("v-model doesn't support element type: " + tag)
 	      return
 	    }
-	    if (this.hasOwnProperty(key)) return
-	    var ob = this.__ob__
-	    ob.convert(key, val)
-	    if (ob.vms) {
-	      var i = ob.vms.length
-	      while (i--) {
-	        var vm = ob.vms[i]
-	        vm._proxy(key)
-	        vm._digest()
-	      }
-	    } else {
-	      ob.notify()
-	    }
+	    handler.bind.call(this)
+	    this.update = handler.update
+	    this.unbind = handler.unbind
 	  }
-	)
 	
-	/**
-	 * Deletes a property from an observed object
-	 * and emits corresponding event
-	 *
-	 * @param {String} key
-	 * @public
-	 */
-	
-	_.define(
-	  objectAgumentations,
-	  '$delete',
-	  function $delete (key) {
-	    if (_.isReserved(key)) {
-	      _.warn('Refused to $add reserved key: ' + key)
-	      return
-	    }
-	    if (!this.hasOwnProperty(key)) return
-	    delete this[key]
-	    var ob = this.__ob__
-	    if (ob.vms) {
-	      var i = ob.vms.length
-	      while (i--) {
-	        var vm = ob.vms[i]
-	        vm._unproxy(key)
-	        vm._digest()
-	      }
-	    } else {
-	      ob.notify()
-	    }
-	  }
-	)
-	
-	module.exports = objectAgumentations
+	}
 
 /***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var config = __webpack_require__(84)
-	var textParser = __webpack_require__(88)
-	var dirParser = __webpack_require__(89)
-	var templateParser = __webpack_require__(102)
+	var config = __webpack_require__(68)
+	var textParser = __webpack_require__(91)
+	var dirParser = __webpack_require__(92)
+	var templateParser = __webpack_require__(103)
 	
 	function noop () {}
 	
@@ -18650,7 +18647,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var templateParser = __webpack_require__(102)
+	var templateParser = __webpack_require__(103)
 	
 	/**
 	 * Process an element or a DocumentFragment based on a
@@ -18880,6 +18877,99 @@
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	var isES5 = (function(){
+	    "use strict";
+	    return this === void 0;
+	})();
+	
+	if (isES5) {
+	    module.exports = {
+	        freeze: Object.freeze,
+	        defineProperty: Object.defineProperty,
+	        keys: Object.keys,
+	        getPrototypeOf: Object.getPrototypeOf,
+	        isArray: Array.isArray,
+	        isES5: isES5
+	    };
+	} else {
+	    var has = {}.hasOwnProperty;
+	    var str = {}.toString;
+	    var proto = {}.constructor.prototype;
+	
+	    var ObjectKeys = function ObjectKeys(o) {
+	        var ret = [];
+	        for (var key in o) {
+	            if (has.call(o, key)) {
+	                ret.push(key);
+	            }
+	        }
+	        return ret;
+	    }
+	
+	    var ObjectDefineProperty = function ObjectDefineProperty(o, key, desc) {
+	        o[key] = desc.value;
+	        return o;
+	    }
+	
+	    var ObjectFreeze = function ObjectFreeze(obj) {
+	        return obj;
+	    }
+	
+	    var ObjectGetPrototypeOf = function ObjectGetPrototypeOf(obj) {
+	        try {
+	            return Object(obj).constructor.prototype;
+	        }
+	        catch (e) {
+	            return proto;
+	        }
+	    }
+	
+	    var ArrayIsArray = function ArrayIsArray(obj) {
+	        try {
+	            return str.call(obj) === "[object Array]";
+	        }
+	        catch(e) {
+	            return false;
+	        }
+	    }
+	
+	    module.exports = {
+	        isArray: ArrayIsArray,
+	        keys: ObjectKeys,
+	        defineProperty: ObjectDefineProperty,
+	        freeze: ObjectFreeze,
+	        getPrototypeOf: ObjectGetPrototypeOf,
+	        isES5: isES5
+	    };
+	}
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright (c) 2014 Petka Antonov
 	 * 
@@ -18945,7 +19035,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19066,103 +19156,89 @@
 
 
 /***/ },
-/* 101 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	var isES5 = (function(){
-	    "use strict";
-	    return this === void 0;
-	})();
-	
-	if (isES5) {
-	    module.exports = {
-	        freeze: Object.freeze,
-	        defineProperty: Object.defineProperty,
-	        keys: Object.keys,
-	        getPrototypeOf: Object.getPrototypeOf,
-	        isArray: Array.isArray,
-	        isES5: isES5
-	    };
-	} else {
-	    var has = {}.hasOwnProperty;
-	    var str = {}.toString;
-	    var proto = {}.constructor.prototype;
-	
-	    var ObjectKeys = function ObjectKeys(o) {
-	        var ret = [];
-	        for (var key in o) {
-	            if (has.call(o, key)) {
-	                ret.push(key);
-	            }
-	        }
-	        return ret;
-	    }
-	
-	    var ObjectDefineProperty = function ObjectDefineProperty(o, key, desc) {
-	        o[key] = desc.value;
-	        return o;
-	    }
-	
-	    var ObjectFreeze = function ObjectFreeze(obj) {
-	        return obj;
-	    }
-	
-	    var ObjectGetPrototypeOf = function ObjectGetPrototypeOf(obj) {
-	        try {
-	            return Object(obj).constructor.prototype;
-	        }
-	        catch (e) {
-	            return proto;
-	        }
-	    }
-	
-	    var ArrayIsArray = function ArrayIsArray(obj) {
-	        try {
-	            return str.call(obj) === "[object Array]";
-	        }
-	        catch(e) {
-	            return false;
-	        }
-	    }
-	
-	    module.exports = {
-	        isArray: ArrayIsArray,
-	        keys: ObjectKeys,
-	        defineProperty: ObjectDefineProperty,
-	        freeze: ObjectFreeze,
-	        getPrototypeOf: ObjectGetPrototypeOf,
-	        isES5: isES5
-	    };
-	}
-
-
-/***/ },
 /* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Cache = __webpack_require__(109)
+	var _ = __webpack_require__(17)
+	
+	/**
+	 * The Batcher maintains a job queue to be run
+	 * async on the next event loop.
+	 */
+	
+	function Batcher () {
+	  this._preFlush = null
+	  this.reset()
+	}
+	
+	var p = Batcher.prototype
+	
+	/**
+	 * Push a job into the job queue.
+	 * Jobs with duplicate IDs will be skipped, however we can
+	 * use the `override` option to override existing jobs.
+	 *
+	 * @param {Object} job
+	 *   properties:
+	 *   - {String|Number} id
+	 *   - {Boolean}       override
+	 *   - {Function}      run
+	 */
+	
+	p.push = function (job) {
+	  if (!job.id || !this.has[job.id]) {
+	    this.queue.push(job)
+	    this.has[job.id] = job
+	    if (!this.waiting) {
+	      this.waiting = true
+	      _.nextTick(this.flush, this)
+	    }
+	  } else if (job.override) {
+	    var oldJob = this.has[job.id]
+	    oldJob.cancelled = true
+	    this.queue.push(job)
+	    this.has[job.id] = job
+	  }
+	}
+	
+	/**
+	 * Flush the queue and run the jobs.
+	 * Will call a preFlush hook if has one.
+	 */
+	
+	p.flush = function () {
+	  // before flush hook
+	  if (this._preFlush) {
+	    this._preFlush()
+	  }
+	  // do not cache length because more jobs might be pushed
+	  // as we run existing jobs
+	  for (var i = 0; i < this.queue.length; i++) {
+	    var job = this.queue[i]
+	    if (!job.cancelled) {
+	      job.run()
+	    }
+	  }
+	  this.reset()
+	}
+	
+	/**
+	 * Reset the batcher's state.
+	 */
+	
+	p.reset = function () {
+	  this.has = {}
+	  this.queue = []
+	  this.waiting = false
+	}
+	
+	module.exports = Batcher
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Cache = __webpack_require__(105)
 	var templateCache = new Cache(100)
 	
 	var map = {
@@ -19345,11 +19421,11 @@
 	}
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Cache = __webpack_require__(109)
+	var Cache = __webpack_require__(105)
 	var pathCache = new Cache(1000)
 	var identRE = /^[$_a-zA-Z]+[\w$]*$/
 	
@@ -19667,426 +19743,7 @@
 	}
 
 /***/ },
-/* 104 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	
-	/**
-	 * The Batcher maintains a job queue to be run
-	 * async on the next event loop.
-	 */
-	
-	function Batcher () {
-	  this._preFlush = null
-	  this.reset()
-	}
-	
-	var p = Batcher.prototype
-	
-	/**
-	 * Push a job into the job queue.
-	 * Jobs with duplicate IDs will be skipped, however we can
-	 * use the `override` option to override existing jobs.
-	 *
-	 * @param {Object} job
-	 *   properties:
-	 *   - {String|Number} id
-	 *   - {Boolean}       override
-	 *   - {Function}      run
-	 */
-	
-	p.push = function (job) {
-	  if (!job.id || !this.has[job.id]) {
-	    this.queue.push(job)
-	    this.has[job.id] = job
-	    if (!this.waiting) {
-	      this.waiting = true
-	      _.nextTick(this.flush, this)
-	    }
-	  } else if (job.override) {
-	    var oldJob = this.has[job.id]
-	    oldJob.cancelled = true
-	    this.queue.push(job)
-	    this.has[job.id] = job
-	  }
-	}
-	
-	/**
-	 * Flush the queue and run the jobs.
-	 * Will call a preFlush hook if has one.
-	 */
-	
-	p.flush = function () {
-	  // before flush hook
-	  if (this._preFlush) {
-	    this._preFlush()
-	  }
-	  // do not cache length because more jobs might be pushed
-	  // as we run existing jobs
-	  for (var i = 0; i < this.queue.length; i++) {
-	    var job = this.queue[i]
-	    if (!job.cancelled) {
-	      job.run()
-	    }
-	  }
-	  this.reset()
-	}
-	
-	/**
-	 * Reset the batcher's state.
-	 */
-	
-	p.reset = function () {
-	  this.has = {}
-	  this.queue = []
-	  this.waiting = false
-	}
-	
-	module.exports = Batcher
-
-/***/ },
 /* 105 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	
-	module.exports = {
-	
-	  bind: function () {
-	    var self = this
-	    var el = this.el
-	
-	    // check params
-	    // - lazy: update model on "change" instead of "input"
-	    var lazy = el.hasAttribute('lazy')
-	    if (lazy) {
-	      el.removeAttribute('lazy')
-	    }
-	    // - number: cast value into number when updating model.
-	    var number =
-	      el.hasAttribute('number') ||
-	      el.type === 'number'
-	    if (number) {
-	      el.removeAttribute('number')
-	    }
-	
-	    // handle composition events.
-	    // http://blog.evanyou.me/2014/01/03/composition-event/
-	    var cpLocked = false
-	    this.cpLock = function () {
-	      cpLocked = true
-	    }
-	    this.cpUnlock = function () {
-	      cpLocked = false
-	      // in IE11 the "compositionend" event fires AFTER
-	      // the "input" event, so the input handler is blocked
-	      // at the end... have to call it here.
-	      set()
-	    }
-	    _.on(el,'compositionstart', this.cpLock)
-	    _.on(el,'compositionend', this.cpUnlock)
-	
-	    // shared setter
-	    function set () {
-	      self.set(
-	        number ? _.toNumber(el.value) : el.value,
-	        true
-	      )
-	    }
-	
-	    // if the directive has filters, we need to
-	    // record cursor position and restore it after updating
-	    // the input with the filtered value.
-	    if (this.filters) {
-	      this.listener = function textInputListener () {
-	        if (cpLocked) return
-	        var cursorPos
-	        // some HTML5 input types throw error here
-	        try { cursorPos = el.selectionStart } catch (e) {}
-	        set()
-	        // force a value update, because in
-	        // certain cases the write filters output the same
-	        // result for different input values, and the Observer
-	        // set events won't be triggered.
-	        _.nextTick(function () {
-	          var newVal = self._watcher.value
-	          self.update(newVal)
-	          if (cursorPos != null) {
-	            el.setSelectionRange(cursorPos, cursorPos)
-	          }
-	        })
-	      }
-	    } else {
-	      this.listener = function textInputListener () {
-	        if (cpLocked) return
-	        set()
-	      }
-	    }
-	    this.event = lazy ? 'change' : 'input'
-	    _.on(el, this.event, this.listener)
-	
-	    // IE9 doesn't fire input event on backspace/del/cut
-	    if (!lazy && _.isIE9) {
-	      this.onCut = function () {
-	        _.nextTick(self.listener)
-	      }
-	      this.onDel = function (e) {
-	        if (e.keyCode === 46 || e.keyCode === 8) {
-	          self.listener()
-	        }
-	      }
-	      _.on(el, 'cut', this.onCut)
-	      _.on(el, 'keyup', this.onDel)
-	    }
-	
-	    // set initial value if present
-	    if (
-	      el.hasAttribute('value') ||
-	      (el.tagName === 'TEXTAREA' && el.value.trim())
-	    ) {
-	      // watcher is not set up yet
-	      this.vm.$set(this.expression, el.value)
-	    }
-	  },
-	
-	  update: function (value) {
-	    this.el.value = _.toString(value)
-	  },
-	
-	  unbind: function () {
-	    var el = this.el
-	    _.off(el, this.event, this.listener)
-	    _.off(el,'compositionstart', this.cpLock)
-	    _.off(el,'compositionend', this.cpUnlock)
-	    if (this.onCut) {
-	      _.off(el,'cut', this.onCut)
-	      _.off(el,'keyup', this.onDel)
-	    }
-	  }
-	
-	}
-
-/***/ },
-/* 106 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	
-	module.exports = {
-	
-	  bind: function () {
-	    var self = this
-	    var el = this.el
-	    this.listener = function () {
-	      self.set(el.value, true)
-	    }
-	    _.on(el, 'change', this.listener)
-	    if (el.checked) {
-	      // watcher is not set up yet
-	      this.vm.$set(this.expression, el.value)
-	    }
-	  },
-	
-	  update: function (value) {
-	    /* jshint eqeqeq: false */
-	    this.el.checked = value == this.el.value
-	  },
-	
-	  unbind: function () {
-	    _.off(this.el, 'change', this.listener)
-	  }
-	
-	}
-
-/***/ },
-/* 107 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(86)
-	
-	module.exports = {
-	
-	  bind: function () {
-	    var self = this
-	    var el = this.el
-	    // check options param
-	    var optionsParam = el.getAttribute('options')
-	    if (optionsParam) {
-	      el.removeAttribute('options')
-	      initOptions.call(this, optionsParam)
-	    }
-	    this.multiple = el.hasAttribute('multiple')
-	    this.listener = function () {
-	      var value = self.multiple
-	        ? getMultiValue(el)
-	        : el.value
-	      self.set(value, true)
-	    }
-	    _.on(el, 'change', this.listener)
-	    checkInitialValue.call(this)
-	  },
-	
-	  update: function (value) {
-	    /* jshint eqeqeq: false */
-	    var el = this.el
-	    el.selectedIndex = -1
-	    var multi = this.multiple && _.isArray(value)
-	    var options = el.options
-	    var i = options.length
-	    var option
-	    while (i--) {
-	      option = options[i]
-	      option.selected = multi
-	        ? value.indexOf(option.value) > -1
-	        : value == option.value
-	    }
-	  },
-	
-	  unbind: function () {
-	    _.off(this.el, 'change', this.listener)
-	    if (this.optionWatcher) {
-	      this.optionWatcher.teardown()
-	    }
-	  }
-	
-	}
-	
-	/**
-	 * Initialize the option list from the param.
-	 *
-	 * @param {String} expression
-	 */
-	
-	function initOptions (expression) {
-	  var self = this
-	  function optionUpdateWatcher (value) {
-	    if (_.isArray(value)) {
-	      self.el.innerHTML = ''
-	      buildOptions(self.el, value)
-	      if (self._watcher) {
-	        self.update(self._watcher.value)
-	      }
-	    } else {
-	      _.warn('Invalid options value for v-model: ' + value)
-	    }
-	  }
-	  this.optionWatcher = new Watcher(
-	    this.vm,
-	    expression,
-	    optionUpdateWatcher
-	  )
-	  // update with initial value
-	  optionUpdateWatcher(this.optionWatcher.value)
-	}
-	
-	/**
-	 * Build up option elements. IE9 doesn't create options
-	 * when setting innerHTML on <select> elements, so we have
-	 * to use DOM API here.
-	 *
-	 * @param {Element} parent - a <select> or an <optgroup>
-	 * @param {Array} options
-	 */
-	
-	function buildOptions (parent, options) {
-	  var op, el
-	  for (var i = 0, l = options.length; i < l; i++) {
-	    op = options[i]
-	    if (!op.options) {
-	      el = document.createElement('option')
-	      if (typeof op === 'string') {
-	        el.text = el.value = op
-	      } else {
-	        el.text = op.text
-	        el.value = op.value
-	      }
-	    } else {
-	      el = document.createElement('optgroup')
-	      el.label = op.label
-	      buildOptions(el, op.options)
-	    }
-	    parent.appendChild(el)
-	  }
-	}
-	
-	/**
-	 * Check the initial value for selected options.
-	 */
-	
-	function checkInitialValue () {
-	  var initValue
-	  var options = this.el.options
-	  for (var i = 0, l = options.length; i < l; i++) {
-	    if (options[i].hasAttribute('selected')) {
-	      if (this.multiple) {
-	        (initValue || (initValue = []))
-	          .push(options[i].value)
-	      } else {
-	        initValue = options[i].value
-	      }
-	    }
-	  }
-	  if (initValue) {
-	    this.vm.$set(this.expression, initValue)
-	  }
-	}
-	
-	/**
-	 * Helper to extract a value array for select[multiple]
-	 *
-	 * @param {SelectElement} el
-	 * @return {Array}
-	 */
-	
-	function getMultiValue (el) {
-	  return Array.prototype.filter
-	    .call(el.options, filterSelected)
-	    .map(getOptionValue)
-	}
-	
-	function filterSelected (op) {
-	  return op.selected
-	}
-	
-	function getOptionValue (op) {
-	  return op.value || op.text
-	}
-
-/***/ },
-/* 108 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	
-	module.exports = {
-	
-	  bind: function () {
-	    var self = this
-	    var el = this.el
-	    this.listener = function () {
-	      self.set(el.checked, true)
-	    }
-	    _.on(el, 'change', this.listener)
-	    if (el.checked) {
-	      // watcher is not set up yet
-	      this.vm.$set(this.expression, el.checked)
-	    }
-	  },
-	
-	  update: function (value) {
-	    this.el.checked = !!value
-	  },
-	
-	  unbind: function () {
-	    _.off(this.el, 'change', this.listener)
-	  }
-	
-	}
-
-/***/ },
-/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20203,11 +19860,11 @@
 	module.exports = Cache
 
 /***/ },
-/* 110 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Batcher = __webpack_require__(104)
+	var Batcher = __webpack_require__(102)
 	var batcher = new Batcher()
 	var transDurationProp = _.transitionProp + 'Duration'
 	var animDurationProp = _.animationProp + 'Duration'
@@ -20363,7 +20020,7 @@
 	}
 
 /***/ },
-/* 111 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20407,6 +20064,346 @@
 	      if (cb) cb()
 	    }
 	  }
+	}
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	
+	module.exports = {
+	
+	  bind: function () {
+	    var self = this
+	    var el = this.el
+	
+	    // check params
+	    // - lazy: update model on "change" instead of "input"
+	    var lazy = el.hasAttribute('lazy')
+	    if (lazy) {
+	      el.removeAttribute('lazy')
+	    }
+	    // - number: cast value into number when updating model.
+	    var number =
+	      el.hasAttribute('number') ||
+	      el.type === 'number'
+	    if (number) {
+	      el.removeAttribute('number')
+	    }
+	
+	    // handle composition events.
+	    // http://blog.evanyou.me/2014/01/03/composition-event/
+	    var cpLocked = false
+	    this.cpLock = function () {
+	      cpLocked = true
+	    }
+	    this.cpUnlock = function () {
+	      cpLocked = false
+	      // in IE11 the "compositionend" event fires AFTER
+	      // the "input" event, so the input handler is blocked
+	      // at the end... have to call it here.
+	      set()
+	    }
+	    _.on(el,'compositionstart', this.cpLock)
+	    _.on(el,'compositionend', this.cpUnlock)
+	
+	    // shared setter
+	    function set () {
+	      self.set(
+	        number ? _.toNumber(el.value) : el.value,
+	        true
+	      )
+	    }
+	
+	    // if the directive has filters, we need to
+	    // record cursor position and restore it after updating
+	    // the input with the filtered value.
+	    if (this.filters) {
+	      this.listener = function textInputListener () {
+	        if (cpLocked) return
+	        var cursorPos
+	        // some HTML5 input types throw error here
+	        try { cursorPos = el.selectionStart } catch (e) {}
+	        set()
+	        // force a value update, because in
+	        // certain cases the write filters output the same
+	        // result for different input values, and the Observer
+	        // set events won't be triggered.
+	        _.nextTick(function () {
+	          var newVal = self._watcher.value
+	          self.update(newVal)
+	          if (cursorPos != null) {
+	            el.setSelectionRange(cursorPos, cursorPos)
+	          }
+	        })
+	      }
+	    } else {
+	      this.listener = function textInputListener () {
+	        if (cpLocked) return
+	        set()
+	      }
+	    }
+	    this.event = lazy ? 'change' : 'input'
+	    _.on(el, this.event, this.listener)
+	
+	    // IE9 doesn't fire input event on backspace/del/cut
+	    if (!lazy && _.isIE9) {
+	      this.onCut = function () {
+	        _.nextTick(self.listener)
+	      }
+	      this.onDel = function (e) {
+	        if (e.keyCode === 46 || e.keyCode === 8) {
+	          self.listener()
+	        }
+	      }
+	      _.on(el, 'cut', this.onCut)
+	      _.on(el, 'keyup', this.onDel)
+	    }
+	
+	    // set initial value if present
+	    if (
+	      el.hasAttribute('value') ||
+	      (el.tagName === 'TEXTAREA' && el.value.trim())
+	    ) {
+	      // watcher is not set up yet
+	      this.vm.$set(this.expression, el.value)
+	    }
+	  },
+	
+	  update: function (value) {
+	    this.el.value = _.toString(value)
+	  },
+	
+	  unbind: function () {
+	    var el = this.el
+	    _.off(el, this.event, this.listener)
+	    _.off(el,'compositionstart', this.cpLock)
+	    _.off(el,'compositionend', this.cpUnlock)
+	    if (this.onCut) {
+	      _.off(el,'cut', this.onCut)
+	      _.off(el,'keyup', this.onDel)
+	    }
+	  }
+	
+	}
+
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	
+	module.exports = {
+	
+	  bind: function () {
+	    var self = this
+	    var el = this.el
+	    this.listener = function () {
+	      self.set(el.value, true)
+	    }
+	    _.on(el, 'change', this.listener)
+	    if (el.checked) {
+	      // watcher is not set up yet
+	      this.vm.$set(this.expression, el.value)
+	    }
+	  },
+	
+	  update: function (value) {
+	    /* jshint eqeqeq: false */
+	    this.el.checked = value == this.el.value
+	  },
+	
+	  unbind: function () {
+	    _.off(this.el, 'change', this.listener)
+	  }
+	
+	}
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var Watcher = __webpack_require__(69)
+	
+	module.exports = {
+	
+	  bind: function () {
+	    var self = this
+	    var el = this.el
+	    // check options param
+	    var optionsParam = el.getAttribute('options')
+	    if (optionsParam) {
+	      el.removeAttribute('options')
+	      initOptions.call(this, optionsParam)
+	    }
+	    this.multiple = el.hasAttribute('multiple')
+	    this.listener = function () {
+	      var value = self.multiple
+	        ? getMultiValue(el)
+	        : el.value
+	      self.set(value, true)
+	    }
+	    _.on(el, 'change', this.listener)
+	    checkInitialValue.call(this)
+	  },
+	
+	  update: function (value) {
+	    /* jshint eqeqeq: false */
+	    var el = this.el
+	    el.selectedIndex = -1
+	    var multi = this.multiple && _.isArray(value)
+	    var options = el.options
+	    var i = options.length
+	    var option
+	    while (i--) {
+	      option = options[i]
+	      option.selected = multi
+	        ? value.indexOf(option.value) > -1
+	        : value == option.value
+	    }
+	  },
+	
+	  unbind: function () {
+	    _.off(this.el, 'change', this.listener)
+	    if (this.optionWatcher) {
+	      this.optionWatcher.teardown()
+	    }
+	  }
+	
+	}
+	
+	/**
+	 * Initialize the option list from the param.
+	 *
+	 * @param {String} expression
+	 */
+	
+	function initOptions (expression) {
+	  var self = this
+	  function optionUpdateWatcher (value) {
+	    if (_.isArray(value)) {
+	      self.el.innerHTML = ''
+	      buildOptions(self.el, value)
+	      if (self._watcher) {
+	        self.update(self._watcher.value)
+	      }
+	    } else {
+	      _.warn('Invalid options value for v-model: ' + value)
+	    }
+	  }
+	  this.optionWatcher = new Watcher(
+	    this.vm,
+	    expression,
+	    optionUpdateWatcher
+	  )
+	  // update with initial value
+	  optionUpdateWatcher(this.optionWatcher.value)
+	}
+	
+	/**
+	 * Build up option elements. IE9 doesn't create options
+	 * when setting innerHTML on <select> elements, so we have
+	 * to use DOM API here.
+	 *
+	 * @param {Element} parent - a <select> or an <optgroup>
+	 * @param {Array} options
+	 */
+	
+	function buildOptions (parent, options) {
+	  var op, el
+	  for (var i = 0, l = options.length; i < l; i++) {
+	    op = options[i]
+	    if (!op.options) {
+	      el = document.createElement('option')
+	      if (typeof op === 'string') {
+	        el.text = el.value = op
+	      } else {
+	        el.text = op.text
+	        el.value = op.value
+	      }
+	    } else {
+	      el = document.createElement('optgroup')
+	      el.label = op.label
+	      buildOptions(el, op.options)
+	    }
+	    parent.appendChild(el)
+	  }
+	}
+	
+	/**
+	 * Check the initial value for selected options.
+	 */
+	
+	function checkInitialValue () {
+	  var initValue
+	  var options = this.el.options
+	  for (var i = 0, l = options.length; i < l; i++) {
+	    if (options[i].hasAttribute('selected')) {
+	      if (this.multiple) {
+	        (initValue || (initValue = []))
+	          .push(options[i].value)
+	      } else {
+	        initValue = options[i].value
+	      }
+	    }
+	  }
+	  if (initValue) {
+	    this.vm.$set(this.expression, initValue)
+	  }
+	}
+	
+	/**
+	 * Helper to extract a value array for select[multiple]
+	 *
+	 * @param {SelectElement} el
+	 * @return {Array}
+	 */
+	
+	function getMultiValue (el) {
+	  return Array.prototype.filter
+	    .call(el.options, filterSelected)
+	    .map(getOptionValue)
+	}
+	
+	function filterSelected (op) {
+	  return op.selected
+	}
+	
+	function getOptionValue (op) {
+	  return op.value || op.text
+	}
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	
+	module.exports = {
+	
+	  bind: function () {
+	    var self = this
+	    var el = this.el
+	    this.listener = function () {
+	      self.set(el.checked, true)
+	    }
+	    _.on(el, 'change', this.listener)
+	    if (el.checked) {
+	      // watcher is not set up yet
+	      this.vm.$set(this.expression, el.checked)
+	    }
+	  },
+	
+	  update: function (value) {
+	    this.el.checked = !!value
+	  },
+	
+	  unbind: function () {
+	    _.off(this.el, 'change', this.listener)
+	  }
+	
 	}
 
 /***/ }
