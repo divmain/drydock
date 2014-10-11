@@ -1,52 +1,52 @@
-<div v-if="expanded">
-  <div class="v-route-config">
+<div v-class="expanded: expanded" class="v-route-config route-config">
 
-    <div class="options">
-      <h4>How would you like this route to behave?</h4>
-      <div v-repeat="handler: handlers">
-        <label>
-          <input
-            type="radio"
-            name="config-{{name}}"
-            value="{{handler.name}}"
-            v-model="selectedHandler"
-          >
-          {{handler.description}}
-        </label>
-      </div>
-    </div>
-
-    <div class="config-panel">
-      <h5>{{selectedHandlerObj.optionsHelperText}}</h5>
-      <div v-if="selectedHandlerObj.optionsType === 'selectMany'">
-        <div v-repeat="option: selectedHandlerObj.options">
-          <label>
-            <input
-              type="checkbox"
-              name="config-{{description}}-selmany-{{$index}}"
-              v-on="change: updateSelectedOptions(selectedHandlerObj, option)"
-              v-attr="checked: isSelected(selectedHandlerObj, option)"
-            >
-            {{option}}
-          </label>
-          <br>
+  <div class="options">
+    <h4>How would you like this route to behave?</h4>
+    <div v-repeat="handler: handlers">
+      <label>
+        <input
+          type="radio"
+          name="config-{{name}}"
+          value="{{handler.name}}"
+          v-model="selectedHandler"
+        >
+        {{handler.description}}
+      </label>
+      <div v-if="handler.name === selectedHandlerObj.name && selectedHandlerObj.optionsHelperText">
+        <div class="config-panel">
+          <h5>
+            {{selectedHandlerObj.optionsHelperText}}
+          </h5>
+          <div v-if="selectedHandlerObj.optionsType === 'selectMany'">
+            <div v-repeat="option: selectedHandlerObj.options">
+              <label>
+                <input
+                  type="checkbox"
+                  name="config-{{description}}-selmany-{{$index}}"
+                  v-on="change: updateSelectedOptions(selectedHandlerObj, option)"
+                  v-attr="checked: isSelected(selectedHandlerObj, option)"
+                >
+                {{option}}
+              </label>
+              <br>
+            </div>
+          </div>
+          <div v-if="selectedHandlerObj.optionsType === 'selectOne'">
+            <div v-repeat="option: selectedHandlerObj.options">
+              <label>
+                <input
+                  type="radio"
+                  name="config-{{description}}-selone-{{$index}}"
+                  value="{{option}}"
+                  v-model="selectedHandlerObj.selectedOption"
+                >
+                {{option}}
+              </label>
+              <br />
+            </div>
+          </div>
         </div>
       </div>
-      <div v-if="selectedHandlerObj.optionsType === 'selectOne'">
-        <div v-repeat="option: selectedHandlerObj.options">
-          <label>
-            <input
-              type="radio"
-              name="config-{{description}}-selone-{{$index}}"
-              value="{{option}}"
-              v-model="selectedHandlerObj.selectedOption"
-            >
-            {{option}}
-          </label>
-          <br />
-        </div>
-      </div>
     </div>
-
   </div>
 </div>
