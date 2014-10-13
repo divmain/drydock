@@ -4,7 +4,7 @@
   max-height: 0
   overflow: hidden
   box-sizing: border-box
-  transition: max-height .3s ease-in-out
+  transition: max-height .3s ease
 
   .options
     padding: 20px 0
@@ -22,4 +22,14 @@
 .expanded.route-config
   height: auto
   max-height: 1000px
-  transition max-height 1s ease-in-out
+  transition max-height 1s ease
+
+.config-panel
+  label
+    width: 300px
+    float: left
+
+  &:after //clearfix
+    display: block;
+    content: "";
+    clear: both;
