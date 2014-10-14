@@ -7,39 +7,39 @@
       <div class="path">Path</div>
     </div>
     <div class="route-wrapper" v-repeat="route: routes">
-      <div class="route">
+      <div v-on="click: toggleRouteConfig(route)" class="route">
         <div class="name">{{route.name}}</div>
         <div class="method">{{route.method}}</div>
         <div class="path">{{route.path}}</div>
         <div>
-          <button v-on="click: toggleRouteConfig(route)">{{route.expanded ? "Hide" : "Configure"}}</button>
+          {{route.expanded ? "∧" : "∨"}}
         </div>
       </div>
-      <div>
-        <div v-component="route-config" v-with="route"></div>
+      <div v-component="route-config" v-with="route"></div>
+    </div>
+  </div>
+  <div class="settings-sidebar">
+    <div class="reset-everything">
+      <h2>Reset</h2>
+      <div class="buttons">
+        <h3>Reset surrogate to original conditions</h3>
+        <button v-on="click: resetSurrogate">Reset Everything</button>
       </div>
     </div>
-  </div>
-  <div class="reset-everything">
-    <h2>Reset</h2>
-    <div class="buttons">
-      <h3>Reset surrogate to original conditions</h3>
-      <button v-on="click: resetSurrogate">Reset Everything</button>
-    </div>
-  </div>
-  <div class="response-delay">
-    <h2>Response Delay</h2>
-    <div class="delay-selector">
-      <h3>Emulate network and services latency</h3>
-      <input
-        class="delay-range"
-        type="range"
-        min="0"
-        max="10"
-        step="1"
-        value="0"
-        v-model="delayWidgetPosition">
-      <span class="delay-ms">{{delayDisplay}}</span>
+    <div class="response-delay">
+      <h2>Response Delay</h2>
+      <div class="delay-selector">
+        <h3>Emulate network and services latency</h3>
+        <input
+          class="delay-range"
+          type="range"
+          min="0"
+          max="10"
+          step="1"
+          value="0"
+          v-model="delayWidgetPosition">
+        <span class="delay-ms">{{delayDisplay}}</span>
+      </div>
     </div>
   </div>
 </div>

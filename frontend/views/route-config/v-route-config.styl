@@ -1,6 +1,35 @@
-.v-route-config
-  padding: 32px
-  background-color: #ddd
+.route-config
+  padding-left: 20px
+  background-color: #eee
+  max-height: 0
+  overflow: hidden
+  box-sizing: border-box
+  transition: max-height .3s ease
 
-  h4
+  .options
+    padding: 20px 0
+
+  .config-panel
+    margin: 5px 25px;
+    padding-left: 15px;
+    font-size: 14px
+    border-left: 2px dotted #aaa
+
+  h4, h5
     margin-top: 0
+    margin-bottom: 5px
+
+.expanded.route-config
+  height: auto
+  max-height: 1000px
+  transition max-height 1s ease
+
+.config-panel
+  label
+    width: 300px
+    float: left
+
+  &:after //clearfix
+    display: block;
+    content: "";
+    clear: both;
