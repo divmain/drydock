@@ -83,6 +83,8 @@ module.exports = {
   get: _.partial(request, "GET"),
   post: _.partial(request, "POST"),
   put: _.partial(request, "PUT"),
+  patch: _.partial(request, "PATCH"),
+  delete: _.partial(request, "DELETE"),
   request: request,
   assertSuccess: assertSuccess
 };
