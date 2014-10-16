@@ -54,10 +54,16 @@ module.exports = Vue.extend({
   },
 
   methods: {
-    updateSelectedOptions: function (handler, newSelection) {
+    updateSelectedOptions: function (handler, clickedOption) {
       handler.selectedOptions = _.filter(handler.options, function (option) {
-        // If the newSelection is already in selectedOptions, it's being deselected
-        return option === newSelection ? !_.contains(handler.selectedOptions, option) : _.contains(handler.selectedOptions, option);
+        var isClickedOption = option === clickedOption;
+
+        return isClickedOption ?
+          // if option is the one clicked, include it if it wasn't already, or disclude it if it was
+          // If the clicked option is already in selectedOptions, it's being deselected
+          !_.contains(handler.selectedOptions, option) :
+          // if options is not the one that was clicked, include only if it is already included
+          _.contains(handler.selectedOptions, option);
       });
     },
     isSelected: function (handler, option) {
