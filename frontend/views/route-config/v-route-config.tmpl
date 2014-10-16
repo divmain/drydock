@@ -21,7 +21,7 @@
             <label v-repeat="option: selectedHandlerObj.options">
               <input
                 type="checkbox"
-                name="config-{{description}}-selmany-{{$index}}"
+                name="config-{{handler.name}}-selmany-{{$index}}"
                 v-on="change: updateSelectedOptions(selectedHandlerObj, option)"
                 v-attr="checked: isSelected(selectedHandlerObj, option)"
               >
@@ -32,7 +32,7 @@
             <label v-repeat="option: selectedHandlerObj.options">
               <input
                 type="radio"
-                name="config-{{description}}-selone-{{$index}}"
+                name="config-{{handler.name}}-selone-{{$index}}"
                 value="{{option}}"
                 v-model="selectedHandlerObj.selectedOption"
               >
