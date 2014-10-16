@@ -116,9 +116,19 @@ describe("views/", function () {
         }));
       });
 
+      it("adds an element to selectedOptions if it is checked by user", function (done) {
+        var
+          handler = _.find(view.handlers, { name: "get-things-success" }),
+          el = view.$el.querySelector("input[name='config-get-things-success-selmany-1']");
 
+        sandbox.stub(ajax, "put");
+        expect(handler.selectedOptions).to.have.length(1);
+        testHelper.click(el);
 
-      it("adds an element to selectedOptions if it is checked by user");
+        Vue.nextTick(testHelper.captureExceptions(done, function () {
+          expect(handler.selectedOptions).to.have.length(2);
+        }));
+      });
     });
   });
 });
