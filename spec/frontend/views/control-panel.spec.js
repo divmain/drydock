@@ -37,7 +37,7 @@ routesFixture = [{
 describe("views/", function () {
   describe("control-panel", function () {
     beforeEach(function () {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.sandbox.create({ useFakeTimers: false });
 
       this.view = new ControlPanel({
         data: {
@@ -102,11 +102,9 @@ describe("views/", function () {
 
       it("should reload the page after the server is reset", function (done) {
         var self = this;
-        this.view.resetSurrogate().then(function () {
-          testHelper.captureExceptions(done, function () {
-            expect(self.reloadStub).to.have.been.calledOnce;
-          });
-        });
+        this.view.resetSurrogate().then(testHelper.captureExceptions(done, function () {
+          expect(self.reloadStub).to.have.been.calledOnce;
+        }));
       });
     });
   });
