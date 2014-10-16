@@ -3,7 +3,7 @@ var
 
 module.exports = {
   compiled: function () {
-    _.each(this.$options.watch, function (handler, keypath) {
+    _.each(this.$options.watchFor, function (handler, keypath) {
       this.$watch(keypath, handler);
     }, this);
   }

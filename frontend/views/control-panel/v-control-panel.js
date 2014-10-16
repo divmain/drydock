@@ -19,7 +19,7 @@ module.exports = Vue.extend({
     watchHash
   ],
 
-  watch: {
+  watchFor: {
     "delay": _.debounce(function (newValue) {
       ajax.put("/surrogate/api/delay", {
         data: { delay: newValue }
