@@ -73,7 +73,7 @@
 	var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
 	  justWhitespace = /^\s*$/,
 	  _ = __webpack_require__(3),
-	  Promise = __webpack_require__(11);
+	  Promise = __webpack_require__(9);
 	
 	
 	assertSuccess = function (resolvedXhr) {
@@ -155,6 +155,8 @@
 	  get: _.partial(request, "GET"),
 	  post: _.partial(request, "POST"),
 	  put: _.partial(request, "PUT"),
+	  patch: _.partial(request, "PATCH"),
+	  delete: _.partial(request, "DELETE"),
 	  request: request,
 	  assertSuccess: assertSuccess
 	};
@@ -170,7 +172,7 @@
 	  watchHash = __webpack_require__(5),
 	  tmpl = __webpack_require__(6),
 	  _ = __webpack_require__(3),
-	  Vue = __webpack_require__(9);
+	  Vue = __webpack_require__(10);
 	
 	__webpack_require__(7);
 	
@@ -185,7 +187,7 @@
 	    watchHash
 	  ],
 	
-	  watch: {
+	  watchFor: {
 	    "delay": _.debounce(function (newValue) {
 	      ajax.put("/surrogate/api/delay", {
 	        data: { delay: newValue }
@@ -7421,7 +7423,7 @@
 	  watchHash = __webpack_require__(5),
 	  tmpl = __webpack_require__(12),
 	  _ = __webpack_require__(3),
-	  Vue = __webpack_require__(9);
+	  Vue = __webpack_require__(10);
 	
 	__webpack_require__(13);
 	
@@ -7438,7 +7440,7 @@
 	    }
 	  },
 	
-	  watch: {
+	  watchFor: {
 	    "selectedHandler": function (newValue) {
 	      ajax.put("/surrogate/api/route", {
 	        data: {
@@ -7472,9 +7474,16 @@
 	  },
 	
 	  methods: {
-	    updateSelectedOptions: function (handler, newSelection) {
+	    updateSelectedOptions: function (handler, clickedOption) {
 	      handler.selectedOptions = _.filter(handler.options, function (option) {
-	        return _.contains(handler.selectedOptions, option) || option === newSelection;
+	        var isClickedOption = option === clickedOption;
+	
+	        return isClickedOption ?
+	          // if option is the one clicked, include it if it wasn't already, or disclude it if it was
+	          // If the clicked option is already in selectedOptions, it's being deselected
+	          !_.contains(handler.selectedOptions, option) :
+	          // if options is not the one that was clicked, include only if it is already included
+	          _.contains(handler.selectedOptions, option);
 	      });
 	    },
 	    isSelected: function (handler, option) {
@@ -7493,7 +7502,7 @@
 	
 	module.exports = {
 	  compiled: function () {
-	    _.each(this.$options.watch, function (handler, keypath) {
+	    _.each(this.$options.watchFor, function (handler, keypath) {
 	      this.$watch(keypath, handler);
 	    }, this);
 	  }
@@ -7504,7 +7513,7 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"v-control-panel\">\n  <div class=\"routes\">\n    <h2>Routes</h2>\n    <div class=\"route header\">\n      <div class=\"name\">Name</div>\n      <div class=\"method\">Method</div>\n      <div class=\"path\">Path</div>\n    </div>\n    <div class=\"route-wrapper\" v-repeat=\"route: routes\">\n      <div class=\"route\">\n        <div class=\"name\">{{route.name}}</div>\n        <div class=\"method\">{{route.method}}</div>\n        <div class=\"path\">{{route.path}}</div>\n        <div>\n          <button v-on=\"click: toggleRouteConfig(route)\">{{route.expanded ? \"Hide\" : \"Configure\"}}</button>\n        </div>\n      </div>\n      <div>\n        <div v-component=\"route-config\" v-with=\"route\"></div>\n      </div>\n    </div>\n  </div>\n  <div class=\"reset-everything\">\n    <h2>Reset</h2>\n    <div class=\"buttons\">\n      <h3>Reset surrogate to original conditions</h3>\n      <button v-on=\"click: resetSurrogate\">Reset Everything</button>\n    </div>\n  </div>\n  <div class=\"response-delay\">\n    <h2>Response Delay</h2>\n    <div class=\"delay-selector\">\n      <h3>Emulate network and services latency</h3>\n      <input\n        class=\"delay-range\"\n        type=\"range\"\n        min=\"0\"\n        max=\"10\"\n        step=\"1\"\n        value=\"0\"\n        v-model=\"delayWidgetPosition\">\n      <span class=\"delay-ms\">{{delayDisplay}}</span>\n    </div>\n  </div>\n</div>\n"
+	module.exports = "<div class=\"v-control-panel\">\n  <div class=\"routes\">\n    <h2>Routes</h2>\n    <div class=\"route header\">\n      <div class=\"name\">Name</div>\n      <div class=\"method\">Method</div>\n      <div class=\"path\">Path</div>\n    </div>\n    <div class=\"route-wrapper\" v-repeat=\"route: routes\">\n      <div v-on=\"click: toggleRouteConfig(route)\" class=\"route\">\n        <div class=\"name\">{{route.name}}</div>\n        <div class=\"method\">{{route.method}}</div>\n        <div class=\"path\">{{route.path}}</div>\n        <div>\n          {{route.expanded ? \"∧\" : \"∨\"}}\n        </div>\n      </div>\n      <div v-component=\"route-config\" v-with=\"route\"></div>\n    </div>\n  </div>\n  <div class=\"settings-sidebar\">\n    <div class=\"reset-everything\">\n      <h2>Reset</h2>\n      <div class=\"buttons\">\n        <h3>Reset surrogate to original conditions</h3>\n        <button v-on=\"click: resetSurrogate\">Reset Everything</button>\n      </div>\n    </div>\n    <div class=\"response-delay\">\n      <h2>Response Delay</h2>\n      <div class=\"delay-selector\">\n        <h3>Emulate network and services latency</h3>\n        <input\n          class=\"delay-range\"\n          type=\"range\"\n          min=\"0\"\n          max=\"10\"\n          step=\"1\"\n          value=\"0\"\n          v-model=\"delayWidgetPosition\">\n        <span class=\"delay-ms\">{{delayDisplay}}</span>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ },
 /* 7 */
@@ -7514,9 +7523,9 @@
 	
 	// load the styles
 	var content = __webpack_require__(8);
-	if(typeof content === 'string') content = [module.id, content, ''];
+	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(10)(content);
+	var update = __webpack_require__(11)(content);
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -7533,11 +7542,41 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(31)();
-	exports.push([module.id, ".v-control-panel {\n  padding: 16px;\n  font-family: sans-serif;\n}\n.v-control-panel button {\n  -moz-box-sizing: border-box;\n       box-sizing: border-box;\n  border: 1px solid #333;\n  margin: 4px 8px;\n  padding: 6px 14px;\n  color: #000;\n  background-color: #ccc;\n  border-radius: 4px;\n  font-weight: 600;\n  font-size: 14px;\n}\n.v-control-panel button:hover {\n  background-color: #ddd;\n}\n.v-control-panel .route button {\n  font-size: 10px;\n  padding: 4px 10px;\n  margin: -4px 0;\n}\n.v-control-panel .routes {\n  margin-bottom: 32px;\n}\n.v-control-panel .route-wrapper {\n  border-bottom: 1px dotted #666;\n}\n.v-control-panel .route {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  padding: 10px 16px;\n}\n.v-control-panel .route.header {\n  background: #555;\n  color: #fff;\n  font-weight: 600;\n}\n.v-control-panel .route .name {\n  -webkit-flex-shrink: 1;\n      -ms-flex-negative: 1;\n          flex-shrink: 1;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 220px;\n  margin-right: 12px;\n}\n.v-control-panel .route .method {\n  -webkit-flex-shrink: 0;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 100px;\n}\n.v-control-panel .route .path {\n  -webkit-flex-shrink: 1;\n      -ms-flex-negative: 1;\n          flex-shrink: 1;\n  -webkit-flex-grow: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n  display: inline-block;\n  width: 100px;\n}\n.v-control-panel .route .mutators {\n  -webkit-flex-shrink: 0;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 144px;\n}\n.v-control-panel .response-delay {\n  margin-bottom: 32px;\n}\n.v-control-panel .response-delay .delay-range {\n  width: 220px;\n}\n.v-control-panel .response-delay .delay-ms {\n  width: 70px;\n  display: inline-block;\n  text-align: right;\n}\n.v-control-panel .current textarea {\n  width: 100%;\n  height: 160px;\n  margin-top: 16px;\n  font-family: monospace;\n  font-size: 12px;\n}\n", ""]);
+	exports = module.exports = __webpack_require__(30)();
+	exports.push([module.id, ".v-control-panel {\n  padding: 16px;\n  font-family: sans-serif;\n}\n.v-control-panel button {\n  box-sizing: border-box;\n  border: 1px solid #333;\n  margin: 4px 8px;\n  padding: 6px 14px;\n  color: #000;\n  background-color: #ccc;\n  border-radius: 4px;\n  font-weight: 600;\n  font-size: 14px;\n}\n.v-control-panel button:hover {\n  background-color: #ddd;\n}\n.v-control-panel .routes {\n  margin-bottom: 32px;\n}\n.v-control-panel .route-wrapper {\n  border-bottom: 1px dotted #666;\n}\n.v-control-panel .route {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  padding: 10px 16px;\n  background-color: #fff;\n  -webkit-transition: background-color 0.2s ease;\n          transition: background-color 0.2s ease;\n}\n.v-control-panel .route:hover {\n  cursor: pointer;\n  background-color: #ccc;\n  -webkit-transition: background-color 0.2s ease;\n          transition: background-color 0.2s ease;\n}\n.v-control-panel .route.header {\n  background: #555;\n  color: #fff;\n  font-weight: 600;\n}\n.v-control-panel .route button {\n  font-size: 10px;\n  padding: 4px 10px;\n  margin: -4px 0;\n}\n.v-control-panel .route .name {\n  -webkit-flex-shrink: 1;\n      -ms-flex-negative: 1;\n          flex-shrink: 1;\n  -webkit-box-flex: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 220px;\n  margin-right: 12px;\n}\n.v-control-panel .route .method {\n  -webkit-flex-shrink: 0;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n  -webkit-box-flex: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 100px;\n}\n.v-control-panel .route .path {\n  -webkit-flex-shrink: 1;\n      -ms-flex-negative: 1;\n          flex-shrink: 1;\n  -webkit-box-flex: 1;\n  -webkit-flex-grow: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n  display: inline-block;\n  width: 100px;\n}\n.v-control-panel .route .mutators {\n  -webkit-flex-shrink: 0;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n  -webkit-box-flex: 0;\n  -webkit-flex-grow: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  display: inline-block;\n  width: 144px;\n}\n.v-control-panel .response-delay {\n  margin-bottom: 32px;\n}\n.v-control-panel .response-delay .delay-range {\n  width: 220px;\n}\n.v-control-panel .response-delay .delay-ms {\n  width: 70px;\n  display: inline-block;\n  text-align: right;\n}\n.v-control-panel .current textarea {\n  width: 100%;\n  height: 160px;\n  margin-top: 16px;\n  font-family: monospace;\n  font-size: 12px;\n}\n", ""]);
 
 /***/ },
 /* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014 Petka Antonov
+	 * 
+	 * Permission is hereby granted, free of charge, to any person obtaining a copy
+	 * of this software and associated documentation files (the "Software"), to deal
+	 * in the Software without restriction, including without limitation the rights
+	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	 * copies of the Software, and to permit persons to whom the Software is
+	 * furnished to do so, subject to the following conditions:</p>
+	 * 
+	 * The above copyright notice and this permission notice shall be included in
+	 * all copies or substantial portions of the Software.
+	 * 
+	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	 * THE SOFTWARE.
+	 * 
+	 */
+	"use strict";
+	var Promise = __webpack_require__(16)();
+	module.exports = Promise;
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -7623,12 +7662,10 @@
 	extend(p, __webpack_require__(22))
 	extend(p, __webpack_require__(23))
 	
-	window.observer = __webpack_require__(30)
-	
 	module.exports = _.Vue = Vue
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7750,40 +7787,10 @@
 
 
 /***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014 Petka Antonov
-	 * 
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:</p>
-	 * 
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 * 
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * 
-	 */
-	"use strict";
-	var Promise = __webpack_require__(16)();
-	module.exports = Promise;
-
-/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div v-if=\"expanded\">\n  <div class=\"v-route-config\">\n\n    <div class=\"options\">\n      <h4>How would you like this route to behave?</h4>\n      <div v-repeat=\"handler: handlers\">\n        <label>\n          <input\n            type=\"radio\"\n            name=\"config-{{name}}\"\n            value=\"{{handler.name}}\"\n            v-model=\"selectedHandler\"\n          >\n          {{handler.description}}\n        </label>\n      </div>\n    </div>\n\n    <div class=\"config-panel\">\n      <h5>{{selectedHandlerObj.optionsHelperText}}</h5>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectMany'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"checkbox\"\n              name=\"config-{{description}}-selmany-{{$index}}\"\n              v-on=\"change: updateSelectedOptions(selectedHandlerObj, option)\"\n              v-attr=\"checked: isSelected(selectedHandlerObj, option)\"\n            >\n            {{option}}\n          </label>\n          <br>\n        </div>\n      </div>\n      <div v-if=\"selectedHandlerObj.optionsType === 'selectOne'\">\n        <div v-repeat=\"option: selectedHandlerObj.options\">\n          <label>\n            <input\n              type=\"radio\"\n              name=\"config-{{description}}-selone-{{$index}}\"\n              value=\"{{option}}\"\n              v-model=\"selectedHandlerObj.selectedOption\"\n            >\n            {{option}}\n          </label>\n          <br />\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
+	module.exports = "<div v-class=\"expanded: expanded\" class=\"v-route-config route-config\">\n\n  <div class=\"options\">\n    <h4>How would you like this route to behave?</h4>\n    <div v-repeat=\"handler: handlers\">\n      <label>\n        <input\n          type=\"radio\"\n          name=\"config-{{name}}\"\n          value=\"{{handler.name}}\"\n          v-model=\"selectedHandler\"\n        >\n        {{handler.description}}\n      </label>\n      <div v-if=\"handler.name === selectedHandlerObj.name && selectedHandlerObj.optionsHelperText\">\n        <div class=\"config-panel\">\n          <h5>\n            {{selectedHandlerObj.optionsHelperText}}\n          </h5>\n          <div v-if=\"selectedHandlerObj.optionsType === 'selectMany'\">\n            <label v-repeat=\"option: selectedHandlerObj.options\">\n              <input\n                type=\"checkbox\"\n                name=\"config-{{handler.name}}-selmany-{{$index}}\"\n                v-on=\"change: updateSelectedOptions(selectedHandlerObj, option)\"\n                v-attr=\"checked: isSelected(selectedHandlerObj, option)\"\n              >\n              {{option}}\n            </label>\n          </div>\n          <div v-if=\"selectedHandlerObj.optionsType === 'selectOne'\">\n            <label v-repeat=\"option: selectedHandlerObj.options\">\n              <input\n                type=\"radio\"\n                name=\"config-{{handler.name}}-selone-{{$index}}\"\n                value=\"{{option}}\"\n                v-model=\"selectedHandlerObj.selectedOption\"\n              >\n              {{option}}\n            </label>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ },
 /* 13 */
@@ -7793,9 +7800,9 @@
 	
 	// load the styles
 	var content = __webpack_require__(14);
-	if(typeof content === 'string') content = [module.id, content, ''];
+	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(10)(content);
+	var update = __webpack_require__(11)(content);
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -7812,8 +7819,8 @@
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(31)();
-	exports.push([module.id, ".v-route-config {\n  padding: 32px;\n  background-color: #ddd;\n}\n.v-route-config h4 {\n  margin-top: 0;\n}\n", ""]);
+	exports = module.exports = __webpack_require__(30)();
+	exports.push([module.id, ".route-config {\n  padding-left: 20px;\n  background-color: #eee;\n  max-height: 0;\n  overflow: hidden;\n  box-sizing: border-box;\n  -webkit-transition: max-height 0.3s ease;\n          transition: max-height 0.3s ease;\n}\n.route-config .options {\n  padding: 20px 0;\n}\n.route-config .config-panel {\n  margin: 5px 25px;\n  padding-left: 15px;\n  font-size: 14px;\n  border-left: 2px dotted #aaa;\n}\n.route-config h4,\n.route-config h5 {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n.expanded.route-config {\n  height: auto;\n  max-height: 1000px;\n  -webkit-transition: max-height 1s ease;\n          transition: max-height 1s ease;\n}\n.config-panel label {\n  width: 300px;\n  float: left;\n}\n.config-panel:after {\n  display: block;\n  content: \"\";\n  clear: both;\n}\n", ""]);
 
 /***/ },
 /* 15 */
@@ -7866,19 +7873,19 @@
 	    return bluebird;
 	}
 	module.exports = function() {
-	var util = __webpack_require__(32);
-	var async = __webpack_require__(33);
-	var errors = __webpack_require__(34);
+	var util = __webpack_require__(31);
+	var async = __webpack_require__(32);
+	var errors = __webpack_require__(33);
 	
 	var INTERNAL = function(){};
 	var APPLY = {};
 	var NEXT_FILTER = {e: null};
 	
-	var cast = __webpack_require__(35)(Promise, INTERNAL);
-	var PromiseArray = __webpack_require__(36)(Promise, INTERNAL, cast);
-	var CapturedTrace = __webpack_require__(37)();
-	var CatchFilter = __webpack_require__(38)(NEXT_FILTER);
-	var PromiseResolver = __webpack_require__(39);
+	var cast = __webpack_require__(34)(Promise, INTERNAL);
+	var PromiseArray = __webpack_require__(35)(Promise, INTERNAL, cast);
+	var CapturedTrace = __webpack_require__(36)();
+	var CatchFilter = __webpack_require__(37)(NEXT_FILTER);
+	var PromiseResolver = __webpack_require__(38);
 	
 	var isArray = util.isArray;
 	
@@ -7895,7 +7902,7 @@
 	var markAsOriginatingFromRejection = errors.markAsOriginatingFromRejection;
 	var canAttach = errors.canAttach;
 	var thrower = util.thrower;
-	var apiRejection = __webpack_require__(40)(Promise);
+	var apiRejection = __webpack_require__(39)(Promise);
 	
 	
 	var makeSelfResolutionError = function Promise$_makeSelfResolutionError() {
@@ -7961,8 +7968,7 @@
 	                        + "or a filter function");
 	
 	                this._attachExtraTrace(catchFilterTypeError);
-	                async.invoke(this._reject, this, catchFilterTypeError);
-	                return;
+	                return Promise.reject(catchFilterTypeError);
 	            }
 	        }
 	        catchInstances.length = j;
@@ -8875,10 +8881,10 @@
 	}
 	
 	Promise._makeSelfResolutionError = makeSelfResolutionError;
-	__webpack_require__(41)(Promise, NEXT_FILTER, cast);
+	__webpack_require__(40)(Promise, NEXT_FILTER, cast);
+	__webpack_require__(41)(Promise);
 	__webpack_require__(42)(Promise);
-	__webpack_require__(43)(Promise);
-	__webpack_require__(44)(Promise, PromiseArray, cast, INTERNAL);
+	__webpack_require__(43)(Promise, PromiseArray, cast, INTERNAL);
 	Promise.RangeError = RangeError;
 	Promise.CancellationError = CancellationError;
 	Promise.TimeoutError = TimeoutError;
@@ -8890,50 +8896,50 @@
 	util.toFastProperties(Promise);
 	util.toFastProperties(Promise.prototype);
 	Promise.Promise = Promise;
+	__webpack_require__(44)(Promise,INTERNAL,cast);
 	__webpack_require__(45)(Promise,INTERNAL,cast);
-	__webpack_require__(46)(Promise,INTERNAL,cast);
-	__webpack_require__(47)(Promise);
-	__webpack_require__(48)(Promise,apiRejection,INTERNAL,cast);
-	__webpack_require__(49)(Promise,PromiseArray,apiRejection,cast,INTERNAL);
-	__webpack_require__(50)(Promise);
-	__webpack_require__(51)(Promise,INTERNAL);
-	__webpack_require__(52)(Promise,PromiseArray,cast);
-	__webpack_require__(53)(Promise,PromiseArray,apiRejection,cast,INTERNAL);
-	__webpack_require__(54)(Promise,PromiseArray);
-	__webpack_require__(55)(Promise,PromiseArray,apiRejection);
-	__webpack_require__(56)(Promise,PromiseArray);
+	__webpack_require__(46)(Promise);
+	__webpack_require__(47)(Promise,apiRejection,INTERNAL,cast);
+	__webpack_require__(48)(Promise,PromiseArray,apiRejection,cast,INTERNAL);
+	__webpack_require__(49)(Promise);
+	__webpack_require__(50)(Promise,INTERNAL);
+	__webpack_require__(51)(Promise,PromiseArray,cast);
+	__webpack_require__(52)(Promise,PromiseArray,apiRejection,cast,INTERNAL);
+	__webpack_require__(53)(Promise,PromiseArray);
+	__webpack_require__(54)(Promise,PromiseArray,apiRejection);
+	__webpack_require__(55)(Promise,PromiseArray);
+	__webpack_require__(56)(Promise,INTERNAL);
 	__webpack_require__(57)(Promise,INTERNAL);
-	__webpack_require__(58)(Promise,INTERNAL);
-	__webpack_require__(59)(Promise,PromiseArray);
-	__webpack_require__(60)(Promise,INTERNAL);
-	__webpack_require__(61)(Promise,apiRejection,cast);
+	__webpack_require__(58)(Promise,PromiseArray);
+	__webpack_require__(59)(Promise,INTERNAL);
+	__webpack_require__(60)(Promise,apiRejection,cast);
 	
 	Promise.prototype = Promise.prototype;
 	return Promise;
 	
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(96)))
 
 /***/ },
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var lang   = __webpack_require__(62)
+	var lang   = __webpack_require__(61)
 	var extend = lang.extend
 	
 	extend(exports, lang)
+	extend(exports, __webpack_require__(62))
 	extend(exports, __webpack_require__(63))
 	extend(exports, __webpack_require__(64))
 	extend(exports, __webpack_require__(65))
-	extend(exports, __webpack_require__(66))
 
 /***/ },
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var mergeOptions = __webpack_require__(67)
+	var mergeOptions = __webpack_require__(66)
 	
 	/**
 	 * Expose useful internals
@@ -8941,7 +8947,7 @@
 	
 	exports.util       = _
 	exports.nextTick   = _.nextTick
-	exports.config     = __webpack_require__(68)
+	exports.config     = __webpack_require__(67)
 	
 	/**
 	 * Each instance constructor, including Vue, has a unique
@@ -9072,10 +9078,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(69)
-	var textParser = __webpack_require__(92)
-	var dirParser = __webpack_require__(93)
-	var expParser = __webpack_require__(94)
+	var Watcher = __webpack_require__(68)
+	var textParser = __webpack_require__(88)
+	var dirParser = __webpack_require__(89)
+	var expParser = __webpack_require__(90)
 	var filterRE = /[^|]\|[^|]/
 	
 	/**
@@ -9243,11 +9249,13 @@
 	 */
 	
 	exports.$appendTo = function (target, cb, withTransition) {
+	  target = query(target)
 	  var targetIsDetached = !_.inDoc(target)
 	  var op = withTransition === false || targetIsDetached
 	    ? append
 	    : transition.append
 	  insert(this, target, op, targetIsDetached, cb)
+	  return this
 	}
 	
 	/**
@@ -9265,6 +9273,7 @@
 	  } else {
 	    this.$appendTo(target, cb, withTransition)
 	  }
+	  return this
 	}
 	
 	/**
@@ -9276,11 +9285,13 @@
 	 */
 	
 	exports.$before = function (target, cb, withTransition) {
+	  target = query(target)
 	  var targetIsDetached = !_.inDoc(target)
 	  var op = withTransition === false || targetIsDetached
 	    ? before
 	    : transition.before
 	  insert(this, target, op, targetIsDetached, cb)
+	  return this
 	}
 	
 	/**
@@ -9298,6 +9309,7 @@
 	  } else {
 	    this.$appendTo(target.parentNode, cb, withTransition)
 	  }
+	  return this
 	}
 	
 	/**
@@ -9332,6 +9344,7 @@
 	      : transition.remove
 	    op(this.$el, this, realCb)
 	  }
+	  return this
 	}
 	
 	/**
@@ -9345,7 +9358,6 @@
 	 */
 	
 	function insert (vm, target, op, targetIsDetached, cb) {
-	  target = query(target)
 	  var shouldCallHook =
 	    !targetIsDetached &&
 	    !vm._isAttached &&
@@ -9452,6 +9464,7 @@
 	  (this._events[event] || (this._events[event] = []))
 	    .push(fn)
 	  modifyListenerCount(this, event, 1)
+	  return this
 	}
 	
 	/**
@@ -9470,6 +9483,7 @@
 	  }
 	  on.fn = fn
 	  this.$on(event, on)
+	  return this
 	}
 	
 	/**
@@ -9493,15 +9507,17 @@
 	      }
 	    }
 	    this._events = {}
-	    return
+	    return this
 	  }
 	  // specific event
 	  cbs = this._events[event]
-	  if (!cbs) return
+	  if (!cbs) {
+	    return this
+	  }
 	  if (arguments.length === 1) {
 	    modifyListenerCount(this, event, -cbs.length)
 	    this._events[event] = null
-	    return
+	    return this
 	  }
 	  // specific handler
 	  var cb
@@ -9514,6 +9530,7 @@
 	      break
 	    }
 	  }
+	  return this
 	}
 	
 	/**
@@ -9543,6 +9560,7 @@
 	      }
 	    }
 	  }
+	  return this
 	}
 	
 	/**
@@ -9566,6 +9584,7 @@
 	      }
 	    }
 	  }
+	  return this
 	}
 	
 	/**
@@ -9583,6 +9602,7 @@
 	      ? null
 	      : parent.$parent
 	  }
+	  return this
 	}
 	
 	/**
@@ -9682,7 +9702,9 @@
 	    _.warn('$mount() should be called only once.')
 	    return
 	  }
-	  if (typeof el === 'string') {
+	  if (!el) {
+	    el = document.createElement('div')
+	  } else if (typeof el === 'string') {
 	    var selector = el
 	    el = document.querySelector(el)
 	    if (!el) {
@@ -9701,6 +9723,7 @@
 	    this._initDOMHooks()
 	    this.$once('hook:attached', ready)
 	  }
+	  return this
 	}
 	
 	/**
@@ -9784,27 +9807,27 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	// manipulation directives
-	exports.text       = __webpack_require__(70)
-	exports.html       = __webpack_require__(71)
-	exports.attr       = __webpack_require__(72)
-	exports.show       = __webpack_require__(73)
-	exports['class']   = __webpack_require__(74)
-	exports.el         = __webpack_require__(75)
-	exports.ref        = __webpack_require__(76)
-	exports.cloak      = __webpack_require__(77)
-	exports.style      = __webpack_require__(78)
-	exports.partial    = __webpack_require__(79)
-	exports.transition = __webpack_require__(80)
+	exports.text       = __webpack_require__(69)
+	exports.html       = __webpack_require__(70)
+	exports.attr       = __webpack_require__(71)
+	exports.show       = __webpack_require__(72)
+	exports['class']   = __webpack_require__(73)
+	exports.el         = __webpack_require__(74)
+	exports.ref        = __webpack_require__(75)
+	exports.cloak      = __webpack_require__(76)
+	exports.style      = __webpack_require__(77)
+	exports.partial    = __webpack_require__(78)
+	exports.transition = __webpack_require__(79)
 	
 	// event listener directives
-	exports.on         = __webpack_require__(81)
-	exports.model      = __webpack_require__(95)
+	exports.on         = __webpack_require__(80)
+	exports.model      = __webpack_require__(92)
 	
 	// child vm directives
-	exports.component  = __webpack_require__(82)
-	exports.repeat     = __webpack_require__(83)
-	exports['if']      = __webpack_require__(84)
-	exports['with']    = __webpack_require__(85)
+	exports.component  = __webpack_require__(81)
+	exports.repeat     = __webpack_require__(82)
+	exports['if']      = __webpack_require__(83)
+	exports['with']    = __webpack_require__(84)
 
 /***/ },
 /* 25 */
@@ -9929,13 +9952,13 @@
 	 * Install special array filters
 	 */
 	
-	_.extend(exports, __webpack_require__(86))
+	_.extend(exports, __webpack_require__(85))
 
 /***/ },
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mergeOptions = __webpack_require__(67)
+	var mergeOptions = __webpack_require__(66)
 	
 	/**
 	 * The main init sequence. This is called for every
@@ -10142,8 +10165,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Observer = __webpack_require__(30)
-	var Binding = __webpack_require__(87)
+	var Observer = __webpack_require__(93)
+	var Binding = __webpack_require__(86)
 	
 	/**
 	 * Setup the scope of an instance, which contains:
@@ -10363,9 +10386,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Directive = __webpack_require__(88)
-	var compile = __webpack_require__(96)
-	var transclude = __webpack_require__(97)
+	var Directive = __webpack_require__(87)
+	var compile = __webpack_require__(94)
+	var transclude = __webpack_require__(95)
 	
 	/**
 	 * Transclude, compile and link element.
@@ -10438,248 +10461,6 @@
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(17)
-	var config = __webpack_require__(68)
-	var Binding = __webpack_require__(87)
-	var arrayAugmentations = __webpack_require__(89)
-	var objectAugmentations = __webpack_require__(90)
-	var arrayKeys = Object.getOwnPropertyNames(arrayAugmentations)
-	var objectKeys = Object.getOwnPropertyNames(objectAugmentations)
-	
-	var uid = 0
-	
-	/**
-	 * Type enums
-	 */
-	
-	var ARRAY  = 0
-	var OBJECT = 1
-	
-	/**
-	 * Augment an target Object or Array by intercepting
-	 * the prototype chain using __proto__
-	 *
-	 * @param {Object|Array} target
-	 * @param {Object} proto
-	 */
-	
-	function protoAugment (target, src) {
-	  target.__proto__ = src
-	}
-	
-	/**
-	 * Augment an target Object or Array by defining
-	 * hidden properties.
-	 *
-	 * @param {Object|Array} target
-	 * @param {Object} proto
-	 */
-	
-	function copyAugment (target, src, keys) {
-	  var i = keys.length
-	  var key
-	  while (i--) {
-	    key = keys[i]
-	    _.define(target, key, src[key])
-	  }
-	}
-	
-	/**
-	 * Observer class that are attached to each observed
-	 * object. Once attached, the observer converts target
-	 * object's property keys into getter/setters that
-	 * collect dependencies and dispatches updates.
-	 *
-	 * @param {Array|Object} value
-	 * @param {Number} type
-	 * @constructor
-	 */
-	
-	function Observer (value, type) {
-	  this.id = ++uid
-	  this.value = value
-	  this.active = true
-	  this.bindings = []
-	  _.define(value, '__ob__', this)
-	  var augment = config.proto && _.hasProto
-	    ? protoAugment
-	    : copyAugment
-	  if (type === ARRAY) {
-	    augment(value, arrayAugmentations, arrayKeys)
-	    this.observeArray(value)
-	  } else if (type === OBJECT) {
-	    augment(value, objectAugmentations, objectKeys)
-	    this.walk(value)
-	  }
-	}
-	
-	Observer.target = null
-	
-	var p = Observer.prototype
-	
-	/**
-	 * Attempt to create an observer instance for a value,
-	 * returns the new observer if successfully observed,
-	 * or the existing observer if the value already has one.
-	 *
-	 * @param {*} value
-	 * @return {Observer|undefined}
-	 * @static
-	 */
-	
-	Observer.create = function (value) {
-	  if (
-	    value &&
-	    value.hasOwnProperty('__ob__') &&
-	    value.__ob__ instanceof Observer
-	  ) {
-	    return value.__ob__
-	  } else if (_.isArray(value)) {
-	    return new Observer(value, ARRAY)
-	  } else if (
-	    _.isPlainObject(value) &&
-	    !value._isVue // avoid Vue instance
-	  ) {
-	    return new Observer(value, OBJECT)
-	  }
-	}
-	
-	/**
-	 * Walk through each property and convert them into
-	 * getter/setters. This method should only be called when
-	 * value type is Object. Properties prefixed with `$` or `_`
-	 * and accessor properties are ignored.
-	 *
-	 * @param {Object} obj
-	 */
-	
-	p.walk = function (obj) {
-	  var keys = Object.keys(obj)
-	  var i = keys.length
-	  var key, prefix
-	  while (i--) {
-	    key = keys[i]
-	    prefix = key.charCodeAt(0)
-	    if (prefix !== 0x24 && prefix !== 0x5F) { // skip $ or _
-	      this.convert(key, obj[key])
-	    }
-	  }
-	}
-	
-	/**
-	 * Try to carete an observer for a child value,
-	 * and if value is array, link binding to the array.
-	 *
-	 * @param {*} val
-	 * @return {Binding|undefined}
-	 */
-	
-	p.observe = function (val) {
-	  return Observer.create(val)
-	}
-	
-	/**
-	 * Observe a list of Array items.
-	 *
-	 * @param {Array} items
-	 */
-	
-	p.observeArray = function (items) {
-	  var i = items.length
-	  while (i--) {
-	    this.observe(items[i])
-	  }
-	}
-	
-	/**
-	 * Convert a property into getter/setter so we can emit
-	 * the events when the property is accessed/changed.
-	 *
-	 * @param {String} key
-	 * @param {*} val
-	 */
-	
-	p.convert = function (key, val) {
-	  var ob = this
-	  var childOb = ob.observe(val)
-	  var binding = new Binding()
-	  if (childOb) {
-	    childOb.bindings.push(binding)
-	  }
-	  Object.defineProperty(ob.value, key, {
-	    enumerable: true,
-	    configurable: true,
-	    get: function () {
-	      // Observer.target is a watcher whose getter is
-	      // currently being evaluated.
-	      if (ob.active && Observer.target) {
-	        Observer.target.addDep(binding)
-	      }
-	      return val
-	    },
-	    set: function (newVal) {
-	      if (newVal === val) return
-	      // remove binding from old value
-	      var oldChildOb = val && val.__ob__
-	      if (oldChildOb) {
-	        var oldBindings = oldChildOb.bindings
-	        oldBindings.splice(oldBindings.indexOf(binding))
-	      }
-	      val = newVal
-	      // add binding to new value
-	      var newChildOb = ob.observe(newVal)
-	      if (newChildOb) {
-	        newChildOb.bindings.push(binding)
-	      }
-	      binding.notify()
-	    }
-	  })
-	}
-	
-	/**
-	 * Notify change on all self bindings on an observer.
-	 * This is called when a mutable value mutates. e.g.
-	 * when an Array's mutating methods are called, or an
-	 * Object's $add/$delete are called.
-	 */
-	
-	p.notify = function () {
-	  var bindings = this.bindings
-	  for (var i = 0, l = bindings.length; i < l; i++) {
-	    bindings[i].notify()
-	  }
-	}
-	
-	/**
-	 * Add an owner vm, so that when $add/$delete mutations
-	 * happen we can notify owner vms to proxy the keys and
-	 * digest the watchers. This is only called when the object
-	 * is observed as an instance's root $data.
-	 *
-	 * @param {Vue} vm
-	 */
-	
-	p.addVm = function (vm) {
-	  (this.vms = this.vms || []).push(vm)
-	}
-	
-	/**
-	 * Remove an owner vm. This is called when the object is
-	 * swapped out as an instance's $data object.
-	 *
-	 * @param {Vue} vm
-	 */
-	
-	p.removeVm = function (vm) {
-	  this.vms.splice(this.vms.indexOf(vm), 1)
-	}
-	
-	module.exports = Observer
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
 	module.exports = function() {
 		var list = [];
 		list.toString = function toString() {
@@ -10698,7 +10479,7 @@
 	}
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10724,7 +10505,7 @@
 	 * 
 	 */
 	"use strict";
-	var es5 = __webpack_require__(99);
+	var es5 = __webpack_require__(97);
 	var haveGetters = (function(){
 	    try {
 	        var o = {};
@@ -10972,7 +10753,7 @@
 
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -10998,10 +10779,10 @@
 	 * 
 	 */
 	"use strict";
-	var schedule = __webpack_require__(100);
-	var Queue = __webpack_require__(101);
-	var errorObj = __webpack_require__(32).errorObj;
-	var tryCatch1 = __webpack_require__(32).tryCatch1;
+	var schedule = __webpack_require__(98);
+	var Queue = __webpack_require__(99);
+	var errorObj = __webpack_require__(31).errorObj;
+	var tryCatch1 = __webpack_require__(31).tryCatch1;
 	var _process = typeof process !== "undefined" ? process : void 0;
 	
 	function Async() {
@@ -11087,10 +10868,10 @@
 	
 	module.exports = new Async();
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(96)))
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11116,8 +10897,8 @@
 	 * 
 	 */
 	"use strict";
-	var Objectfreeze = __webpack_require__(99).freeze;
-	var util = __webpack_require__(32);
+	var Objectfreeze = __webpack_require__(97).freeze;
+	var util = __webpack_require__(31);
 	var inherits = util.inherits;
 	var notEnumerableProp = util.notEnumerableProp;
 	
@@ -11241,7 +11022,7 @@
 
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11268,8 +11049,8 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, INTERNAL) {
-	var util = __webpack_require__(32);
-	var canAttach = __webpack_require__(34).canAttach;
+	var util = __webpack_require__(31);
+	var canAttach = __webpack_require__(33).canAttach;
 	var errorObj = util.errorObj;
 	var isObject = util.isObject;
 	
@@ -11380,7 +11161,7 @@
 
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11407,8 +11188,8 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, INTERNAL, cast) {
-	var canAttach = __webpack_require__(34).canAttach;
-	var util = __webpack_require__(32);
+	var canAttach = __webpack_require__(33).canAttach;
+	var util = __webpack_require__(31);
 	var isArray = util.isArray;
 	
 	function toResolutionValue(val) {
@@ -11588,7 +11369,7 @@
 
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11615,8 +11396,8 @@
 	 */
 	"use strict";
 	module.exports = function() {
-	var inherits = __webpack_require__(32).inherits;
-	var defineProperty = __webpack_require__(99).defineProperty;
+	var inherits = __webpack_require__(31).inherits;
+	var defineProperty = __webpack_require__(97).defineProperty;
 	
 	var rignore = new RegExp(
 	    "\\b(?:[a-zA-Z0-9.]+\\$_\\w+|" +
@@ -11827,7 +11608,7 @@
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11854,11 +11635,11 @@
 	 */
 	"use strict";
 	module.exports = function(NEXT_FILTER) {
-	var util = __webpack_require__(32);
-	var errors = __webpack_require__(34);
+	var util = __webpack_require__(31);
+	var errors = __webpack_require__(33);
 	var tryCatch1 = util.tryCatch1;
 	var errorObj = util.errorObj;
-	var keys = __webpack_require__(99).keys;
+	var keys = __webpack_require__(97).keys;
 	var TypeError = errors.TypeError;
 	
 	function CatchFilter(instances, callback, promise) {
@@ -11927,7 +11708,7 @@
 
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11953,14 +11734,14 @@
 	 * 
 	 */
 	"use strict";
-	var util = __webpack_require__(32);
+	var util = __webpack_require__(31);
 	var maybeWrapAsError = util.maybeWrapAsError;
-	var errors = __webpack_require__(34);
+	var errors = __webpack_require__(33);
 	var TimeoutError = errors.TimeoutError;
 	var OperationalError = errors.OperationalError;
-	var async = __webpack_require__(33);
+	var async = __webpack_require__(32);
 	var haveGetters = util.haveGetters;
-	var es5 = __webpack_require__(99);
+	var es5 = __webpack_require__(97);
 	
 	function isUntypedError(obj) {
 	    return obj instanceof Error &&
@@ -12091,7 +11872,7 @@
 
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12118,7 +11899,7 @@
 	 */
 	"use strict";
 	module.exports = function(Promise) {
-	var TypeError = __webpack_require__(34).TypeError;
+	var TypeError = __webpack_require__(33).TypeError;
 	
 	function apiRejection(msg) {
 	    var error = new TypeError(msg);
@@ -12135,7 +11916,7 @@
 
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12162,7 +11943,7 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, NEXT_FILTER, cast) {
-	var util = __webpack_require__(32);
+	var util = __webpack_require__(31);
 	var wrapsPrimitiveReceiver = util.wrapsPrimitiveReceiver;
 	var isPrimitive = util.isPrimitive;
 	var thrower = util.thrower;
@@ -12261,7 +12042,7 @@
 
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12287,7 +12068,7 @@
 	 * 
 	 */
 	"use strict";
-	var util = __webpack_require__(32);
+	var util = __webpack_require__(31);
 	var isPrimitive = util.isPrimitive;
 	var wrapsPrimitiveReceiver = util.wrapsPrimitiveReceiver;
 	
@@ -12345,7 +12126,7 @@
 
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12427,7 +12208,7 @@
 
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12455,7 +12236,7 @@
 	"use strict";
 	module.exports =
 	function(Promise, PromiseArray, cast, INTERNAL) {
-	var util = __webpack_require__(32);
+	var util = __webpack_require__(31);
 	var canEvaluate = util.canEvaluate;
 	var tryCatch1 = util.tryCatch1;
 	var errorObj = util.errorObj;
@@ -12555,7 +12336,7 @@
 
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12592,9 +12373,9 @@
 	};
 	
 	module.exports = function(Promise, INTERNAL, cast) {
-	var util = __webpack_require__(32);
-	var errors = __webpack_require__(34);
-	var apiRejection = __webpack_require__(40)(Promise);
+	var util = __webpack_require__(31);
+	var errors = __webpack_require__(33);
+	var apiRejection = __webpack_require__(39)(Promise);
 	var TimeoutError = Promise.TimeoutError;
 	
 	var afterTimeout = function Promise$_afterTimeout(promise, message, ms) {
@@ -12652,7 +12433,7 @@
 
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12679,8 +12460,8 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, INTERNAL, cast) {
-	var apiRejection = __webpack_require__(40)(Promise);
-	var isArray = __webpack_require__(32).isArray;
+	var apiRejection = __webpack_require__(39)(Promise);
+	var isArray = __webpack_require__(31).isArray;
 	
 	var raceLater = function Promise$_raceLater(promise) {
 	    return promise.then(function(array) {
@@ -12730,7 +12511,7 @@
 
 
 /***/ },
-/* 47 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12764,7 +12545,7 @@
 	}
 	
 	module.exports = function(Promise) {
-	var util = __webpack_require__(32);
+	var util = __webpack_require__(31);
 	var canEvaluate = util.canEvaluate;
 	var isIdentifier = util.isIdentifier;
 	
@@ -12855,7 +12636,7 @@
 
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12882,10 +12663,10 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, apiRejection, INTERNAL, cast) {
-	var errors = __webpack_require__(34);
+	var errors = __webpack_require__(33);
 	var TypeError = errors.TypeError;
-	var deprecated = __webpack_require__(32).deprecated;
-	var util = __webpack_require__(32);
+	var deprecated = __webpack_require__(31).deprecated;
+	var util = __webpack_require__(31);
 	var errorObj = util.errorObj;
 	var tryCatch1 = util.tryCatch1;
 	var yieldHandlers = [];
@@ -13012,7 +12793,7 @@
 
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13039,7 +12820,7 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, PromiseArray, apiRejection, cast, INTERNAL) {
-	var util = __webpack_require__(32);
+	var util = __webpack_require__(31);
 	var tryCatch3 = util.tryCatch3;
 	var errorObj = util.errorObj;
 	var PENDING = {};
@@ -13167,7 +12948,7 @@
 
 
 /***/ },
-/* 50 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13194,8 +12975,8 @@
 	 */
 	"use strict";
 	module.exports = function(Promise) {
-	var util = __webpack_require__(32);
-	var async = __webpack_require__(33);
+	var util = __webpack_require__(31);
+	var async = __webpack_require__(32);
 	var tryCatch2 = util.tryCatch2;
 	var tryCatch1 = util.tryCatch1;
 	var errorObj = util.errorObj;
@@ -13249,7 +13030,7 @@
 
 
 /***/ },
-/* 51 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13277,13 +13058,13 @@
 	"use strict";
 	module.exports = function(Promise, INTERNAL) {
 	var THIS = {};
-	var util = __webpack_require__(32);
-	var nodebackForPromise = __webpack_require__(39)
+	var util = __webpack_require__(31);
+	var nodebackForPromise = __webpack_require__(38)
 	    ._nodebackForPromise;
 	var withAppended = util.withAppended;
 	var maybeWrapAsError = util.maybeWrapAsError;
 	var canEvaluate = util.canEvaluate;
-	var TypeError = __webpack_require__(34).TypeError;
+	var TypeError = __webpack_require__(33).TypeError;
 	var defaultSuffix = "Async";
 	var defaultFilter = function(name, func) {
 	    return util.isIdentifier(name) &&
@@ -13392,26 +13173,26 @@
 	        var ret;
 	        if (typeof callback === "string") {
 	            ret = "                                                          \n\
-	                this.method(args, fn);                                       \n\
+	                this.method({{args}}, fn);                                   \n\
 	                break;                                                       \n\
 	            ".replace(".method", generatePropertyAccess(callback));
 	        } else if (receiver === THIS) {
 	            ret =  "                                                         \n\
-	                callback.call(this, args, fn);                               \n\
+	                callback.call(this, {{args}}, fn);                           \n\
 	                break;                                                       \n\
 	            ";
 	        } else if (receiver !== void 0) {
 	            ret =  "                                                         \n\
-	                callback.call(receiver, args, fn);                           \n\
+	                callback.call(receiver, {{args}}, fn);                       \n\
 	                break;                                                       \n\
 	            ";
 	        } else {
 	            ret =  "                                                         \n\
-	                callback(args, fn);                                          \n\
+	                callback({{args}}, fn);                                      \n\
 	                break;                                                       \n\
 	            ";
 	        }
-	        return ret.replace("args", args).replace(", ", comma);
+	        return ret.replace("{{args}}", args).replace(", ", comma);
 	    }
 	
 	    function generateArgumentSwitchCase() {
@@ -13581,7 +13362,7 @@
 
 
 /***/ },
-/* 52 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13608,10 +13389,10 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, PromiseArray, cast) {
-	var util = __webpack_require__(32);
-	var apiRejection = __webpack_require__(40)(Promise);
+	var util = __webpack_require__(31);
+	var apiRejection = __webpack_require__(39)(Promise);
 	var isObject = util.isObject;
-	var es5 = __webpack_require__(99);
+	var es5 = __webpack_require__(97);
 	
 	function PropertiesPromiseArray(obj) {
 	    var keys = es5.keys(obj);
@@ -13695,7 +13476,7 @@
 
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13722,7 +13503,7 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, PromiseArray, apiRejection, cast, INTERNAL) {
-	var util = __webpack_require__(32);
+	var util = __webpack_require__(31);
 	var tryCatch4 = util.tryCatch4;
 	var tryCatch3 = util.tryCatch3;
 	var errorObj = util.errorObj;
@@ -13882,7 +13663,7 @@
 
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13911,7 +13692,7 @@
 	module.exports =
 	    function(Promise, PromiseArray) {
 	var PromiseInspection = Promise.PromiseInspection;
-	var util = __webpack_require__(32);
+	var util = __webpack_require__(31);
 	
 	function SettledPromiseArray(values) {
 	    this.constructor$(values);
@@ -13955,7 +13736,7 @@
 
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13983,9 +13764,9 @@
 	"use strict";
 	module.exports =
 	function(Promise, PromiseArray, apiRejection) {
-	var util = __webpack_require__(32);
-	var RangeError = __webpack_require__(34).RangeError;
-	var AggregateError = __webpack_require__(34).AggregateError;
+	var util = __webpack_require__(31);
+	var RangeError = __webpack_require__(33).RangeError;
+	var AggregateError = __webpack_require__(33).AggregateError;
 	var isArray = util.isArray;
 	
 	
@@ -14122,7 +13903,7 @@
 
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14149,9 +13930,9 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, PromiseArray) {
-	var util = __webpack_require__(32);
-	var async = __webpack_require__(33);
-	var errors = __webpack_require__(34);
+	var util = __webpack_require__(31);
+	var async = __webpack_require__(32);
+	var errors = __webpack_require__(33);
 	var tryCatch1 = util.tryCatch1;
 	var errorObj = util.errorObj;
 	
@@ -14240,7 +14021,7 @@
 
 
 /***/ },
-/* 57 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14267,9 +14048,9 @@
 	 */
 	"use strict";
 	module.exports = function(Promise, INTERNAL) {
-	var errors = __webpack_require__(34);
+	var errors = __webpack_require__(33);
 	var canAttach = errors.canAttach;
-	var async = __webpack_require__(33);
+	var async = __webpack_require__(32);
 	var CancellationError = errors.CancellationError;
 	
 	Promise.prototype._cancel = function Promise$_cancel(reason) {
@@ -14321,7 +14102,7 @@
 
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14361,7 +14142,7 @@
 
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14413,7 +14194,7 @@
 
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14453,7 +14234,7 @@
 
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14480,8 +14261,8 @@
 	 */
 	"use strict";
 	module.exports = function (Promise, apiRejection, cast) {
-	    var TypeError = __webpack_require__(34).TypeError;
-	    var inherits = __webpack_require__(32).inherits;
+	    var TypeError = __webpack_require__(33).TypeError;
+	    var inherits = __webpack_require__(31).inherits;
 	    var PromiseInspection = Promise.PromiseInspection;
 	
 	    function inspectionMapper(inspections) {
@@ -14649,7 +14430,7 @@
 
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14825,7 +14606,7 @@
 	}
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14904,10 +14685,10 @@
 	}
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var config = __webpack_require__(68)
+	var config = __webpack_require__(67)
 	
 	/**
 	 * Check if a node is in the document.
@@ -15077,10 +14858,10 @@
 	}
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(66)
+	var _ = __webpack_require__(65)
 	
 	/**
 	 * Resolve read & write filters for a vm instance. The
@@ -15154,10 +14935,10 @@
 	}
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var config = __webpack_require__(68)
+	var config = __webpack_require__(67)
 	
 	/**
 	 * Enable debug utilities. The enableDebug() function and
@@ -15209,7 +14990,7 @@
 	}
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -15257,7 +15038,7 @@
 	    // mix default data into instance data
 	    for (var key in defaultData) {
 	      if (!instanceData.hasOwnProperty(key)) {
-	        instanceData[key] = defaultData[key]
+	        instanceData.$add(key, defaultData[key])
 	      }
 	    }
 	    return instanceData
@@ -15442,7 +15223,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -15520,13 +15301,13 @@
 	})
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Observer = __webpack_require__(30)
-	var expParser = __webpack_require__(94)
-	var Batcher = __webpack_require__(102)
+	var Observer = __webpack_require__(93)
+	var expParser = __webpack_require__(90)
+	var Batcher = __webpack_require__(100)
 	
 	var batcher = new Batcher()
 	var uid = 0
@@ -15723,7 +15504,7 @@
 	module.exports = Watcher
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -15743,11 +15524,11 @@
 	}
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var templateParser = __webpack_require__(103)
+	var templateParser = __webpack_require__(101)
 	
 	module.exports = {
 	
@@ -15785,7 +15566,7 @@
 	}
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// xlink
@@ -15822,7 +15603,7 @@
 	}
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var transition = __webpack_require__(91)
@@ -15835,7 +15616,7 @@
 	}
 
 /***/ },
-/* 74 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -15885,7 +15666,7 @@
 	}
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -15903,7 +15684,7 @@
 	}
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -15929,10 +15710,10 @@
 	}
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var config = __webpack_require__(68)
+	var config = __webpack_require__(67)
 	
 	module.exports = {
 	
@@ -15946,7 +15727,7 @@
 	}
 
 /***/ },
-/* 78 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var prefixes = ['-webkit-', '-moz-', '-ms-']
@@ -15997,12 +15778,12 @@
 	}
 
 /***/ },
-/* 79 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var compile = __webpack_require__(96)
-	var templateParser = __webpack_require__(103)
+	var compile = __webpack_require__(94)
+	var templateParser = __webpack_require__(101)
 	
 	module.exports = {
 	
@@ -16033,7 +15814,7 @@
 	}
 
 /***/ },
-/* 80 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -16050,7 +15831,7 @@
 	}
 
 /***/ },
-/* 81 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -16115,11 +15896,11 @@
 	}
 
 /***/ },
-/* 82 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(69)
+	var Watcher = __webpack_require__(68)
 	
 	module.exports = {
 	
@@ -16312,17 +16093,17 @@
 	}
 
 /***/ },
-/* 83 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
 	var isObject = _.isObject
-	var textParser = __webpack_require__(92)
-	var expParser = __webpack_require__(94)
-	var templateParser = __webpack_require__(103)
-	var compile = __webpack_require__(96)
-	var transclude = __webpack_require__(97)
-	var mergeOptions = __webpack_require__(67)
+	var textParser = __webpack_require__(88)
+	var expParser = __webpack_require__(90)
+	var templateParser = __webpack_require__(101)
+	var compile = __webpack_require__(94)
+	var transclude = __webpack_require__(95)
+	var mergeOptions = __webpack_require__(66)
 	var uid = 0
 	
 	module.exports = {
@@ -16594,7 +16375,7 @@
 	      meta.$value = raw
 	    }
 	    // resolve constructor
-	    var Ctor = this.Ctor || this.resolveCtor(data)
+	    var Ctor = this.Ctor || this.resolveCtor(data, meta)
 	    var vm = this.vm.$addChild({
 	      el: this.template.cloneNode(true),
 	      _linker: this._linker,
@@ -16613,15 +16394,22 @@
 	   * components depending on instance data.
 	   *
 	   * @param {Object} data
+	   * @param {Object} meta
 	   * @return {Function}
 	   */
 	
-	  resolveCtor: function (data) {
+	  resolveCtor: function (data, meta) {
+	    // create a temporary context object and copy data
+	    // and meta properties onto it.
+	    // use _.define to avoid accidentally overwriting scope
+	    // properties.
 	    var context = Object.create(this.vm)
-	    for (var key in data) {
-	      // use _.define to avoid accidentally
-	      // overwriting scope properties
+	    var key
+	    for (key in data) {
 	      _.define(context, key, data[key])
+	    }
+	    for (key in meta) {
+	      _.define(context, key, meta[key])
 	    }
 	    var id = this.ctorGetter.call(context, context)
 	    var Ctor = this.vm.$options.components[id]
@@ -16808,11 +16596,11 @@
 	}
 
 /***/ },
-/* 84 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var templateParser = __webpack_require__(103)
+	var templateParser = __webpack_require__(101)
 	
 	module.exports = {
 	
@@ -16865,11 +16653,11 @@
 	}
 
 /***/ },
-/* 85 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(69)
+	var Watcher = __webpack_require__(68)
 	
 	module.exports = {
 	
@@ -16917,11 +16705,11 @@
 	}
 
 /***/ },
-/* 86 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Path = __webpack_require__(104)
+	var Path = __webpack_require__(102)
 	
 	/**
 	 * Filter filter for v-repeat
@@ -17009,7 +16797,7 @@
 	}
 
 /***/ },
-/* 87 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var uid = 0
@@ -17065,13 +16853,13 @@
 	module.exports = Binding
 
 /***/ },
-/* 88 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(69)
-	var textParser = __webpack_require__(92)
-	var expParser = __webpack_require__(94)
+	var Watcher = __webpack_require__(68)
+	var textParser = __webpack_require__(88)
+	var expParser = __webpack_require__(90)
 	
 	/**
 	 * A directive links a DOM element with a piece of data,
@@ -17131,7 +16919,7 @@
 	    this.bind()
 	  }
 	  if (
-	    this.expression && this.update &&
+	    this.update && this._watcherExp &&
 	    (!this.isLiteral || this._isDynamicLiteral) &&
 	    !this._checkExpFn()
 	  ) {
@@ -17264,301 +17052,11 @@
 	module.exports = Directive
 
 /***/ },
-/* 89 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(17)
-	var arrayAugmentations = Object.create(Array.prototype)
-	
-	/**
-	 * Intercept mutating methods and emit events
-	 */
-	
-	;[
-	  'push',
-	  'pop',
-	  'shift',
-	  'unshift',
-	  'splice',
-	  'sort',
-	  'reverse'
-	]
-	.forEach(function (method) {
-	  // cache original method
-	  var original = Array.prototype[method]
-	  _.define(arrayAugmentations, method, function mutator () {
-	    // avoid leaking arguments:
-	    // http://jsperf.com/closure-with-arguments
-	    var i = arguments.length
-	    var args = new Array(i)
-	    while (i--) {
-	      args[i] = arguments[i]
-	    }
-	    var result = original.apply(this, args)
-	    var ob = this.__ob__
-	    var inserted
-	    switch (method) {
-	      case 'push':
-	        inserted = args
-	        break
-	      case 'unshift':
-	        inserted = args
-	        break
-	      case 'splice':
-	        inserted = args.slice(2)
-	        break
-	    }
-	    if (inserted) ob.observeArray(inserted)
-	    // notify change
-	    ob.notify()
-	    return result
-	  })
-	})
-	
-	/**
-	 * Swap the element at the given index with a new value
-	 * and emits corresponding event.
-	 *
-	 * @param {Number} index
-	 * @param {*} val
-	 * @return {*} - replaced element
-	 */
-	
-	_.define(
-	  arrayAugmentations,
-	  '$set',
-	  function $set (index, val) {
-	    if (index >= this.length) {
-	      this.length = index + 1
-	    }
-	    return this.splice(index, 1, val)[0]
-	  }
-	)
-	
-	/**
-	 * Convenience method to remove the element at given index.
-	 *
-	 * @param {Number} index
-	 * @param {*} val
-	 */
-	
-	_.define(
-	  arrayAugmentations,
-	  '$remove',
-	  function $remove (index) {
-	    if (typeof index !== 'number') {
-	      index = this.indexOf(index)
-	    }
-	    if (index > -1) {
-	      return this.splice(index, 1)[0]
-	    }
-	  }
-	)
-	
-	module.exports = arrayAugmentations
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var objectAgumentations = Object.create(Object.prototype)
-	
-	/**
-	 * Add a new property to an observed object
-	 * and emits corresponding event
-	 *
-	 * @param {String} key
-	 * @param {*} val
-	 * @public
-	 */
-	
-	_.define(
-	  objectAgumentations,
-	  '$add',
-	  function $add (key, val) {
-	    if (_.isReserved(key)) {
-	      _.warn('Refused to $add reserved key: ' + key)
-	      return
-	    }
-	    if (this.hasOwnProperty(key)) return
-	    var ob = this.__ob__
-	    ob.convert(key, val)
-	    if (ob.vms) {
-	      var i = ob.vms.length
-	      while (i--) {
-	        var vm = ob.vms[i]
-	        vm._proxy(key)
-	        vm._digest()
-	      }
-	    } else {
-	      ob.notify()
-	    }
-	  }
-	)
-	
-	/**
-	 * Deletes a property from an observed object
-	 * and emits corresponding event
-	 *
-	 * @param {String} key
-	 * @public
-	 */
-	
-	_.define(
-	  objectAgumentations,
-	  '$delete',
-	  function $delete (key) {
-	    if (_.isReserved(key)) {
-	      _.warn('Refused to $add reserved key: ' + key)
-	      return
-	    }
-	    if (!this.hasOwnProperty(key)) return
-	    delete this[key]
-	    var ob = this.__ob__
-	    if (ob.vms) {
-	      var i = ob.vms.length
-	      while (i--) {
-	        var vm = ob.vms[i]
-	        vm._unproxy(key)
-	        vm._digest()
-	      }
-	    } else {
-	      ob.notify()
-	    }
-	  }
-	)
-	
-	module.exports = objectAgumentations
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var applyCSSTransition = __webpack_require__(105)
-	var applyJSTransition = __webpack_require__(106)
-	
-	/**
-	 * Append with transition.
-	 *
-	 * @oaram {Element} el
-	 * @param {Element} target
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	exports.append = function (el, target, vm, cb) {
-	  apply(el, 1, function () {
-	    target.appendChild(el)
-	  }, vm, cb)
-	}
-	
-	/**
-	 * InsertBefore with transition.
-	 *
-	 * @oaram {Element} el
-	 * @param {Element} target
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	exports.before = function (el, target, vm, cb) {
-	  apply(el, 1, function () {
-	    _.before(el, target)
-	  }, vm, cb)
-	}
-	
-	/**
-	 * Remove with transition.
-	 *
-	 * @oaram {Element} el
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	exports.remove = function (el, vm, cb) {
-	  apply(el, -1, function () {
-	    _.remove(el)
-	  }, vm, cb)
-	}
-	
-	/**
-	 * Remove by appending to another parent with transition.
-	 * This is only used in block operations.
-	 *
-	 * @oaram {Element} el
-	 * @param {Element} target
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	exports.removeThenAppend = function (el, target, vm, cb) {
-	  apply(el, -1, function () {
-	    target.appendChild(el)
-	  }, vm, cb)
-	}
-	
-	/**
-	 * Apply transitions with an operation callback.
-	 *
-	 * @oaram {Element} el
-	 * @param {Number} direction
-	 *                  1: enter
-	 *                 -1: leave
-	 * @param {Function} op - the actual DOM operation
-	 * @param {Vue} vm
-	 * @param {Function} [cb]
-	 */
-	
-	var apply = exports.apply = function (el, direction, op, vm, cb) {
-	  var transData = el.__v_trans
-	  if (
-	    !transData ||
-	    !vm._isCompiled ||
-	    // if the vm is being manipulated by a parent directive
-	    // during the parent's compilation phase, skip the
-	    // animation.
-	    (vm.$parent && !vm.$parent._isCompiled)
-	  ) {
-	    op()
-	    if (cb) cb()
-	    return
-	  }
-	  // determine the transition type on the element
-	  var jsTransition = vm.$options.transitions[transData.id]
-	  if (jsTransition) {
-	    // js
-	    applyJSTransition(
-	      el,
-	      direction,
-	      op,
-	      transData,
-	      jsTransition,
-	      cb
-	    )
-	  } else if (_.transitionEndEvent) {
-	    // css
-	    applyCSSTransition(
-	      el,
-	      direction,
-	      op,
-	      transData,
-	      cb
-	    )
-	  } else {
-	    // not applicable
-	    op()
-	    if (cb) cb()
-	  }
-	}
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Cache = __webpack_require__(107)
-	var config = __webpack_require__(68)
+	var Cache = __webpack_require__(103)
+	var config = __webpack_require__(67)
 	var regexEscapeRE = /[-.*+?^${}()|[\]\/\\]/g
 	var cache, tagRE, htmlRE, firstChar, lastChar
 	
@@ -17696,11 +17194,11 @@
 	}
 
 /***/ },
-/* 93 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Cache = __webpack_require__(107)
+	var Cache = __webpack_require__(103)
 	var cache = new Cache(1000)
 	var argRE = /^[^\{\?]+$|^'[^']*'$|^"[^"]*"$/
 	var filterTokenRE = /[^\s'"]+|'[^']+'|"[^"]+"/g
@@ -17860,12 +17358,12 @@
 	}
 
 /***/ },
-/* 94 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Path = __webpack_require__(104)
-	var Cache = __webpack_require__(107)
+	var Path = __webpack_require__(102)
+	var Cache = __webpack_require__(103)
 	var expressionCache = new Cache(1000)
 	
 	var keywords =
@@ -18098,16 +17596,138 @@
 	exports.pathTestRE = pathTestRE
 
 /***/ },
-/* 95 */
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var applyCSSTransition = __webpack_require__(104)
+	var applyJSTransition = __webpack_require__(105)
+	
+	/**
+	 * Append with transition.
+	 *
+	 * @oaram {Element} el
+	 * @param {Element} target
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	exports.append = function (el, target, vm, cb) {
+	  apply(el, 1, function () {
+	    target.appendChild(el)
+	  }, vm, cb)
+	}
+	
+	/**
+	 * InsertBefore with transition.
+	 *
+	 * @oaram {Element} el
+	 * @param {Element} target
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	exports.before = function (el, target, vm, cb) {
+	  apply(el, 1, function () {
+	    _.before(el, target)
+	  }, vm, cb)
+	}
+	
+	/**
+	 * Remove with transition.
+	 *
+	 * @oaram {Element} el
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	exports.remove = function (el, vm, cb) {
+	  apply(el, -1, function () {
+	    _.remove(el)
+	  }, vm, cb)
+	}
+	
+	/**
+	 * Remove by appending to another parent with transition.
+	 * This is only used in block operations.
+	 *
+	 * @oaram {Element} el
+	 * @param {Element} target
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	exports.removeThenAppend = function (el, target, vm, cb) {
+	  apply(el, -1, function () {
+	    target.appendChild(el)
+	  }, vm, cb)
+	}
+	
+	/**
+	 * Apply transitions with an operation callback.
+	 *
+	 * @oaram {Element} el
+	 * @param {Number} direction
+	 *                  1: enter
+	 *                 -1: leave
+	 * @param {Function} op - the actual DOM operation
+	 * @param {Vue} vm
+	 * @param {Function} [cb]
+	 */
+	
+	var apply = exports.apply = function (el, direction, op, vm, cb) {
+	  var transData = el.__v_trans
+	  if (
+	    !transData ||
+	    !vm._isCompiled ||
+	    // if the vm is being manipulated by a parent directive
+	    // during the parent's compilation phase, skip the
+	    // animation.
+	    (vm.$parent && !vm.$parent._isCompiled)
+	  ) {
+	    op()
+	    if (cb) cb()
+	    return
+	  }
+	  // determine the transition type on the element
+	  var jsTransition = vm.$options.transitions[transData.id]
+	  if (jsTransition) {
+	    // js
+	    applyJSTransition(
+	      el,
+	      direction,
+	      op,
+	      transData,
+	      jsTransition,
+	      cb
+	    )
+	  } else if (_.transitionEndEvent) {
+	    // css
+	    applyCSSTransition(
+	      el,
+	      direction,
+	      op,
+	      transData,
+	      cb
+	    )
+	  } else {
+	    // not applicable
+	    op()
+	    if (cb) cb()
+	  }
+	}
+
+/***/ },
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
 	
 	var handlers = {
-	  text: __webpack_require__(108),
-	  radio: __webpack_require__(109),
-	  select: __webpack_require__(110),
-	  checkbox: __webpack_require__(111)
+	  text: __webpack_require__(106),
+	  radio: __webpack_require__(107),
+	  select: __webpack_require__(108),
+	  checkbox: __webpack_require__(109)
 	}
 	
 	module.exports = {
@@ -18150,14 +17770,254 @@
 	}
 
 /***/ },
-/* 96 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var config = __webpack_require__(68)
-	var textParser = __webpack_require__(92)
-	var dirParser = __webpack_require__(93)
-	var templateParser = __webpack_require__(103)
+	var config = __webpack_require__(67)
+	var Binding = __webpack_require__(86)
+	var arrayMethods = __webpack_require__(110)
+	var arrayKeys = Object.getOwnPropertyNames(arrayMethods)
+	__webpack_require__(111)
+	
+	var uid = 0
+	
+	/**
+	 * Type enums
+	 */
+	
+	var ARRAY  = 0
+	var OBJECT = 1
+	
+	/**
+	 * Augment an target Object or Array by intercepting
+	 * the prototype chain using __proto__
+	 *
+	 * @param {Object|Array} target
+	 * @param {Object} proto
+	 */
+	
+	function protoAugment (target, src) {
+	  target.__proto__ = src
+	}
+	
+	/**
+	 * Augment an target Object or Array by defining
+	 * hidden properties.
+	 *
+	 * @param {Object|Array} target
+	 * @param {Object} proto
+	 */
+	
+	function copyAugment (target, src, keys) {
+	  var i = keys.length
+	  var key
+	  while (i--) {
+	    key = keys[i]
+	    _.define(target, key, src[key])
+	  }
+	}
+	
+	/**
+	 * Observer class that are attached to each observed
+	 * object. Once attached, the observer converts target
+	 * object's property keys into getter/setters that
+	 * collect dependencies and dispatches updates.
+	 *
+	 * @param {Array|Object} value
+	 * @param {Number} type
+	 * @constructor
+	 */
+	
+	function Observer (value, type) {
+	  this.id = ++uid
+	  this.value = value
+	  this.active = true
+	  this.bindings = []
+	  _.define(value, '__ob__', this)
+	  if (type === ARRAY) {
+	    var augment = config.proto && _.hasProto
+	      ? protoAugment
+	      : copyAugment
+	    augment(value, arrayMethods, arrayKeys)
+	    this.observeArray(value)
+	  } else if (type === OBJECT) {
+	    this.walk(value)
+	  }
+	}
+	
+	Observer.target = null
+	
+	var p = Observer.prototype
+	
+	/**
+	 * Attempt to create an observer instance for a value,
+	 * returns the new observer if successfully observed,
+	 * or the existing observer if the value already has one.
+	 *
+	 * @param {*} value
+	 * @return {Observer|undefined}
+	 * @static
+	 */
+	
+	Observer.create = function (value) {
+	  if (
+	    value &&
+	    value.hasOwnProperty('__ob__') &&
+	    value.__ob__ instanceof Observer
+	  ) {
+	    return value.__ob__
+	  } else if (_.isArray(value)) {
+	    return new Observer(value, ARRAY)
+	  } else if (
+	    _.isPlainObject(value) &&
+	    !value._isVue // avoid Vue instance
+	  ) {
+	    return new Observer(value, OBJECT)
+	  }
+	}
+	
+	/**
+	 * Walk through each property and convert them into
+	 * getter/setters. This method should only be called when
+	 * value type is Object. Properties prefixed with `$` or `_`
+	 * and accessor properties are ignored.
+	 *
+	 * @param {Object} obj
+	 */
+	
+	p.walk = function (obj) {
+	  var keys = Object.keys(obj)
+	  var i = keys.length
+	  var key, prefix
+	  while (i--) {
+	    key = keys[i]
+	    prefix = key.charCodeAt(0)
+	    if (prefix !== 0x24 && prefix !== 0x5F) { // skip $ or _
+	      this.convert(key, obj[key])
+	    }
+	  }
+	}
+	
+	/**
+	 * Try to carete an observer for a child value,
+	 * and if value is array, link binding to the array.
+	 *
+	 * @param {*} val
+	 * @return {Binding|undefined}
+	 */
+	
+	p.observe = function (val) {
+	  return Observer.create(val)
+	}
+	
+	/**
+	 * Observe a list of Array items.
+	 *
+	 * @param {Array} items
+	 */
+	
+	p.observeArray = function (items) {
+	  var i = items.length
+	  while (i--) {
+	    this.observe(items[i])
+	  }
+	}
+	
+	/**
+	 * Convert a property into getter/setter so we can emit
+	 * the events when the property is accessed/changed.
+	 *
+	 * @param {String} key
+	 * @param {*} val
+	 */
+	
+	p.convert = function (key, val) {
+	  var ob = this
+	  var childOb = ob.observe(val)
+	  var binding = new Binding()
+	  if (childOb) {
+	    childOb.bindings.push(binding)
+	  }
+	  Object.defineProperty(ob.value, key, {
+	    enumerable: true,
+	    configurable: true,
+	    get: function () {
+	      // Observer.target is a watcher whose getter is
+	      // currently being evaluated.
+	      if (ob.active && Observer.target) {
+	        Observer.target.addDep(binding)
+	      }
+	      return val
+	    },
+	    set: function (newVal) {
+	      if (newVal === val) return
+	      // remove binding from old value
+	      var oldChildOb = val && val.__ob__
+	      if (oldChildOb) {
+	        var oldBindings = oldChildOb.bindings
+	        oldBindings.splice(oldBindings.indexOf(binding))
+	      }
+	      val = newVal
+	      // add binding to new value
+	      var newChildOb = ob.observe(newVal)
+	      if (newChildOb) {
+	        newChildOb.bindings.push(binding)
+	      }
+	      binding.notify()
+	    }
+	  })
+	}
+	
+	/**
+	 * Notify change on all self bindings on an observer.
+	 * This is called when a mutable value mutates. e.g.
+	 * when an Array's mutating methods are called, or an
+	 * Object's $add/$delete are called.
+	 */
+	
+	p.notify = function () {
+	  var bindings = this.bindings
+	  for (var i = 0, l = bindings.length; i < l; i++) {
+	    bindings[i].notify()
+	  }
+	}
+	
+	/**
+	 * Add an owner vm, so that when $add/$delete mutations
+	 * happen we can notify owner vms to proxy the keys and
+	 * digest the watchers. This is only called when the object
+	 * is observed as an instance's root $data.
+	 *
+	 * @param {Vue} vm
+	 */
+	
+	p.addVm = function (vm) {
+	  (this.vms = this.vms || []).push(vm)
+	}
+	
+	/**
+	 * Remove an owner vm. This is called when the object is
+	 * swapped out as an instance's $data object.
+	 *
+	 * @param {Vue} vm
+	 */
+	
+	p.removeVm = function (vm) {
+	  this.vms.splice(this.vms.indexOf(vm), 1)
+	}
+	
+	module.exports = Observer
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var config = __webpack_require__(67)
+	var textParser = __webpack_require__(88)
+	var dirParser = __webpack_require__(89)
+	var templateParser = __webpack_require__(101)
 	
 	function noop () {}
 	
@@ -18220,33 +18080,27 @@
 	 */
 	
 	function compileElement (el, options) {
-	  var hasAttributes = el.hasAttributes()
-	  var tag = el.tagName.toLowerCase()
-	  if (hasAttributes) {
-	    // check terminal direcitves
-	    var terminalLinkFn
-	    for (var i = 0; i < 3; i++) {
-	      terminalLinkFn = checkTerminalDirectives(el, options)
-	      if (terminalLinkFn) {
-	        terminalLinkFn.terminal = true
-	        return terminalLinkFn
-	      }
+	  var linkFn, tag, component
+	  // check custom element component, but only on non-root
+	  if (!el.__vue__) {
+	    tag = el.tagName.toLowerCase()
+	    component =
+	      tag.indexOf('-') > 0 &&
+	      options.components[tag]
+	    if (component) {
+	      el.setAttribute(config.prefix + 'component', tag)
 	    }
 	  }
-	  // check custom element component
-	  var component =
-	    tag.indexOf('-') > 0 &&
-	    options.components[tag]
-	  if (component) {
-	    return makeTeriminalLinkFn(el, 'component', tag, options)
-	  }
-	  // check other directives
-	  var linkFn
-	  if (hasAttributes) {
-	    var directives = collectDirectives(el, options)
-	    linkFn = directives.length
-	      ? makeDirectivesLinkFn(directives)
-	      : null
+	  if (component || el.hasAttributes()) {
+	    // check terminal direcitves
+	    linkFn = checkTerminalDirectives(el, options)
+	    // if not terminal, build normal link function
+	    if (!linkFn) {
+	      var directives = collectDirectives(el, options)
+	      linkFn = directives.length
+	        ? makeDirectivesLinkFn(directives)
+	        : null
+	    }
 	  }
 	  // if the element is a textarea, we need to interpolate
 	  // its content on initial render.
@@ -18256,6 +18110,7 @@
 	      el.value = vm.$interpolate(el.value)
 	      if (realLinkFn) realLinkFn(vm, el)      
 	    }
+	    linkFn.terminal = true
 	  }
 	  return linkFn
 	}
@@ -18543,9 +18398,11 @@
 	function makeTeriminalLinkFn (el, dirName, value, options) {
 	  var descriptor = dirParser.parse(value)[0]
 	  var def = options.directives[dirName]
-	  return function terminalLinkFn (vm, el) {
+	  var terminalLinkFn = function (vm, el) {
 	    vm._bindDir(dirName, el, descriptor, def)
 	  }
+	  terminalLinkFn.terminal = true
+	  return terminalLinkFn
 	}
 	
 	/**
@@ -18643,11 +18500,11 @@
 	}
 
 /***/ },
-/* 97 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var templateParser = __webpack_require__(103)
+	var templateParser = __webpack_require__(101)
 	
 	/**
 	 * Process an element or a DocumentFragment based on a
@@ -18692,7 +18549,7 @@
 	    collectRawContent(el)
 	    if (options.replace) {
 	      if (frag.childNodes.length > 1) {
-	        transcludeContent(_.toArray(frag.childNodes))
+	        transcludeContent(frag)
 	        return frag
 	      } else {
 	        var replacer = frag.firstChild
@@ -18781,7 +18638,7 @@
 	function getOutlets (el) {
 	  return _.isArray(el)
 	    ? concat.apply([], el.map(getOutlets))
-	    : el.nodeType === 1
+	    : el.querySelectorAll
 	      ? _.toArray(el.querySelectorAll('content'))
 	      : []
 	}
@@ -18805,7 +18662,7 @@
 	}
 
 /***/ },
-/* 98 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// shim for using process in browser
@@ -18874,7 +18731,7 @@
 
 
 /***/ },
-/* 99 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18967,7 +18824,7 @@
 
 
 /***/ },
-/* 100 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -19032,10 +18889,10 @@
 	else throw new Error("no async scheduler available");
 	module.exports = schedule;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(96)))
 
 /***/ },
-/* 101 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19156,7 +19013,7 @@
 
 
 /***/ },
-/* 102 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -19167,7 +19024,6 @@
 	 */
 	
 	function Batcher () {
-	  this._preFlush = null
 	  this.reset()
 	}
 	
@@ -19207,10 +19063,6 @@
 	 */
 	
 	p.flush = function () {
-	  // before flush hook
-	  if (this._preFlush) {
-	    this._preFlush()
-	  }
 	  // do not cache length because more jobs might be pushed
 	  // as we run existing jobs
 	  for (var i = 0; i < this.queue.length; i++) {
@@ -19235,10 +19087,10 @@
 	module.exports = Batcher
 
 /***/ },
-/* 103 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Cache = __webpack_require__(107)
+	var Cache = __webpack_require__(103)
 	var templateCache = new Cache(100)
 	
 	var map = {
@@ -19421,11 +19273,11 @@
 	}
 
 /***/ },
-/* 104 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Cache = __webpack_require__(107)
+	var Cache = __webpack_require__(103)
 	var pathCache = new Cache(1000)
 	var identRE = /^[$_a-zA-Z]+[\w$]*$/
 	
@@ -19713,244 +19565,20 @@
 	    obj = obj[key]
 	    if (!_.isObject(obj)) {
 	      obj = {}
-	      add(last, key, obj)
+	      last.$add(key, obj)
 	    }
 	  }
 	  key = path[i]
 	  if (key in obj) {
 	    obj[key] = val
 	  } else {
-	    add(obj, key, val)
+	    obj.$add(key, val)
 	  }
 	  return true
 	}
-	
-	/**
-	 * Add a property to an object, using $add if target
-	 * has been augmented by Vue's observer.
-	 *
-	 * @param {Object} obj
-	 * @param {String} key
-	 * @param {*} val
-	 */
-	
-	function add (obj, key, val) {
-	  if (obj.$add) {
-	    obj.$add(key, val)
-	  } else {
-	    obj[key] = val
-	  }
-	}
 
 /***/ },
-/* 105 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(17)
-	var Batcher = __webpack_require__(102)
-	var batcher = new Batcher()
-	var transDurationProp = _.transitionProp + 'Duration'
-	var animDurationProp = _.animationProp + 'Duration'
-	
-	/**
-	 * Force layout before triggering transitions/animations
-	 */
-	
-	batcher._preFlush = function () {
-	  /* jshint unused: false */
-	  var f = document.documentElement.offsetHeight
-	}
-	
-	/**
-	 * Get an element's transition type based on the
-	 * calculated styles
-	 *
-	 * @param {Element} el
-	 * @param {Object} data
-	 * @param {String} className
-	 * @return {Number}
-	 *         1 - transition
-	 *         2 - animation
-	 */
-	
-	function getTransitionType (el, data, className) {
-	  var type = data.cache && data.cache[className]
-	  if (type) return type
-	  var inlineStyles = el.style
-	  var computedStyles = window.getComputedStyle(el)
-	  var transDuration =
-	    inlineStyles[transDurationProp] ||
-	    computedStyles[transDurationProp]
-	  if (transDuration && transDuration !== '0s') {
-	    type = 1
-	  } else {
-	    var animDuration =
-	      inlineStyles[animDurationProp] ||
-	      computedStyles[animDurationProp]
-	    if (animDuration && animDuration !== '0s') {
-	      type = 2
-	    }
-	  }
-	  if (type) {
-	    if (!data.cache) data.cache = {}
-	    data.cache[className] = type
-	  }
-	  return type
-	}
-	
-	/**
-	 * Apply CSS transition to an element.
-	 *
-	 * @param {Element} el
-	 * @param {Number} direction - 1: enter, -1: leave
-	 * @param {Function} op - the actual DOM operation
-	 * @param {Object} data - target element's transition data
-	 */
-	
-	module.exports = function (el, direction, op, data, cb) {
-	  var classList = el.classList
-	  var prefix = data.id || 'v'
-	  var enterClass = prefix + '-enter'
-	  var leaveClass = prefix + '-leave'
-	  // clean up potential previous unfinished transition
-	  if (data.callback) {
-	    _.off(el, data.event, data.callback)
-	    classList.remove(enterClass)
-	    classList.remove(leaveClass)
-	    data.event = data.callback = null
-	  }
-	  var transitionType, onEnd, endEvent
-	  if (direction > 0) { // enter
-	    // Enter Transition
-	    classList.add(enterClass)
-	    op()
-	    transitionType = getTransitionType(el, data, enterClass)
-	    if (transitionType === 1) {
-	      batcher.push({
-	        run: function () {
-	          classList.remove(enterClass)
-	        }
-	      })
-	      // only listen for transition end if user has sent
-	      // in a callback
-	      if (cb) {
-	        endEvent = data.event = _.transitionEndEvent
-	        onEnd = data.callback = function transitionCb (e) {
-	          if (e.target === el) {
-	            _.off(el, endEvent, onEnd)
-	            data.event = data.callback = null
-	            cb()
-	          }
-	        }
-	        _.on(el, endEvent, onEnd)
-	      }
-	    } else if (transitionType === 2) {
-	      // Enter Animation
-	      //
-	      // Animations are triggered automatically as the
-	      // element is inserted into the DOM, so we just
-	      // listen for the animationend event.
-	      endEvent = data.event = _.animationEndEvent
-	      onEnd = data.callback = function transitionCb (e) {
-	        if (e.target === el) {
-	          _.off(el, endEvent, onEnd)
-	          data.event = data.callback = null
-	          classList.remove(enterClass)
-	          if (cb) cb()
-	        }
-	      }
-	      _.on(el, endEvent, onEnd)
-	    } else {
-	      // no transition applicable
-	      classList.remove(enterClass)
-	      if (cb) cb()
-	    }
-	
-	  } else { // leave
-	
-	    classList.add(leaveClass)
-	    transitionType = getTransitionType(el, data, leaveClass)
-	    if (transitionType) {
-	      if (transitionType === 1) {
-	        classList.remove(leaveClass)
-	        batcher.push({
-	          run: function () {
-	            classList.add(leaveClass)
-	          }
-	        })
-	      }
-	      endEvent = data.event = transitionType === 1
-	        ? _.transitionEndEvent
-	        : _.animationEndEvent
-	      onEnd = data.callback = function transitionCb (e) {
-	        if (e.target === el) {
-	          _.off(el, endEvent, onEnd)
-	          data.event = data.callback = null
-	          // actually remove node here
-	          op()
-	          classList.remove(leaveClass)
-	          if (cb) cb()
-	        }
-	      }
-	      _.on(el, endEvent, onEnd)
-	    } else {
-	      op()
-	      classList.remove(leaveClass)
-	      if (cb) cb()
-	    }
-	
-	  }
-	}
-
-/***/ },
-/* 106 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Apply JavaScript enter/leave functions.
-	 *
-	 * @param {Element} el
-	 * @param {Number} direction - 1: enter, -1: leave
-	 * @param {Function} op - the actual DOM operation
-	 * @param {Object} data - target element's transition data
-	 * @param {Object} def - transition definition object
-	 * @param {Function} [cb]
-	 */
-	
-	module.exports = function (el, direction, op, data, def, cb) {
-	  if (data.cancel) {
-	    data.cancel()
-	    data.cancel = null
-	  }
-	  if (direction > 0) { // enter
-	    if (def.beforeEnter) {
-	      def.beforeEnter(el)
-	    }
-	    op()
-	    if (def.enter) {
-	      data.cancel = def.enter(el, function () {
-	        data.cancel = null
-	        if (cb) cb()
-	      })
-	    } else if (cb) {
-	      cb()
-	    }
-	  } else { // leave
-	    if (def.leave) {
-	      data.cancel = def.leave(el, function () {
-	        data.cancel = null
-	        op()
-	        if (cb) cb()
-	      })
-	    } else {
-	      op()
-	      if (cb) cb()
-	    }
-	  }
-	}
-
-/***/ },
-/* 107 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20067,7 +19695,248 @@
 	module.exports = Cache
 
 /***/ },
-/* 108 */
+/* 104 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var transDurationProp = _.transitionProp + 'Duration'
+	var animDurationProp = _.animationProp + 'Duration'
+	
+	var queue = []
+	var queued = false
+	
+	/**
+	 * Push a job into the transition queue, which is to be
+	 * executed on next frame.
+	 *
+	 * @param {Element} el    - target element
+	 * @param {Number} dir    - 1: enter, -1: leave
+	 * @param {Function} op   - the actual dom operation
+	 * @param {String} cls    - the className to remove when the
+	 *                          transition is done.
+	 * @param {Function} [cb] - user supplied callback.
+	 */
+	
+	function push (el, dir, op, cls, cb) {
+	  queue.push({
+	    el  : el,
+	    dir : dir,
+	    cb  : cb,
+	    cls : cls,
+	    op  : op
+	  })
+	  if (!queued) {
+	    queued = true
+	    _.nextTick(flush)
+	  }
+	}
+	
+	/**
+	 * Flush the queue, and do one forced reflow before
+	 * triggering transitions.
+	 */
+	
+	function flush () {
+	  /* jshint unused: false */
+	  var f = document.documentElement.offsetHeight
+	  queue.forEach(run)
+	  queue = []
+	  queued = false
+	}
+	
+	/**
+	 * Run a transition job.
+	 *
+	 * @param {Object} job
+	 */
+	
+	function run (job) {
+	
+	  var el = job.el
+	  var classList = el.classList
+	  var data = el.__v_trans
+	  var cls = job.cls
+	  var cb = job.cb
+	  var op = job.op
+	  var transitionType = getTransitionType(el, data, cls)
+	
+	  if (job.dir > 0) { // ENTER
+	    if (transitionType === 1) {
+	      // trigger transition by removing enter class
+	      classList.remove(cls)
+	      // only need to listen for transitionend if there's
+	      // a user callback
+	      if (cb) setupTransitionCb(_.transitionEndEvent)
+	    } else if (transitionType === 2) {
+	      // animations are triggered when class is added
+	      // so we just listen for animationend to remove it.
+	      setupTransitionCb(_.animationEndEvent, function () {
+	        classList.remove(cls)
+	      })
+	    } else {
+	      // no transition applicable
+	      classList.remove(cls)
+	      if (cb) cb()
+	    }
+	  } else { // LEAVE
+	    if (transitionType) {
+	      // leave transitions/animations are both triggered
+	      // by adding the class, just remove it on end event.
+	      var event = transitionType === 1
+	        ? _.transitionEndEvent
+	        : _.animationEndEvent
+	      setupTransitionCb(event, function () {
+	        op()
+	        classList.remove(cls)
+	      })
+	    } else {
+	      op()
+	      classList.remove(cls)
+	      if (cb) cb()
+	    }
+	  }
+	
+	  /**
+	   * Set up a transition end callback, store the callback
+	   * on the element's __v_trans data object, so we can
+	   * clean it up if another transition is triggered before
+	   * the callback is fired.
+	   *
+	   * @param {String} event
+	   * @param {Function} [cleanupFn]
+	   */
+	
+	  function setupTransitionCb (event, cleanupFn) {
+	    data.event = event
+	    var onEnd = data.callback = function transitionCb (e) {
+	      if (e.target === el) {
+	        _.off(el, event, onEnd)
+	        data.event = data.callback = null
+	        if (cleanupFn) cleanupFn()
+	        if (cb) cb()
+	      }
+	    }
+	    _.on(el, event, onEnd)
+	  }
+	}
+	
+	/**
+	 * Get an element's transition type based on the
+	 * calculated styles
+	 *
+	 * @param {Element} el
+	 * @param {Object} data
+	 * @param {String} className
+	 * @return {Number}
+	 *         1 - transition
+	 *         2 - animation
+	 */
+	
+	function getTransitionType (el, data, className) {
+	  var type = data.cache && data.cache[className]
+	  if (type) return type
+	  var inlineStyles = el.style
+	  var computedStyles = window.getComputedStyle(el)
+	  var transDuration =
+	    inlineStyles[transDurationProp] ||
+	    computedStyles[transDurationProp]
+	  if (transDuration && transDuration !== '0s') {
+	    type = 1
+	  } else {
+	    var animDuration =
+	      inlineStyles[animDurationProp] ||
+	      computedStyles[animDurationProp]
+	    if (animDuration && animDuration !== '0s') {
+	      type = 2
+	    }
+	  }
+	  if (type) {
+	    if (!data.cache) data.cache = {}
+	    data.cache[className] = type
+	  }
+	  return type
+	}
+	
+	/**
+	 * Apply CSS transition to an element.
+	 *
+	 * @param {Element} el
+	 * @param {Number} direction - 1: enter, -1: leave
+	 * @param {Function} op - the actual DOM operation
+	 * @param {Object} data - target element's transition data
+	 */
+	
+	module.exports = function (el, direction, op, data, cb) {
+	  var classList = el.classList
+	  var prefix = data.id || 'v'
+	  var enterClass = prefix + '-enter'
+	  var leaveClass = prefix + '-leave'
+	  // clean up potential previous unfinished transition
+	  if (data.callback) {
+	    _.off(el, data.event, data.callback)
+	    classList.remove(enterClass)
+	    classList.remove(leaveClass)
+	    data.event = data.callback = null
+	  }
+	  if (direction > 0) { // enter
+	    classList.add(enterClass)
+	    op()
+	    push(el, direction, null, enterClass, cb)
+	  } else { // leave
+	    classList.add(leaveClass)
+	    push(el, direction, op, leaveClass, cb)
+	  }
+	}
+
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Apply JavaScript enter/leave functions.
+	 *
+	 * @param {Element} el
+	 * @param {Number} direction - 1: enter, -1: leave
+	 * @param {Function} op - the actual DOM operation
+	 * @param {Object} data - target element's transition data
+	 * @param {Object} def - transition definition object
+	 * @param {Function} [cb]
+	 */
+	
+	module.exports = function (el, direction, op, data, def, cb) {
+	  if (data.cancel) {
+	    data.cancel()
+	    data.cancel = null
+	  }
+	  if (direction > 0) { // enter
+	    if (def.beforeEnter) {
+	      def.beforeEnter(el)
+	    }
+	    op()
+	    if (def.enter) {
+	      data.cancel = def.enter(el, function () {
+	        data.cancel = null
+	        if (cb) cb()
+	      })
+	    } else if (cb) {
+	      cb()
+	    }
+	  } else { // leave
+	    if (def.leave) {
+	      data.cancel = def.leave(el, function () {
+	        data.cancel = null
+	        op()
+	        if (cb) cb()
+	      })
+	    } else {
+	      op()
+	      if (cb) cb()
+	    }
+	  }
+	}
+
+/***/ },
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -20189,7 +20058,7 @@
 	}
 
 /***/ },
-/* 109 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -20221,11 +20090,11 @@
 	}
 
 /***/ },
-/* 110 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
-	var Watcher = __webpack_require__(69)
+	var Watcher = __webpack_require__(68)
 	
 	module.exports = {
 	
@@ -20376,7 +20245,7 @@
 	}
 
 /***/ },
-/* 111 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(17)
@@ -20405,6 +20274,181 @@
 	  }
 	
 	}
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var arrayProto = Array.prototype
+	var arrayMethods = Object.create(arrayProto)
+	
+	/**
+	 * Intercept mutating methods and emit events
+	 */
+	
+	;[
+	  'push',
+	  'pop',
+	  'shift',
+	  'unshift',
+	  'splice',
+	  'sort',
+	  'reverse'
+	]
+	.forEach(function (method) {
+	  // cache original method
+	  var original = arrayProto[method]
+	  _.define(arrayMethods, method, function mutator () {
+	    // avoid leaking arguments:
+	    // http://jsperf.com/closure-with-arguments
+	    var i = arguments.length
+	    var args = new Array(i)
+	    while (i--) {
+	      args[i] = arguments[i]
+	    }
+	    var result = original.apply(this, args)
+	    var ob = this.__ob__
+	    var inserted
+	    switch (method) {
+	      case 'push':
+	        inserted = args
+	        break
+	      case 'unshift':
+	        inserted = args
+	        break
+	      case 'splice':
+	        inserted = args.slice(2)
+	        break
+	    }
+	    if (inserted) ob.observeArray(inserted)
+	    // notify change
+	    ob.notify()
+	    return result
+	  })
+	})
+	
+	/**
+	 * Swap the element at the given index with a new value
+	 * and emits corresponding event.
+	 *
+	 * @param {Number} index
+	 * @param {*} val
+	 * @return {*} - replaced element
+	 */
+	
+	_.define(
+	  arrayProto,
+	  '$set',
+	  function $set (index, val) {
+	    if (index >= this.length) {
+	      this.length = index + 1
+	    }
+	    return this.splice(index, 1, val)[0]
+	  }
+	)
+	
+	/**
+	 * Convenience method to remove the element at given index.
+	 *
+	 * @param {Number} index
+	 * @param {*} val
+	 */
+	
+	_.define(
+	  arrayProto,
+	  '$remove',
+	  function $remove (index) {
+	    if (typeof index !== 'number') {
+	      index = this.indexOf(index)
+	    }
+	    if (index > -1) {
+	      return this.splice(index, 1)[0]
+	    }
+	  }
+	)
+	
+	module.exports = arrayMethods
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(17)
+	var objProto = Object.prototype
+	
+	/**
+	 * Add a new property to an observed object
+	 * and emits corresponding event
+	 *
+	 * @param {String} key
+	 * @param {*} val
+	 * @public
+	 */
+	
+	_.define(
+	  objProto,
+	  '$add',
+	  function $add (key, val) {
+	    var ob = this.__ob__
+	    if (!ob) {
+	      this[key] = val
+	      return
+	    }
+	    if (_.isReserved(key)) {
+	      _.warn('Refused to $add reserved key: ' + key)
+	      return
+	    }
+	    if (this.hasOwnProperty(key)) return
+	    ob.convert(key, val)
+	    if (ob.vms) {
+	      var i = ob.vms.length
+	      while (i--) {
+	        var vm = ob.vms[i]
+	        vm._proxy(key)
+	        vm._digest()
+	      }
+	    } else {
+	      ob.notify()
+	    }
+	  }
+	)
+	
+	/**
+	 * Deletes a property from an observed object
+	 * and emits corresponding event
+	 *
+	 * @param {String} key
+	 * @public
+	 */
+	
+	_.define(
+	  objProto,
+	  '$delete',
+	  function $delete (key) {
+	    var ob = this.__ob__
+	    if (!ob) {
+	      delete this[key]
+	      return
+	    }
+	    if (_.isReserved(key)) {
+	      _.warn('Refused to $add reserved key: ' + key)
+	      return
+	    }
+	    if (!this.hasOwnProperty(key)) return
+	    delete this[key]
+	    if (ob.vms) {
+	      var i = ob.vms.length
+	      while (i--) {
+	        var vm = ob.vms[i]
+	        vm._unproxy(key)
+	        vm._digest()
+	      }
+	    } else {
+	      ob.notify()
+	    }
+	  }
+	)
 
 /***/ }
 /******/ ])
