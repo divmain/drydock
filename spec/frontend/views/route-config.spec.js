@@ -1,5 +1,8 @@
 var sandbox, selectOneFixture, selectManyFixture, noOptionsFixture,
+  ajax = require("frontend/util/ajax"),
   _ = require("lodash"),
+  testHelper = require("spec/helpers/test"),
+  Vue = require("vue"),
   RouteConfig = require("frontend/views/route-config/v-route-config");
 
 noOptionsFixture = {
@@ -39,45 +42,41 @@ selectManyFixture = {
   "path": "/api/things",
   "selectedHandler": "get-things-success",
   "handlers": [{
+    "name": "get-things-success",
     "description": "Return things.",
     "optionsHelperText": "What thigns should be returned?",
     "optionsType": "selectMany",
     "options": ["thing 1", "thing 2"],
-    "selectedOptions": ["thing 1", "thing 2"],
-    "name": "get-things-success"
+    "selectedOptions": ["thing 1"]
   }, {
+    "name": "get-things-error",
     "description": "Return an error instead of the things.",
-    "options": [],
-    "name": "get-things-error"
+    "options": []
   }]
 };
 
 describe("views/", function () {
   describe("route-config", function () {
+    var view;
+
     beforeEach(function () {
-      sandbox = sinon.sandbox.create();
-
-      this.view = new RouteConfig({
-        data: {
-
-        }
-      });
+      sandbox = sinon.sandbox.create({ useFakeTimers: false });
     });
 
     afterEach(function () {
       sandbox.restore();
-      if (this.view) {
-        this.view.$destroy();
-        delete this.view;
+      if (view) {
+        view.$destroy();
+        view = null;
       }
     });
 
     describe("for all configurations", function () {
       beforeEach(function () {
-        this.view = new RouteConfig({
+        view = new RouteConfig({
           data: _.cloneDeep(noOptionsFixture)
         });
-        this.view.$mount("#fixtures");
+        view.$mount("#fixtures");
       });
 
       it("should display all available handlers");
@@ -94,9 +93,32 @@ describe("views/", function () {
     });
 
     describe("with selectMany options", function () {
+      beforeEach(function () {
+        view = new RouteConfig({
+          data: _.cloneDeep(selectManyFixture)
+        });
+        view.$mount("#fixtures");
+      });
+
       it("should display all available options");
 
-      it("should update the surrogate server when clicked");
+      it("removes an element from selectedOptions if it is unchecked by user", function (done) {
+        var
+          handler = _.find(view.handlers, { name: "get-things-success" }),
+          el = view.$el.querySelector("input[name='config-get-things-success-selmany-0']");
+
+        sandbox.stub(ajax, "put");
+        expect(handler.selectedOptions).to.have.length(1);
+        testHelper.click(el);
+
+        Vue.nextTick(testHelper.captureExceptions(done, function () {
+          expect(handler.selectedOptions).to.have.length(0);
+        }));
+      });
+
+
+
+      it("adds an element to selectedOptions if it is checked by user");
     });
   });
 });
