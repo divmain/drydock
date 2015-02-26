@@ -7,7 +7,8 @@ var
     verbose: false,
     initialState: {
       birthday: null
-    }
+    },
+    cors: true
   });
 
 surrogate.jsonRoute({
