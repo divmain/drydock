@@ -1,9 +1,10 @@
-var sandbox, routesFixture,
-  ajax = require("frontend/util/ajax"),
+var ajax = require("frontend/util/ajax"),
   _ = require("lodash"),
   Promise = require("bluebird"),
   testHelper = require("frontend/test-helper"),
   ControlPanel = require("frontend/views/control-panel/v-control-panel");
+
+var sandbox, routesFixture;
 
 routesFixture = [{
   "name": "set-info",

@@ -1,10 +1,12 @@
+var _ = require("lodash"),
+  Vue = require("vue");
+
 var
   ajax = require("frontend/util/ajax"),
   RouteConfig = require("frontend/views/route-config/v-route-config"),
-  watchHash = require("frontend/helpers/watch-hash"),
-  tmpl = require("./v-control-panel.tmpl"),
-  _ = require("lodash"),
-  Vue = require("vue");
+  watchHash = require("frontend/helpers/watch-hash");
+
+var tmpl = require("./v-control-panel.tmpl");
 
 require("./v-control-panel.styl");
 
@@ -69,8 +71,8 @@ module.exports = Vue.extend({
 
     toggleRouteConfig: function (route) {
       var alreadyExpanded = route.expanded;
-      _.each(this.routes, function (route) {
-        route.expanded = false;
+      _.each(this.routes, function (rte) {
+        rte.expanded = false;
       });
       route.expanded = !alreadyExpanded;
     },

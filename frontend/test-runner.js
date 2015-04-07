@@ -27,7 +27,9 @@ if (!Object.keys) {
 }
 
 if (typeof Function.prototype.bind !== "function") {
+  /* eslint-disable no-extend-native */
   Function.prototype.bind = function bind(obj) {
+  /* eslint-enable no-extend-native */
     var args = Array.prototype.slice.call(arguments, 1);
     var self = this;
     var NoOp = function () {};

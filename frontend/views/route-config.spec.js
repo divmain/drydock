@@ -1,11 +1,12 @@
-var sandbox, selectOneFixture, selectManyFixture, noOptionsFixture,
-  ajax = require("frontend/util/ajax"),
+var ajax = require("frontend/util/ajax"),
   _ = require("lodash"),
   testHelper = require("frontend/test-helper"),
   Vue = require("vue"),
   RouteConfig = require("frontend/views/route-config/v-route-config");
 
-noOptionsFixture = {
+var sandbox;
+
+var noOptionsFixture = {
   "name": "set-info",
   "method": "POST",
   "path": "/api/person",
@@ -17,26 +18,26 @@ noOptionsFixture = {
   }]
 };
 
-selectOneFixture = {
-  "name": "get-info",
-  "method": "GET",
-  "path": "/api/person",
-  "selectedHandler": "get-person-success",
-  "handlers": [{
-    "description": "Return info about the person.",
-    "optionsHelperText": "What should birthday info be wrapped in?",
-    "optionsType": "selectOne",
-    "options": ["wrap in body", "wrap in html"],
-    "selectedOption": "wrap in body",
-    "name": "get-person-success"
-  }, {
-    "description": "Return an error instead of the person's info.",
-    "options": [],
-    "name": "get-person-error"
-  }]
-};
+// var selectOneFixture = {
+//   "name": "get-info",
+//   "method": "GET",
+//   "path": "/api/person",
+//   "selectedHandler": "get-person-success",
+//   "handlers": [{
+//     "description": "Return info about the person.",
+//     "optionsHelperText": "What should birthday info be wrapped in?",
+//     "optionsType": "selectOne",
+//     "options": ["wrap in body", "wrap in html"],
+//     "selectedOption": "wrap in body",
+//     "name": "get-person-success"
+//   }, {
+//     "description": "Return an error instead of the person's info.",
+//     "options": [],
+//     "name": "get-person-error"
+//   }]
+// };
 
-selectManyFixture = {
+var selectManyFixture = {
   "name": "get-things",
   "method": "GET",
   "path": "/api/things",

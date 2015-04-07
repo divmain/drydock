@@ -1,8 +1,8 @@
-var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
-  justWhitespace = /^\s*$/,
-  _ = require("lodash"),
+var _ = require("lodash"),
   Promise = require("bluebird");
 
+var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
+  justWhitespace = /^\s*$/;
 
 assertSuccess = function (resolvedXhr) {
   if (resolvedXhr.status > 299 || resolvedXhr.status < 200) {
@@ -84,7 +84,7 @@ module.exports = {
   post: _.partial(request, "POST"),
   put: _.partial(request, "PUT"),
   patch: _.partial(request, "PATCH"),
-  delete: _.partial(request, "DELETE"),
+  "delete": _.partial(request, "DELETE"),
   request: request,
   assertSuccess: assertSuccess
 };

@@ -1,9 +1,11 @@
+var _ = require("lodash"),
+  Vue = require("vue");
+
 var
   ajax = require("frontend/util/ajax"),
-  watchHash = require("frontend/helpers/watch-hash"),
-  tmpl = require("./v-route-config.tmpl"),
-  _ = require("lodash"),
-  Vue = require("vue");
+  watchHash = require("frontend/helpers/watch-hash");
+
+var tmpl = require("./v-route-config.tmpl");
 
 require("./v-route-config.styl");
 
