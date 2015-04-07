@@ -55,6 +55,7 @@
     "webpack-dev-server": "^1.6.5"
   },
   "dependencies": {
+    "bluebird": "^2.9.24",
     "hapi": "^6.8.1",
     "joi": "^4.7.0",
     "lodash": "^2.4.1",
