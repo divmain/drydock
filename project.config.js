@@ -1,20 +1,17 @@
 var path = require("path");
 
-module.exports = {
-  root: __dirname,
+var config = module.exports = {};
 
-  libSrc: "lib",
-  frontendSrc: "frontend",
-  frontendDest: "frontend-dist",
-  libSrcFullPath: path.join(__dirname, "lib"),
-  frontendSrcFullPath: path.join(__dirname, "frontend"),
-  frontendDestFullPath: path.join(__dirname, "frontend-dist"),
-  frontendJs: "js",
-  frontendAssets: "assets",
-  frontendStyles: "styles",
-  testFullPath: path.join(__dirname, "spec"),
-  testRunner: "spec/test-runner.js",
-  karmaConfig: "karma.conf.js",
-  port: 3000,
-  testPort: 3001
-};
+config.root = __dirname;
+config.src = "frontend";
+config.dest = "frontend-dist";
+config.srcFullPath = path.join(config.root, config.src);
+config.destFullPath = path.join(config.root, config.dest);
+
+config.js = "frontend";
+config.assets = "frontend/assets";
+config.styles = "frontend/styles";
+config.karmaConfig = "karma.conf.js";
+config.testRunner = path.join(config.src, "test-runner.js");
+
+config.libSrc = "lib";

@@ -1,7 +1,7 @@
 var sandbox, selectOneFixture, selectManyFixture, noOptionsFixture,
   ajax = require("frontend/util/ajax"),
   _ = require("lodash"),
-  testHelper = require("spec/helpers/test"),
+  testHelper = require("frontend/test-helper"),
   Vue = require("vue"),
   RouteConfig = require("frontend/views/route-config/v-route-config");
 

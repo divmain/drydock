@@ -2,7 +2,7 @@ var sandbox, routesFixture,
   ajax = require("frontend/util/ajax"),
   _ = require("lodash"),
   Promise = require("bluebird"),
-  testHelper = require("spec/helpers/test"),
+  testHelper = require("frontend/test-helper"),
   ControlPanel = require("frontend/views/control-panel/v-control-panel");
 
 routesFixture = [{
