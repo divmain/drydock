@@ -1,7 +1,7 @@
 {
   "name": "surrogate",
   "main": "lib/index.js",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "scripts": {
     "start": "gulp",
     "test": "gulp lint && gulp frontend:test-phantom && gulp lib:test"
