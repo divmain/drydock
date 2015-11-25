@@ -57,6 +57,13 @@ function main (options) {
 
   Promise.resolve()
     .then(() => {
+      console.log(
+        "\nWhen started, the proxy server will forward any HTTP(S) requests along to\n" +
+        "the intended servers.  Responses will be relayed back to the originating\n" +
+        "client, and all transactions will be recorded.\n\n" +
+        "Once you have captured all desired API interactions, press CTRL-C to stop\n" +
+        "the proxy server, and mocks will be written to disk.\n\n---\n"
+      );
       console.log(`starting proxy server on http://${ip}:${port}...`);
       return start();
     })
@@ -71,9 +78,11 @@ function main (options) {
       console.log("writing mocks to disk...")
       return writeMocks(ip, port, destination, transactions);
     })
-    // TODO: offer to `npm install yargs lodash`
     .then(() => {
       console.log("finished!");
+      console.log("");
+      console.log("If you haven't done so, you'll want to install a couple of node modules:");
+      console.log("  npm install --save yargs lodash");
     });
 }
 
