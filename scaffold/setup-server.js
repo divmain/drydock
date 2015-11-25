@@ -5,6 +5,7 @@ import request from "request";
 import Promise from "bluebird";
 
 import text from "../lib/text";
+import { printRow } from "./util";
 
 const requestP = Promise.promisify(request);
 const gunzip = Promise.promisify(zlib.gunzip, { context: zlib });
@@ -21,7 +22,7 @@ function decompress (body, headers) {
       .catch(() => body);
 }
 
-export default function setupServer ({ ip, port }, onRequest, onResponse) {
+export default function setupServer ({ ip, port }, onRequest, onResponse, onError) {
   const server = new Hapi.Server(ip, port, {
     cors: true
   });
@@ -68,6 +69,7 @@ export default function setupServer ({ ip, port }, onRequest, onResponse) {
           });
         })
         .catch(err => {
+          onError(transactionNo);
           printRow(transactionNo, text("ERROR").cyan(), err);
           reply("").code(500);
           return;

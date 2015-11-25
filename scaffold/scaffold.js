@@ -7,19 +7,15 @@ import Promise from "bluebird";
 import setupServer from "./setup-server";
 import writeMocks from "./write-mocks";
 import text from "../lib/text";
+import { printRow } from "./util";
 
-
-
-function printRow (a, b, c) {
-  console.log("" + text(a).rightJustify(5) + text(b).rightJustify(7) + " " + c);
-}
 
 function trapFirstCtrlC () {
   let firstCtrlC = true;
   return new Promise(resolve => {
     process.on("SIGINT", () => {
       if (!firstCtrlC) {
-        console.log("exiting early...\n");
+        console.log("\nexiting early...\n");
         process.exit();
       }
       firstCtrlC = false;
@@ -53,11 +49,15 @@ function main (options) {
     });
   }
 
-  const [ start, stop ] = setupServer({ ip, port}, onRequest, onResponse);
+  function onError(transactionNo) {
+    transactions[transactionNo] = null;
+  }
+
+  const [ start, stop ] = setupServer({ ip, port}, onRequest, onResponse, onError);
 
   Promise.resolve()
     .then(() => {
-      console.log("starting server...");
+      console.log(`starting proxy server on http://${ip}:${port}...`);
       return start();
     })
     .then(trapFirstCtrlC)
@@ -65,10 +65,13 @@ function main (options) {
       console.log("\nstopping server...");
       return stop();
     })
+    .then(() => console.log("server stopped, press CTRL-C immediately to avoid writing to disk..."))
+    .delay(1000)
     .then(() => {
       console.log("writing mocks to disk...")
       return writeMocks(ip, port, destination, transactions);
     })
+    // TODO: offer to `npm install yargs lodash`
     .then(() => {
       console.log("finished!");
     });
