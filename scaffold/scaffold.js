@@ -73,7 +73,7 @@ function main (options) {
       return stop();
     })
     .then(() => console.log("server stopped, press CTRL-C immediately to avoid writing to disk..."))
-    .delay(1000)
+    .delay(3000)
     .then(() => {
       console.log("writing mocks to disk...")
       return writeMocks(ip, port, destination, transactions);
