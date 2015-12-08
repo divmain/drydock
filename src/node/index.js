@@ -3,7 +3,7 @@ var Surrogate,
   _ = require("lodash"),
   text = require("./text"),
   schemas = require("./schemas"),
-  jsApi = require("./js-api"),
+  nodeApi = require("./node-api"),
   defineSurrogateRoutes = require("./surrogate-routes"),
   defineUserRoutes = require("./user-routes"),
   log = require("./log"),
@@ -130,6 +130,6 @@ Surrogate.prototype.reset = function (logReset, cb) {
 
 Surrogate.Errors = Errors;
 
-_.extend(Surrogate.prototype, jsApi);
+_.extend(Surrogate.prototype, nodeApi);
 
 module.exports = Surrogate;
