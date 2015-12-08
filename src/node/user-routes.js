@@ -1,14 +1,14 @@
-const path = require("path");
+import path from "path";
 
-const _ = require("lodash");
-const Promise = require("bluebird");
+import _ from "lodash";
+import Promise from "bluebird";
 
-const jsonDiff = require("./json-diff");
-const Errors = require("./errors");
+import jsonDiff from "./json-diff";
+import Errors from "./errors";
 
 
 function getSelectedHandler (drydock, routeName) {
-  var route = _.find(drydock.routes, { name: routeName });
+  const route = _.find(drydock.routes, { name: routeName });
   return route.handlers[route.selectedHandler];
 }
 
@@ -37,7 +37,7 @@ function updateCookieState (reply, originalCookies, modifiedCookies, settings) {
 
 function getHandlerArgs (request, handler) {
   const handlerArgs = [ filterRequest(request) ];
- 
+
   if (handler.optionsType === "selectOne") {
     handlerArgs.push(handler.options[handler.selectedOption]);
   } else if (handler.optionsType === "selectMany") {
@@ -48,8 +48,6 @@ function getHandlerArgs (request, handler) {
 }
 
 function defineDynamicRoutes (drydock) {
-  const routesCache = {};
-
   drydock._routes.forEach(routeCfg => {
     drydock.server.route({
       method: routeCfg.method,
@@ -77,14 +75,14 @@ function defineDynamicRoutes (drydock) {
               .type(responseOptions.type)
               .code(responseOptions.code);
 
-              updateCookieState(r, request.state, handlerCxt.cookies, {
-                encoding: drydock.cookieEncoding,
-                domain: handlerCxt.cookieDomain
-              });
+            updateCookieState(r, request.state, handlerCxt.cookies, {
+              encoding: drydock.cookieEncoding,
+              domain: handlerCxt.cookieDomain
+            });
 
-              _.each(handlerCxt.headers, (val, key) => r.header(key, val));
+            _.each(handlerCxt.headers, (val, key) => r.header(key, val));
 
-          }, drydock.delay || 0))
+          }, drydock.delay || 0));
       }
     });
   });
@@ -106,7 +104,7 @@ function defineStaticRoutes (drydock) {
           }
         }
       });
-    } else if (staticRoute.type === "file") {
+    } else if (routeCfg.type === "file") {
       drydock.server.route({
         method: "GET",
         path: routeCfg.urlPath,
