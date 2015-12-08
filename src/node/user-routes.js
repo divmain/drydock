@@ -2,7 +2,6 @@ const path = require("path");
 
 const _ = require("lodash");
 const Promise = require("bluebird");
-const request = require("superagent");
 
 const jsonDiff = require("./json-diff");
 const Errors = require("./errors");
@@ -117,51 +116,8 @@ function defineStaticRoutes (drydock) {
   });
 }
 
-function defineProxyRoute (drydock) {
-  if (!drydock.proxyUndefinedRoutes) {
-    return;
-  }
-
-  drydock.server.route({
-    method: "*",
-    path: "{path*}",
-    handler: function (request, reply) {
-      const transaction = {
-        response: {},
-        request: {
-          method: request.method,
-          protocol: request.url.protocol,
-          hostname: request.url.hostname,
-          pathname: request.url.pathname,
-          href: request.url.href,
-          headers: request.headers,
-          payload: request.payload
-        }
-      };
-      drydock.transactionHistory.push(transaction);
-
-
-      const reqHeaders = request.headers;
-      const reqPayload = request.payload;
-
-      let r = request[method](href);
-      if (reqPayload) { r = r.send(payload); }
-      _.each(reqHeaders, (val, key) => r = r.set(key, val));
-
-      r.end((err, res) => {
-        if (err) {
-          console.log("ERR!", err);
-          return;
-        }
-        console.log("Response for", transaction.request.href, ":", res);
-      });
-    }
-  });
-}
-
 module.exports = function (drydock) {
   defineDynamicRoutes(drydock);
   defineHapiRoutes(drydock);
   defineStaticRoutes(drydock);
-  defineProxyRoute(drydock);
 };
