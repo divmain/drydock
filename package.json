@@ -4,6 +4,7 @@
   "version": "0.4.4",
   "scripts": {
     "build-node": "babel -d ./lib/node/ ./src/node/",
+    "lint": "eslint -c ./.eslintrc src/",
     "start": "gulp",
     "test": "gulp lint && gulp frontend:test-phantom && gulp lib:test"
   },
