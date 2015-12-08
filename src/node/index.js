@@ -4,7 +4,7 @@ var Surrogate,
   text = require("./text"),
   schemas = require("./schemas"),
   nodeApi = require("./node-api"),
-  defineSurrogateRoutes = require("./surrogate-routes"),
+  defineDrydockRoutes = require("./drydock-routes"),
   defineUserRoutes = require("./user-routes"),
   log = require("./log"),
   Errors = require("./errors"),
@@ -82,7 +82,7 @@ Surrogate.prototype.start = function (cb) {
     state: { cookies: { failAction: "ignore" } }
   });
 
-  defineSurrogateRoutes.apply(this);
+  defineDrydockRoutes.apply(this);
   defineUserRoutes(this);
 
   if (this.verbose) {
