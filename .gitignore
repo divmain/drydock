@@ -4,3 +4,6 @@ dist
 frontend-dist
 coverage
 lib
+
+# added by GitSavvy
+/npm-debug.log
