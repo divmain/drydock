@@ -3,12 +3,12 @@ import { Server } from "hapi";
 
 import { version } from "../../package.json";
 
-import text from "./text";
 import * as schemas from "./schemas";
 import nodeApi from "./node-api";
-import defineApiRoutes from "./api-routes";
-import defineUserRoutes from "./user-routes";
-import log from "./log";
+import defineApiRoutes from "./routes/api";
+import defineInstanceRoutes from "./routes/instance";
+import text from "./util/text";
+import log from "./util/log";
 import * as Errors from "./errors";
 
 
@@ -85,7 +85,7 @@ export default class Drydock {
     });
 
     defineApiRoutes(this);
-    defineUserRoutes(this);
+    defineInstanceRoutes(this);
 
     if (this.verbose) {
       this.server.on("response", request => {

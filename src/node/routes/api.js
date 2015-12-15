@@ -2,8 +2,8 @@ import path from "path";
 
 import _ from "lodash";
 
-import * as Errors from "./errors";
-import schemas from "./schemas";
+import * as Errors from "../errors";
+import schemas from "../schemas";
 
 
 const ROOT = "/drydock";

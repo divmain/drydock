@@ -3,8 +3,8 @@ import path from "path";
 import _ from "lodash";
 import Promise from "bluebird";
 
-import jsonDiff from "./json-diff";
-import * as Errors from "./errors";
+import jsonDiff from "../util/json-diff";
+import * as Errors from "../errors";
 
 
 function getSelectedHandler (drydock, routeName) {
