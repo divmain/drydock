@@ -1,49 +1,45 @@
-var
-  Errors = require("./errors"),
-  Joi = require("joi");
+import Joi from "joi";
 
-/*********
-  Schemas
- *********/
+import Errors from "./errors";
 
-module.exports = {
-  validateConfig: function (schema, obj) {
-    var result = Joi.validate(obj, schema);
-    if (result.error) {
-      throw new Errors.ConfigurationError(result.error.toString());
-    }
-  },
 
-  validateApiUpdate: function (obj, schema) {
-    var result = Joi.validate(obj, schema);
-    if (result.error) {
-      throw new Errors.ApiError(result.error.toString());
-    }
-  },
+export function validateConfig (schema, obj) {
+  const result = Joi.validate(obj, schema);
+  if (result.error) {
+    throw new Errors.ConfigurationError(result.error.toString());
+  }
+}
 
-  route: Joi.object().keys({
-    name: Joi.string().regex(/^[A-Za-z\-]+$/).required(),
-    method: Joi.string().allow("*", "GET", "POST", "PUT", "DELETE", "PATCH").required(),
-    path: Joi.string().regex(/^[A-Za-z\-\/\_\{\}]+$/).required(),
-    handlers: Joi.object().required(),
-    hostname: Joi.string().optional()
-  }),
+export function validateApiUpdate (obj, schema) {
+  const result = Joi.validate(obj, schema);
+  if (result.error) {
+    throw new Errors.ApiError(result.error.toString());
+  }
+}
 
-  handler: Joi.object().keys({
-    description: Joi.string().required(),
-    handler: Joi.func().required(),
-    optionsHelperText: Joi.string(),
-    optionsType: Joi.string().allow("selectOne", "selectMany"),
-    options: Joi.object(),
-    selectedOptions: Joi.array()
-  }).with("options", "optionsType", "optionsHelperText"),
+export const route = Joi.object().keys({
+  name: Joi.string().regex(/^[A-Za-z\-]+$/).required(),
+  method: Joi.string().allow("*", "GET", "POST", "PUT", "DELETE", "PATCH").required(),
+  path: Joi.string().regex(/^[A-Za-z\-\/\_\{\}]+$/).required(),
+  handlers: Joi.object().required(),
+  hostname: Joi.string().optional()
+});
 
-  staticRoute: Joi.object().keys({
-    filePath: Joi.string().required(),
-    urlPath: Joi.string().required()
-  }),
+export const handler = Joi.object().keys({
+  description: Joi.string().required(),
+  handler: Joi.func().required(),
+  optionsHelperText: Joi.string(),
+  optionsType: Joi.string().allow("selectOne", "selectMany"),
+  options: Joi.object(),
+  selectedOptions: Joi.array()
+}).with("options", "optionsType", "optionsHelperText");
 
-  delay: Joi.object().keys({
-    delay: Joi.alternatives().try(Joi.number().integer(), Joi.any().valid(null)).required()
-  })
-};
+
+export const staticRoute = Joi.object().keys({
+  filePath: Joi.string().required(),
+  urlPath: Joi.string().required()
+});
+
+export const delay = Joi.object().keys({
+  delay: Joi.alternatives().try(Joi.number().integer(), Joi.any().valid(null)).required()
+});

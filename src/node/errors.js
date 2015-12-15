@@ -1,20 +1,18 @@
-var _ = require("lodash");
-
+import { isString } from "lodash";
 
 /**
  * Error helper functions
  */
 
 function inherit (Child, Parent) {
-  var hasOwn, Intermediate, prop;
-  hasOwn = Object.prototype.hasOwnProperty;
+  const hasOwn = Object.prototype.hasOwnProperty;
 
-  Intermediate = function () {
+  const Intermediate = function () {
     this.constructor = Child;
     this.constructor$ = Parent;
-    for (prop in Parent.prototype) {
+    for (const prop in Parent.prototype) {
       if (hasOwn.call(Parent.prototype, prop) && prop.slice(-1) !== "$") {
-        this[prop + "$"] = Parent.prototype[prop];
+        this[`${prop}$`] = Parent.prototype[prop];
       }
     }
   };
@@ -25,7 +23,7 @@ function inherit (Child, Parent) {
 }
 
 function errorFactory (Parent, name) {
-  var ErrorType = function (message) {
+  const ErrorType = function (message) {
     this.name = name;
     this.message = message;
     this.cause = message;
@@ -41,23 +39,21 @@ function errorFactory (Parent, name) {
   return ErrorType;
 }
 
-
 /**
  * Base error prototype
  */
 
-var BaseError = errorFactory(Error, "BaseError");
-
+export const BaseError = errorFactory(Error, "BaseError");
 
 /**
  * Error prototypes with custom behavior
  */
 
-var HttpError = function (code, payload) {
+export const HttpError = function (code, payload) {
   this.name = "HttpError";
   this.code = code;
   this.payload = payload;
-  this.type = _.isString(payload) ? "text/html" : "application/json";
+  this.type = isString(payload) ? "text/html" : "application/json";
 
   this.message = code;
   this.cause = code;
@@ -68,15 +64,10 @@ var HttpError = function (code, payload) {
 };
 inherit(HttpError, BaseError);
 
-
 /**
  * Exported error definitions
  */
 
-module.exports = {
-  BaseError: BaseError,
-  HttpError: HttpError,
-  ConfigurationError: errorFactory(BaseError, "ConfigurationError"),
-  ParsingErr: errorFactory(BaseError, "ParsingErr"),
-  ApiError: errorFactory(BaseError, "ApiError")
-};
+export const ConfigurationError = errorFactory(BaseError, "ConfigurationError");
+export const ParsingErr = errorFactory(BaseError, "ParsingErr");
+export const ApiError = errorFactory(BaseError, "ApiError");

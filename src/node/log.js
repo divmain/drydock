@@ -1,4 +1,3 @@
-module.exports = function (msg) {
-  /* eslint no-console:0 */
-  console.log(msg);
-};
+export default function (msg) {
+  console.log(msg);  // eslint-disable-line no-console
+}

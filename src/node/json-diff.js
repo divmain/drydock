@@ -1,71 +1,58 @@
-var
-  _ = require("lodash");
+import _ from "lodash";
 
-function getKeyDifferences (first, second) {
-  var sortedKeys = {
-    first: [],
-    both: [],
-    second: []
-  };
-  second = _.clone(second);
 
-  _.chain(first)
-    .keys()
-    .each(function (k) {
+export function getKeyDifferences (a, b) {
+  const bClone = Object.assign({}, b);
 
-      if (k in second) {
-        sortedKeys.both.push(k);
-        delete second[k];
-      } else {
-        sortedKeys.first.push(k);
-      }
-    });
+  const onlyA = [];
+  const both = [];
 
-  sortedKeys.second = _.keys(second);
-
-  return sortedKeys;
-}
-
-function jsonDiff (first, second) {
-  var fresh, dead,
-    groupedKeys = getKeyDifferences(first, second),
-    added = {},
-    deleted = {};
-
-  fresh = _.chain(groupedKeys.second)
-    .map(function (key) {
-      return [ key, second[key] ];
-    })
-    .object()
-    .value();
-
-  dead = _.chain(groupedKeys.first)
-    .map(function (key) {
-      return [ key, first[key] ];
-    })
-    .object()
-    .value();
-
-  _.each(groupedKeys.both, function (key) {
-    var subDiff,
-      firstObj = first[key],
-      secondObj = second[key];
-
-    if (_.isObject(firstObj) && _.isObject(secondObj)) {
-      subDiff = jsonDiff(firstObj, secondObj);
-      if (!_.isEmpty(subDiff.del)) { deleted[key] = subDiff.del; }
-      if (!_.isEmpty(subDiff.add)) { added[key] = subDiff.add; }
-    } else if (firstObj !== secondObj) {
-      added[key] = secondObj;
+  Object.keys(a).forEach(key => {
+    if (key in bClone) {
+      both.push(key);
+      delete bClone[key];
+    } else {
+      onlyA.push(key);
     }
   });
 
   return {
-    add: _.extend({}, fresh, added),
-    del: _.extend({}, dead, deleted)
+    a: onlyA,
+    both,
+    b: Object.keys(bClone)
   };
 }
 
-jsonDiff.getKeyDifferences = getKeyDifferences;
+export default function jsonDiff (a, b) {
+  const groupedKeys = getKeyDifferences(a, b);
+  const added = {};
+  const deleted = {};
 
-module.exports = jsonDiff;
+  groupedKeys.both.forEach(key => {
+    const aVal = a[key];
+    const bVal = b[key];
+
+    if (_.isObject(aVal) && _.isObject(bVal)) {
+      const subDiff = jsonDiff(aVal, bVal);
+      if (!_.isEmpty(subDiff.del)) { deleted[key] = subDiff.del; }
+      if (!_.isEmpty(subDiff.add)) { added[key] = subDiff.add; }
+    } else if (aVal !== bVal) {
+      added[key] = bVal;
+    }
+  });
+
+  const fresh = _.chain(groupedKeys.b)
+    .map(key => [ key, b[key] ])
+    .object()
+    .value();
+
+  const dead = _.chain(groupedKeys.a)
+    .map(key => [ key, a[key] ])
+    .object()
+    .value();
+
+  return {
+    add: Object.assign({}, fresh, added),
+    del: Object.assign({}, dead, deleted)
+  };
+}

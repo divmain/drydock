@@ -1,11 +1,7 @@
-var color, Text,
-  _ = require("lodash");
+import { partial } from "lodash";
 
-// ********************
 
-color = _.extend(function (text, color) {
-  return color + text + "\x1b[0m";
-}, {
+const color = Object.assign((text, _color) => `${_color}${text}\x1b[0m`, {
   normal: "\x1b[0m",
   black: "\x1b[30m",
   bright: "\x1b[1m",
@@ -17,82 +13,79 @@ color = _.extend(function (text, color) {
   cyan: "\x1b[36m"
 });
 
-// ********************
 
-Text = function (text) {
-  if (typeof text === undefined) {
-    throw new Error("you must supply a toString-able parameter");
-  }
-  if (text instanceof Text) {
-    return text;
-  }
-  this.text = text.toString();
-};
-
-Text.prototype.toString = Text.prototype.inspect = function () {
-  return this._color ? color(this.text, this._color) : this.text;
-};
-
-Text.prototype.rightJustify = function (width) {
-  if (!width || width < 0) {
-    throw new Error("you must supply a width");
-  }
-  this.text = (new Array(width).join(" ") + this.text).slice(-width);
-  return this;
-};
-
-Text.prototype.leftJustify = function (width) {
-  if (!width || width < 0) {
-    throw new Error("you must supply a width");
-  }
-  this.text = (this.text + Array(width).join(" ")).slice(0, width);
-  return this;
-};
-
-Text.prototype.center = function (width) {
-  var extra, left, right;
-  if (!width || width < 0) {
-    throw new Error("you must supply a width");
+export class Text {
+  constructor (text) {
+    if (typeof text === undefined) {
+      throw new Error("you must supply a parameter with `toString` method");
+    }
+    if (text instanceof Text) { return text; }
+    this.text = text.toString();
   }
 
-  extra = width - this.text.length;
-  if (extra < 1) { return this; }
-
-  left = right = extra / 2 | 0;
-  if (extra % 2) { right++; }
-
-  this.text = Array(left + 1).join(" ") + this.text + Array(right + 1).join(" ");
-  return this;
-};
-
-Text.prototype.pad = function (num, chr) {
-  var padding;
-
-  if (!num || num < 0) {
-    throw new Error("you must supply the number of characters to pad by");
+  toString () {
+    return this._color ? color(this.text, this._color) : this.text;
   }
 
-  chr = chr || " ";
-  padding = Array(num + 1).join(chr);
-  this.text = padding + this.text + padding;
+  rightJustify (width) {
+    if (typeof width !== "number" || width < 0) {
+      throw new Error("you must supply a width");
+    }
+    this.text = (new Array(width).join(" ") + this.text).slice(-width);
+    return this;
+  }
 
-  return this;
-};
+  leftJustify (width) {
+    if (!width || width < 0) {
+      throw new Error("you must supply a width");
+    }
+    this.text = (this.text + Array(width).join(" ")).slice(0, width);
+    return this;
+  }
 
-Text.prototype.color = function (color) {
-  this._color = color;
-  return this;
-};
+  center (width) {
+    if (!width || width < 0) {
+      throw new Error("you must supply a width");
+    }
 
-Text.prototype.black = _.partial(Text.prototype.color, color.black);
-Text.prototype.bright = _.partial(Text.prototype.color, color.bright);
-Text.prototype.red = _.partial(Text.prototype.color, color.red);
-Text.prototype.green = _.partial(Text.prototype.color, color.green);
-Text.prototype.yellow = _.partial(Text.prototype.color, color.yellow);
-Text.prototype.blue = _.partial(Text.prototype.color, color.blue);
-Text.prototype.magenta = _.partial(Text.prototype.color, color.magenta);
-Text.prototype.cyan = _.partial(Text.prototype.color, color.cyan);
+    const extra = width - this.text.length;
+    if (extra < 1) { return this; }
 
-module.exports = function (text) {
+    const left = Math.floor(extra / 2);
+    const right = Math.ceil(extra / 2);
+
+    this.text = Array(left + 1).join(" ") + this.text + Array(right + 1).join(" ");
+    return this;
+  }
+
+  pad (num, chr) {
+    if (!num || num < 0) {
+      throw new Error("you must supply the number of characters to pad by");
+    }
+
+    chr = chr || " ";
+    const padding = Array(num + 1).join(chr);
+    this.text = padding + this.text + padding;
+
+    return this;
+  }
+
+  color (_color) {
+    this._color = _color;
+    return this;
+  }
+}
+
+Text.prototype.inspect = Text.prototype.toString;
+Text.prototype.black = partial(Text.prototype.color, color.black);
+Text.prototype.bright = partial(Text.prototype.color, color.bright);
+Text.prototype.red = partial(Text.prototype.color, color.red);
+Text.prototype.green = partial(Text.prototype.color, color.green);
+Text.prototype.yellow = partial(Text.prototype.color, color.yellow);
+Text.prototype.blue = partial(Text.prototype.color, color.blue);
+Text.prototype.magenta = partial(Text.prototype.color, color.magenta);
+Text.prototype.cyan = partial(Text.prototype.color, color.cyan);
+
+export default function (text) {
   return new Text(text);
-};
+}

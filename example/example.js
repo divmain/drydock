@@ -1,17 +1,16 @@
-var
-  path = require("path"),
-  Surrogate = require(".."),
-  surrogate = new Surrogate({
-    port: 1337,
-    ip: "0.0.0.0",
-    verbose: false,
-    initialState: {
-      birthday: null
-    },
-    cors: true
-  });
+var path = require("path");
+var Drydock = require("..");
+var drydock = new Drydock({
+  port: 1337,
+  ip: "0.0.0.0",
+  verbose: false,
+  initialState: {
+    birthday: null
+  },
+  cors: true
+});
 
-surrogate.jsonRoute({
+drydock.jsonRoute({
   name: "set-info",
   method: "POST",
   path: "/api/person",
@@ -27,7 +26,7 @@ surrogate.jsonRoute({
   }
 });
 
-surrogate.htmlRoute({
+drydock.htmlRoute({
   name: "get-info",
   method: "GET",
   path: "/api/person",
@@ -59,7 +58,7 @@ surrogate.htmlRoute({
     "get-person-error": {
       description: "Return an error instead of the person's info.",
       handler: function () {
-        throw new Surrogate.HttpErr({
+        throw new Drydock.HttpErr({
           code: 401,
           payload: "<html>can't do that right now...</html>"
         });
@@ -68,7 +67,7 @@ surrogate.htmlRoute({
   }
 });
 
-surrogate.htmlRoute({
+drydock.htmlRoute({
   name: "get-things",
   method: "GET",
   path: "/api/things",
@@ -88,7 +87,7 @@ surrogate.htmlRoute({
     "get-things-error": {
       description: "Return an error instead of the things.",
       handler: function () {
-        throw new Surrogate.HttpErr({
+        throw new Drydock.HttpErr({
           code: 401,
           payload: "<html>can't do that right now...</html>"
         });
@@ -97,14 +96,13 @@ surrogate.htmlRoute({
   }
 });
 
-surrogate.staticDir({
+drydock.staticDir({
   filePath: path.join(__dirname, "example-dir"),
   urlPath: "/static/"
 });
 
-
 if (require.main === module) {
-  surrogate.start();
+  drydock.start();
 } else {
-  module.exports = surrogate;
+  module.exports = drydock;
 }

@@ -4,7 +4,7 @@ import _ from "lodash";
 import Promise from "bluebird";
 
 import jsonDiff from "./json-diff";
-import Errors from "./errors";
+import * as Errors from "./errors";
 
 
 function getSelectedHandler (drydock, routeName) {
@@ -48,7 +48,7 @@ function getHandlerArgs (request, handler) {
 }
 
 function defineDynamicRoutes (drydock) {
-  drydock._routes.forEach(routeCfg => {
+  drydock._initial.routes.forEach(routeCfg => {
     drydock.server.route({
       method: routeCfg.method,
       path: routeCfg.path,
@@ -89,11 +89,11 @@ function defineDynamicRoutes (drydock) {
 }
 
 function defineHapiRoutes (drydock) {
-  drydock._hapiRoutes.forEach(drydock.server.route.bind(drydock.server));
+  drydock._initial.hapiRoutes.forEach(drydock.server.route.bind(drydock.server));
 }
 
 function defineStaticRoutes (drydock) {
-  drydock._staticRoutes.forEach(routeCfg => {
+  drydock._initial.staticRoutes.forEach(routeCfg => {
     if (routeCfg.type === "directory") {
       drydock.server.route({
         method: "GET",
@@ -114,8 +114,8 @@ function defineStaticRoutes (drydock) {
   });
 }
 
-module.exports = function (drydock) {
+export default function (drydock) {
   defineDynamicRoutes(drydock);
   defineHapiRoutes(drydock);
   defineStaticRoutes(drydock);
-};
+}
