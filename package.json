@@ -3,7 +3,9 @@
   "main": "index.js",
   "version": "0.4.4",
   "scripts": {
+    "build": "npm run clean && npm run build-node",
     "build-node": "babel -d ./lib/node/ ./src/node/",
+    "clean": "rimraf ./lib && mkdir lib",
     "lint": "eslint -c ./.eslintrc src/",
     "start": "gulp",
     "test": "gulp lint && gulp frontend:test-phantom && gulp lib:test"
@@ -42,6 +44,7 @@
     "open": "^0.0.5",
     "raw-loader": "^0.5.1",
     "require-dir": "^0.1.0",
+    "rimraf": "^2.4.4",
     "sass-loader": "^0.3.1",
     "script-loader": "^0.6.0",
     "sinon": "1.9.1",
