@@ -4,7 +4,7 @@ import { Server } from "hapi";
 import { version } from "../../package.json";
 
 import * as schemas from "./schemas";
-import nodeApi from "./node-api";
+import * as nodeApi from "./node-api";
 import defineApiRoutes from "./routes/api";
 import defineInstanceRoutes from "./routes/instance";
 import text from "./util/text";

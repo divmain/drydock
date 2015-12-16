@@ -3,12 +3,12 @@ import path from "path";
 import _ from "lodash";
 
 import * as Errors from "../errors";
-import schemas from "../schemas";
+import { validateApiUpdate, delay as delaySchema } from "../schemas";
 
 
 const ROOT = "/drydock";
 const API = `${ROOT}/api`;
-const frontendDir = path.join(__dirname, "../ui");
+const frontendDir = path.join(__dirname, "../../ui");
 
 
 export default function (drydock) {
@@ -31,7 +31,7 @@ export default function (drydock) {
         handlers: Object.keys(route.handlers).map(name => {
           const handler = route.handlers[name];
           return Object.assign({}, handler, {
-            options: Object.keys(handler.options),
+            options: handler.options && Object.keys(handler.options) || [],
             name
           });
         })
@@ -104,7 +104,7 @@ export default function (drydock) {
     method: "PUT",
     path: `${API}/delay`,
     handler (request, reply) {
-      schemas.validateApiUpdate(request.payload, schemas.delay);
+      validateApiUpdate(request.payload, delaySchema);
       drydock.delay = request.payload.delay;
       reply({ message: "OK" }).type("application/json");
     }
