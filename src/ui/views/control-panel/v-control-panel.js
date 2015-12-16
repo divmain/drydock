@@ -2,9 +2,9 @@ var _ = require("lodash"),
   Vue = require("vue");
 
 var
-  ajax = require("frontend/util/ajax"),
-  RouteConfig = require("frontend/views/route-config/v-route-config"),
-  watchHash = require("frontend/helpers/watch-hash");
+  ajax = require("../../util/ajax"),
+  RouteConfig = require("../route-config/v-route-config"),
+  watchHash = require("../../helpers/watch-hash");
 
 var tmpl = require("./v-control-panel.tmpl");
 
@@ -23,7 +23,7 @@ module.exports = Vue.extend({
 
   watchFor: {
     "delay": _.debounce(function (newValue) {
-      ajax.put("/surrogate/api/delay", {
+      ajax.put("/drydock/api/delay", {
         data: { delay: newValue }
       });
     }, 300)
@@ -64,7 +64,7 @@ module.exports = Vue.extend({
   methods: {
     resetSurrogate: function () {
       var self = this;
-      return ajax.post("/surrogate/api/reset").then(function () {
+      return ajax.post("/drydock/api/reset").then(function () {
         self._getDocument().location.reload();
       });
     },

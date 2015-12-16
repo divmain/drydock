@@ -1,52 +1,23 @@
-var
-  path = require("path");
+var path = require("path");
+var webpack = require("webpack");
 
-var
-  webpack = require("webpack");
-
-var
-  config = require("./project.config");
 
 module.exports = {
-  context: config.srcFullPath,
-
-  /**
-   * Based on the configuration below, a `main.bundle.js` file will be generated
-   * from the file specified in `entry.main` along with its dependencies. You can
-   * create additional entry points and Webpack will intelligently bundle them
-   * for you.
-   */
+  context: path.resolve(__dirname, "../src/ui/"),
 
   entry: {
-    main: "frontend/webapp-entry.js"
-  },
-  output: {
-    path: path.join(config.destFullPath, config.js),
-    filename: "[name].bundle.js",
-    chunkFilename: "[id].bundle.js"
+    main: "main.js"
   },
 
-  /**
-   * The following loaders define alternate behavior for `require` expressions in
-   * your JS modules.
-   *
-   * Any CSS files will go through the style-loader (meaning that
-   * they'll be loaded into the document when the JS file is required).  Any
-   * Stylus files will be processed by Stylus to generate CSS, run through auto-
-   * prefixer to add CSS vendor prefixes, and then treated as CSS files inside
-   * your application.
-   *
-   * Files ending in `.tmpl` will be required into your application as plain text.
-   * Modify this entry or create a new entry if you prefer to use a different
-   * extension for your templates.
-   */
+  output: {
+    path: path.join(__dirname, "../lib/ui/"),
+    filename: "[name].js"
+  },
 
   module: {
     loaders: [
       { test: /\.css$/, loader: "style-loader!css-loader" },
       { test: /\.styl$/, loader: "style-loader!css-loader!autoprefixer-loader!stylus-loader" },
-      { test: /\.less$/, loader: "style-loader!css-loader!autoprefixer-loader!less-loader" },
-      { test: /\.scss$/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader" },
       { test: /\.tmpl$/, loader: "raw" }
     ]
   },
@@ -58,7 +29,7 @@ module.exports = {
    */
 
   resolve: {
-    root: config.root
+    root: path.join(__dirname, "../src/ui")
   },
 
   /**

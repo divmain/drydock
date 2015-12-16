@@ -1,9 +1,9 @@
 var
-  ajax = require("frontend/util/ajax"),
+  ajax = require("./util/ajax"),
   _ = require("lodash"),
-  ControlPanel = require("frontend/views/control-panel/v-control-panel");
+  ControlPanel = require("./views/control-panel/v-control-panel");
 
-ajax.get("/surrogate/api/routes").then(function (response) {
+ajax.get("/drydock/api/routes").then(function (response) {
   var controlPanel,
     routes = JSON.parse(response.data);
 

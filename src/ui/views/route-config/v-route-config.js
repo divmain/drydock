@@ -2,8 +2,8 @@ var _ = require("lodash"),
   Vue = require("vue");
 
 var
-  ajax = require("frontend/util/ajax"),
-  watchHash = require("frontend/helpers/watch-hash");
+  ajax = require("../../util/ajax"),
+  watchHash = require("../../helpers/watch-hash");
 
 var tmpl = require("./v-route-config.tmpl");
 
@@ -24,7 +24,7 @@ module.exports = Vue.extend({
 
   watchFor: {
     "selectedHandler": function (newValue) {
-      ajax.put("/surrogate/api/route", {
+      ajax.put("/drydock/api/route", {
         data: {
           name: this.$data.name,
           selectedHandler: newValue
@@ -33,7 +33,7 @@ module.exports = Vue.extend({
     },
     "selectedHandlerObj.selectedOption": function (newSelection) {
       if (newSelection) {
-        ajax.put("/surrogate/api/route/selected-option", {
+        ajax.put("/drydock/api/route/selected-option", {
           data: {
             name: this.$data.name,
             handler: this.$data.selectedHandler,
@@ -44,7 +44,7 @@ module.exports = Vue.extend({
     },
     "selectedHandlerObj.selectedOptions": function (newSelections) {
       if (newSelections) {
-        ajax.put("/surrogate/api/route/selected-options", {
+        ajax.put("/drydock/api/route/selected-options", {
           data: {
             name: this.$data.name,
             handler: this.$data.selectedHandler,
