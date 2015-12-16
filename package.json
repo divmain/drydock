@@ -4,7 +4,7 @@
   "version": "0.4.4",
   "scripts": {
     "build": "npm run clean && npm run build-node && npm run build-frontend && npm run copy",
-    "build-frontend": "webpack --config ./infra/webpack.config.js",
+    "build-frontend": "webpack --config ./webpack.config.js",
     "build-node": "babel -d ./lib/node/ ./src/node/",
     "clean": "rimraf ./lib && mkdir lib",
     "copy": "cp src/ui/index.html lib/ui/index.html",

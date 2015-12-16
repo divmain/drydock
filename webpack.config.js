@@ -3,14 +3,14 @@ var webpack = require("webpack");
 
 
 module.exports = {
-  context: path.resolve(__dirname, "../src/ui/"),
+  context: path.resolve(__dirname, "src/ui/"),
 
   entry: {
     main: "main.js"
   },
 
   output: {
-    path: path.join(__dirname, "../lib/ui/"),
+    path: path.join(__dirname, "lib/ui/"),
     filename: "[name].js"
   },
 
@@ -29,7 +29,7 @@ module.exports = {
    */
 
   resolve: {
-    root: path.join(__dirname, "../src/ui")
+    root: path.join(__dirname, "src/ui")
   },
 
   /**
