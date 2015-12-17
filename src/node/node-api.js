@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import Errors from "./errors";
+import * as Errors from "./errors";
 
 
 export function route (name) {

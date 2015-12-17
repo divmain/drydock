@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-import Errors from "./errors";
+import * as Errors from "./errors";
 
 
 export function validateConfig (schema, obj) {
