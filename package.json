@@ -36,7 +36,6 @@
     "webpack": "^1.4.13"
   },
   "dependencies": {
-    "ast-template": "^1.0.0",
     "bluebird": "^2.9.24",
     "hapi": "^6.8.1",
     "joi": "^4.7.0",
