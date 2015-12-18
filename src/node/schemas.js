@@ -18,7 +18,7 @@ export function validateApiUpdate (obj, schema) {
 }
 
 export const route = Joi.object().keys({
-  name: Joi.string().regex(/^[A-Za-z0-9\-]+$/).required(),
+  name: Joi.string().required(),
   method: Joi.string().allow("*", "GET", "POST", "PUT", "DELETE", "PATCH").required(),
   path: Joi.string().required(),
   handlers: Joi.object().required(),
