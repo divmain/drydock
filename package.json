@@ -2,6 +2,12 @@
   "name": "drydock",
   "main": "index.js",
   "version": "0.4.4",
+  "files": [
+    "lib",
+    "index.js",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "build": "npm run clean && npm run build-node && npm run build-frontend && npm run copy",
     "build-frontend": "webpack --config ./webpack.config.js",
