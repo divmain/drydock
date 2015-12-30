@@ -58,6 +58,8 @@ While it is possible to install the tool globally, we recommend a non-saved `npm
 
 Once it is installed, it can operate in one of two modes (see below).  Once your mocks have been written to disk, you can run them like `node ./mock.js`.  It is likely that you will want to make modifications, often to add statefulness.
 
+**NOTE:** Proxies are unable to intercept and decode SSL-encrypted traffic, due to the fundamental constraints of the technology.  Because of this, `drydock-scaffold` will not be able to record and generate mock data for existing HTTPS endpoints.  If possible, it is recommended to temporarily set HTTP endpoints for the initial data capture, if they are available.  Otherwise, you will have to resort to other methods to capture the data.
+
 
 #### Import mode
 
