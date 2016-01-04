@@ -93,7 +93,7 @@ export default class Drydock {
     if (this.verbose) {
       this.server.on("response", request => {
         let action = text("RTE").green().pad(1);
-        if (request.route.path.indexOf("/drydock") === 0) { action = text("SUR").bright().pad(1); }
+        if (request.route.path.indexOf("/drydock") === 0) { action = text("DDK").bright().pad(1); }
         log(`${text(request.method.toUpperCase()).rightJustify(5)}${action}${request.path}`);
       });
     }
