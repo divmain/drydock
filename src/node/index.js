@@ -7,6 +7,7 @@ import * as schemas from "./schemas";
 import * as nodeApi from "./node-api";
 import defineApiRoutes from "./routes/api";
 import defineInstanceRoutes from "./routes/instance";
+import defineProxyRoute from "./routes/proxy";
 import text from "./util/text";
 import log from "./util/log";
 import * as Errors from "./errors";
@@ -22,6 +23,7 @@ export default class Drydock {
       ip: options.ip || "0.0.0.0",
       verbose: !!options.verbose,
       cors: !!options.cors,
+      proxyUndefined: !!options.proxyUndefined,
       cookieEncoding: options.cookieEncoding || "none",
       _initial: {
         state: options.initialState || {},
@@ -86,6 +88,7 @@ export default class Drydock {
 
     defineApiRoutes(this);
     defineInstanceRoutes(this);
+    if (this.proxyUndefined) { defineProxyRoute(this); }
 
     if (this.verbose) {
       this.server.on("response", request => {

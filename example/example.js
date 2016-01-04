@@ -4,6 +4,7 @@ var drydock = new Drydock({
   port: 1337,
   ip: "0.0.0.0",
   verbose: false,
+  proxyUndefined: true,
   initialState: {
     birthday: null
   },
