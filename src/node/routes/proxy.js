@@ -23,19 +23,26 @@ export default function (drydock) {
         href
       } } = req;
 
+      if (!hostname) {
+        console.log(`Unable to fulfill HTTP request: ${href}`);
+        reply("Unknown failer.").code(500);
+        return;
+      }
+
       request({
         url: href,
         method,
         headers,
         body: payload,
         encoding: null
-      }, (err, { statusCode, body, headers: responseHeaders }) => {
+      }, (err, response) => {
         if (err) {
           console.log(`Unable to fulfill HTTP request: ${err.stack}`);
           reply("Unknown failure.").code(500);
           return;
         }
 
+        const { statusCode, body, headers: responseHeaders } = response;
         let r = reply(body).code(statusCode);
         Object.keys(responseHeaders).forEach(header => {
           r = r.header(header, responseHeaders[header]);
