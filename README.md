@@ -38,6 +38,8 @@ Stop waiting for the seas to calm - use Drydock!
     - [Single-page application](#single-page-application)
     - [Node](#node)
     - [Java](#java)
+- [Contributing](#contributing)
+
 
 
 ## Quick start
@@ -417,3 +419,10 @@ Java is a little trickier, but you can define proxy settings in the `JAVA_OPTS` 
 ```
 export JAVA_OPTS="-XX:MaxPermSize=1024m -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=1337 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=1337"
 ```
+
+
+## Contributing
+
+If you'd like to see something changed or added to Drydock, please open an issue or PR.  Make sure `npm run test` passes before you submit your PR.
+
+**Note:**  If you're making changes and testing Drydock on your local machine, you'll need to run `npm run build` so that the ES6 source is compiled to ES5 in `lib/`.
