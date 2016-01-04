@@ -34,10 +34,15 @@ export const handler = Joi.object().keys({
   selectedOptions: Joi.array()
 }).with("options", "optionsType", "optionsHelperText");
 
-
 export const staticRoute = Joi.object().keys({
   filePath: Joi.string().required(),
   urlPath: Joi.string().required()
+});
+
+export const proxyRoute = Joi.object().keys({
+  method: Joi.string().allow("*", "GET", "POST", "PUT", "DELETE", "PATCH").required(),
+  path: Joi.string().required(),
+  forwardTo: Joi.string().required(),
 });
 
 export const delay = Joi.object().keys({

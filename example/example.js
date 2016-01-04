@@ -102,6 +102,12 @@ drydock.staticDir({
   urlPath: "/static/"
 });
 
+drydock.proxyRoute({
+  method: "GET",
+  path: "/google",
+  forwardTo: "http://www.google.com/"
+});
+
 if (require.main === module) {
   drydock.start();
 } else {

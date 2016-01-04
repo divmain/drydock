@@ -241,6 +241,23 @@ drydock.htmlRoute({
 ```
 
 
+#### Proxy routes
+
+If you'd like to define routes that should be forwarded to a specific URL on an existing server, you can define a `proxyRoute`.  This is useful if the API you are mocking relies on another service, or if you'd like to enumerate all routes that you _plan_ to mock, but implement those mocks incrementally.
+
+Here's an example:
+
+```javascript
+drydock.proxyRoute({
+  method: "GET",
+  path: "/google",
+  forwardTo: "http://www.google.com/"
+});
+```
+
+If your mock server is running on `localhost` port `1337`, opening `http://localhost:1337/google` in your browser will result in the HTML from `www.google.com`.
+
+
 #### State
 
 The above example shows us now to make our mocks stateful.  When invoked, each handler will have access to `this.state`, a simple object that is share across your mock instance.  In this way, you can persist data from across endpoints and requests.

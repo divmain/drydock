@@ -2,6 +2,7 @@ import path from "path";
 
 import _ from "lodash";
 import Promise from "bluebird";
+import request from "request";
 
 import jsonDiff from "../util/json-diff";
 import * as Errors from "../errors";
@@ -114,8 +115,47 @@ function defineStaticRoutes (drydock) {
   });
 }
 
+function defineProxyRoutes (drydock) {
+  drydock._initial.proxyRoutes.forEach(proxyRoute => {
+    drydock.server.route({
+      method: proxyRoute.method,
+      path: proxyRoute.path,
+      handler: (req, reply) => {
+        const { method, headers, payload, url: {
+          protocol,
+          hostname,
+          pathname,
+          href
+        } } = req;
+
+        request({
+          url: proxyRoute.forwardTo,
+          method,
+          headers,
+          body: payload,
+          encoding: null
+        }, (err, { statusCode, body, headers: responseHeaders }) => {
+          if (err) {
+            console.log(`Unable to proxy HTTP request: ${err.stack}`);
+            reply("Unknown failure.").code(500);
+            return;
+          }
+
+          let r = reply(body).code(statusCode);
+          Object.keys(responseHeaders).forEach(header => {
+            r = r.header(header, responseHeaders[header]);
+          });
+        });
+
+      }
+    });
+
+  });
+}
+
 export default function (drydock) {
   defineDynamicRoutes(drydock);
   defineHapiRoutes(drydock);
   defineStaticRoutes(drydock);
+  defineProxyRoutes(drydock);
 }

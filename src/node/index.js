@@ -29,7 +29,8 @@ export default class Drydock {
         state: options.initialState || {},
         routes: [],
         staticRoutes: [],
-        hapiRoutes: []
+        hapiRoutes: [],
+        proxyRoutes: []
       }
     });
   }
@@ -65,6 +66,11 @@ export default class Drydock {
 
   hapiRoute (routeCfg) {
     this._initial.hapiRoutes.push(routeCfg);
+  }
+
+  proxyRoute (routeCfg) {
+    schemas.validateConfig(schemas.proxyRoute, routeCfg);
+    this._initial.proxyRoutes.push(routeCfg);
   }
 
   staticDir (staticCfg) {
@@ -113,6 +119,7 @@ export default class Drydock {
       routes: cloneDeep(this._initial.routes),
       staticRoutes: cloneDeep(this._initial.staticRoutes),
       hapiRoutes: cloneDeep(this._initial.hapiRoutes),
+      proxyRoutes: cloneDeep(this._initial.proxyRoutes),
       state: cloneDeep(this._initial.state)
     });
 
