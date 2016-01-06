@@ -1,7 +1,7 @@
 {
   "name": "drydock",
   "main": "index.js",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "files": [
     "lib",
     "index.js",
