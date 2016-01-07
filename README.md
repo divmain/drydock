@@ -232,10 +232,7 @@ drydock.htmlRoute({
     "get-name-error": {
       description: "Return an error instead of the user's name.",
       handler: function () {
-        throw new Drydock.HttpErr({
-          code: 401,
-          payload: "<html>The evil shredder attacks. Oh no!!!</html>"
-        });
+        throw new Drydock.Errors.HttpError(401, "<html>The evil shredder attacks. Oh no!!!</html>");
       }
     }
   }
@@ -304,10 +301,7 @@ drydock.htmlRoute({
     "get-name-error": {
       description: "Return an error instead of the user's name.",
       handler: function () {
-        throw new Drydock.HttpErr({
-          code: 401,
-          payload: "<html>The evil shredder attacks. Oh no!!!</html>"
-        });
+        throw new Drydock.Errors.HttpError(401, "<html>The evil shredder attacks. Oh no!!!</html>");
       }
     }
   }

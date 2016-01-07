@@ -59,10 +59,7 @@ drydock.htmlRoute({
     "get-person-error": {
       description: "Return an error instead of the person's info.",
       handler: function () {
-        throw new Drydock.HttpErr({
-          code: 401,
-          payload: "<html>can't do that right now...</html>"
-        });
+        throw new Drydock.HttpErr(401, payload: "<html>can't do that right now...</html>");
       }
     }
   }
@@ -88,10 +85,7 @@ drydock.htmlRoute({
     "get-things-error": {
       description: "Return an error instead of the things.",
       handler: function () {
-        throw new Drydock.HttpErr({
-          code: 401,
-          payload: "<html>can't do that right now...</html>"
-        });
+        throw new Drydock.Errors.HttpError(401, "<html>can't do that right now...</html>");
       }
     }
   }
