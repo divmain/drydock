@@ -42,7 +42,10 @@ export const staticRoute = Joi.object().keys({
 export const proxyRoute = Joi.object().keys({
   method: Joi.string().allow("*", "GET", "POST", "PUT", "DELETE", "PATCH").required(),
   path: Joi.string().required(),
-  forwardTo: Joi.string().required(),
+  forwardTo: Joi.alternatives().try(
+    Joi.string(),
+    Joi.func()
+  ).required()
 });
 
 export const delay = Joi.object().keys({
