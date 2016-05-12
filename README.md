@@ -256,15 +256,15 @@ drydock.proxyRoute({
 
 If your mock server is running on `localhost` port `1337`, opening `http://localhost:1337/google` in your browser will result in the HTML from `www.google.com`.
 
-forwardTo can alternatively take a function to dynamically determine the url.
+`forwardTo` can alternatively take a function to dynamically determine the url.
 
 For example:
 
 ```javascript
 drydock.proxyRoute({
-     method: "GET",
-     path: "/images/{path*}",
-     forwardTo: (request) => `https:/localhost:8080/images/${request.params.path}`
+  method: "GET",
+  path: "/images/{path*}",
+  forwardTo: (request) => `https:/localhost:8080/images/${request.params.path}`
 });
 ```
 
