@@ -1,14 +1,14 @@
-var _ = require("lodash"),
-  Vue = require("vue");
+var _ = require("lodash");
+var Vue = require("vue");
 
-var
-  ajax = require("../../util/ajax"),
-  RouteConfig = require("../route-config/v-route-config"),
-  watchHash = require("../../helpers/watch-hash");
+var ajax = require("../../util/ajax");
+var RouteConfig = require("../route-config/v-route-config");
+var watchHash = require("../../helpers/watch-hash");
 
 var tmpl = require("./v-control-panel.tmpl");
 
 require("./v-control-panel.styl");
+
 
 module.exports = Vue.extend({
   template: tmpl,
@@ -36,7 +36,7 @@ module.exports = Vue.extend({
         var number;
         if (this.delay === 0) {
           return 0;
-        } else if (this.delay === null  ) {
+        } else if (this.delay === null) {
           return 10;
         }
         number = Math.log(this.delay / 10) / Math.log(2);

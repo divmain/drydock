@@ -1,15 +1,13 @@
-var
-  ajax = require("./util/ajax"),
-  _ = require("lodash"),
-  ControlPanel = require("./views/control-panel/v-control-panel");
+var ajax = require("./util/ajax");
+var _ = require("lodash");
+var ControlPanel = require("./views/control-panel/v-control-panel");
 
 ajax.get("/drydock/api/routes").then(function (response) {
-  var controlPanel,
-    routes = JSON.parse(response.data);
+  var routes = JSON.parse(response.data);
 
   _.each(routes, function (route) { route.expanded = false; });
 
-  controlPanel = new ControlPanel({
+  var controlPanel = new ControlPanel({
     data: {
       routes: routes,
       delay: 0

@@ -1,17 +1,16 @@
-var _ = require("lodash"),
-  Promise = require("bluebird");
+var _ = require("lodash");
+var Promise = require("bluebird");
 
-var assertSuccess, parseHeaders, buildResolved, buildRejected, request,
-  justWhitespace = /^\s*$/;
+var justWhitespace = /^\s*$/;
 
-assertSuccess = function (resolvedXhr) {
+function assertSuccess (resolvedXhr) {
   if (resolvedXhr.status > 299 || resolvedXhr.status < 200) {
     throw resolvedXhr;
   }
   return resolvedXhr;
-};
+}
 
-parseHeaders = function (headerText) {
+function parseHeaders (headerText) {
   return _.chain(headerText.split("\n"))
     .filter(function (headerLine) {
       return justWhitespace.test(headerLine);
@@ -25,9 +24,9 @@ parseHeaders = function (headerText) {
     })
     .object()
     .value();
-};
+}
 
-buildResolved = function (resolve) {
+function buildResolved (resolve) {
   return function (xhr) {
     resolve({
       data: xhr.target.response,
@@ -36,26 +35,26 @@ buildResolved = function (resolve) {
       statusText: xhr.target.statusText
     });
   };
-};
+}
 
-buildRejected = function (reject) {
+function buildRejected (reject) {
   return function (xhr) {
     reject(xhr);
   };
-};
+}
 
-request = function (method, url, options) {
-  var data, xhr, username, password;
-
+function request (method, url, options) {
   method = (method || "GET").toUpperCase();
   options = options || {};
   options.contentType = options.contentType || "application/json; charset=utf-8";
-  username = _.isString(options.username) && options.username || "";
-  password = _.isString(options.password) && options.password || "";
+  var username = _.isString(options.username) && options.username || "";
+  var password = _.isString(options.password) && options.password || "";
 
-  xhr = new XMLHttpRequest();
+  var xhr = new XMLHttpRequest();
 
   return new Promise(function (resolve, reject) {
+    var data;
+
     xhr.addEventListener("load", buildResolved(resolve));
     xhr.addEventListener("error", buildRejected(reject));
     xhr.addEventListener("abort", buildRejected(reject));
@@ -76,8 +75,7 @@ request = function (method, url, options) {
 
     xhr.send(data);
   });
-
-};
+}
 
 module.exports = {
   get: _.partial(request, "GET"),

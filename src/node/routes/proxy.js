@@ -1,29 +1,15 @@
-import path from "path";
-
-import _ from "lodash";
 import request from "request";
-
-import * as Errors from "../errors";
-import { validateApiUpdate, delay as delaySchema } from "../schemas";
-
-const ROOT = "/drydock";
-const API = `${ROOT}/api`;
-const frontendDir = path.join(__dirname, "../../ui");
 
 
 export default function (drydock) {
   drydock.server.route({
     method: "*",
     path: "/{path*}",
-    handler: function (req, reply) {
-      const { method, headers, payload, url: {
-        protocol,
-        hostname,
-        pathname,
-        href
-      } } = req;
+    handler (req, reply) {
+      const { method, headers, payload, url: { hostname, href } } = req;
 
       if (!hostname) {
+        // eslint-disable-next-line no-console
         console.log(`Unable to fulfill HTTP request: ${href}`);
         reply("Unknown failer.").code(500);
         return;
@@ -37,6 +23,7 @@ export default function (drydock) {
         encoding: null
       }, (err, response) => {
         if (err) {
+          // eslint-disable-next-line no-console
           console.log(`Unable to fulfill HTTP request: ${err.stack}`);
           reply("Unknown failure.").code(500);
           return;

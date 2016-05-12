@@ -13,17 +13,17 @@ function getSelectedHandler (drydock, routeName) {
   return route.handlers[route.selectedHandler];
 }
 
-function filterRequest (request) {
-  return _.chain(request)
+function filterRequest (req) {
+  return _.chain(req)
     .pick("payload", "params", "query")
     .cloneDeep()
     .value();
 }
 
-function getHandlerContext (drydock, request) {
+function getHandlerContext (drydock, req) {
   return {
     state: drydock.state,
-    cookies: _.cloneDeep(request.state) || {},
+    cookies: _.cloneDeep(req.state) || {},
     headers: {},
     cookieDomain: null
   };
@@ -36,8 +36,8 @@ function updateCookieState (reply, originalCookies, modifiedCookies, settings) {
   _.each(cookiesDiff.del, (val, key) => reply.state(key, "", settings));
 }
 
-function getHandlerArgs (request, handler) {
-  const handlerArgs = [ filterRequest(request) ];
+function getHandlerArgs (req, handler) {
+  const handlerArgs = [ filterRequest(req) ];
 
   if (handler.optionsType === "selectOne") {
     handlerArgs.push(handler.options[handler.selectedOption]);
@@ -54,10 +54,10 @@ function defineDynamicRoutes (drydock) {
       method: routeCfg.method,
       path: routeCfg.path,
       vhost: routeCfg.hostname,
-      handler: (request, reply) => {
+      handler: (req, reply) => {
         const drydockHandler = getSelectedHandler(drydock, routeCfg.name);
-        const handlerCxt = getHandlerContext(drydock, request);
-        const handlerArgs = getHandlerArgs(request, drydockHandler);
+        const handlerCxt = getHandlerContext(drydock, req);
+        const handlerArgs = getHandlerArgs(req, drydockHandler);
 
         Promise.resolve()
           .then(() => drydockHandler.handler.apply(handlerCxt, handlerArgs))
@@ -76,7 +76,7 @@ function defineDynamicRoutes (drydock) {
               .type(responseOptions.type)
               .code(responseOptions.code);
 
-            updateCookieState(r, request.state, handlerCxt.cookies, {
+            updateCookieState(r, req.state, handlerCxt.cookies, {
               encoding: drydock.cookieEncoding,
               domain: handlerCxt.cookieDomain
             });
@@ -109,7 +109,7 @@ function defineStaticRoutes (drydock) {
       drydock.server.route({
         method: "GET",
         path: routeCfg.urlPath,
-        handler: (request, reply) => reply.file(routeCfg.filePath)
+        handler: (req, reply) => reply.file(routeCfg.filePath)
       });
     }
   });
@@ -121,18 +121,13 @@ function defineProxyRoutes (drydock) {
       method: proxyRoute.method,
       path: proxyRoute.path,
       handler: (req, reply) => {
-        const { method, headers, payload, url: {
-          protocol,
-          hostname,
-          pathname,
-          href
-        } } = req;
+        const { method, headers, payload } = req;
 
         delete headers.host;
-        let url = proxyRoute.forwardTo;
-        if (_.isFunction(proxyRoute.forwardTo)) {
-          url = proxyRoute.forwardTo(req);
-        }
+
+        const url = _.isFunction(proxyRoute.forwardTo) ?
+          proxyRoute.forwardTo(req) :
+          proxyRoute.forwardTo;
 
         request({
           url,
@@ -142,6 +137,7 @@ function defineProxyRoutes (drydock) {
           encoding: null
         }, (err, { statusCode, body, headers: responseHeaders }) => {
           if (err) {
+            // eslint-disable-next-line no-console
             console.log(`Unable to proxy HTTP request: ${err.stack}`);
             reply("Unknown failure.").code(500);
             return;

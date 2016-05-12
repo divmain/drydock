@@ -16,11 +16,12 @@ const color = Object.assign((text, _color) => `${_color}${text}\x1b[0m`, {
 
 export class Text {
   constructor (text) {
-    if (typeof text === undefined) {
+    if (typeof text === "undefined") {
       throw new Error("you must supply a parameter with `toString` method");
     }
     if (text instanceof Text) { return text; }
     this.text = text.toString();
+    return this;
   }
 
   toString () {

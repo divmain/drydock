@@ -1,13 +1,13 @@
-var _ = require("lodash"),
-  Vue = require("vue");
+var _ = require("lodash");
+var Vue = require("vue");
 
-var
-  ajax = require("../../util/ajax"),
-  watchHash = require("../../helpers/watch-hash");
+var ajax = require("../../util/ajax");
+var watchHash = require("../../helpers/watch-hash");
 
 var tmpl = require("./v-route-config.tmpl");
 
 require("./v-route-config.styl");
+
 
 module.exports = Vue.extend({
   template: tmpl,
