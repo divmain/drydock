@@ -20,7 +20,7 @@ drydock.jsonRoute({
       description: "Save the person's info.",
       handler: function (request) {
         this.state.birthday = request.payload.birthday;
-        this.cookies.hasBirthday = true;
+        this.cookies.hasBirthday = "true";
         return { status: "OK" };
       }
     }
@@ -59,7 +59,10 @@ drydock.htmlRoute({
     "get-person-error": {
       description: "Return an error instead of the person's info.",
       handler: function () {
-        throw new Drydock.HttpErr(401, payload: "<html>can't do that right now...</html>");
+        throw new Drydock.Errors.HttpError(
+          401,
+          "<html>can't do that right now...</html>"
+        );
       }
     }
   }
