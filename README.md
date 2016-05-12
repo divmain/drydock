@@ -157,7 +157,7 @@ When creating a `new Drydock` instance, the following options can be provided.  
 
 - `port` _integer_ - the port that your mock server should listen on.  Defaults to `1337` if not provided.
 - `ip` _string_ - the IP that you mock server should bind to.  Defaults to `0.0.0.0` (all interfaces) if not provided.
-- `verbose` _boolean_ - indicates whether the mock server should output HTTP transaction data to the console.  Defaults to `false` if not provided.
+- `verbose` _boolean_ - indicates whether the mock server should output HTTP transaction data and additional logging to the console.  Defaults to `false` if not provided.
 - `cors` _boolean_ - indicates whether the mock server should respond to CORS requests.  Defaults to `false` if not provided.
 - `cookieEncoding` _string_ - indicates the transformation between raw cookie data and how it is transferred to the client.  See the `encoding` in [Hapi's state management documentation](http://hapijs.com/api#serverstatename-options) to learn about the available options.  Defaults to `none` if not provided.
 - `proxyUndefined` _boolean_ - indicates whether requests for unknown routes should be forwarded to the host specified in the HTTP request.  This requires that the client is configured to use the Drydocks server as a proxy.
@@ -295,7 +295,7 @@ drydock.htmlRoute({
         "Mr.": "Mr. ",
         "Mrs.": "Mrs. ",
         "Ms.": "Ms. ",
-        "None": "" 
+        "None": ""
       }
     },
     "get-name-error": {
