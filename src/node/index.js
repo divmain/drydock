@@ -84,7 +84,9 @@ export default class Drydock {
   }
 
   start (cb) {
-    log(`starting drydock ${version} server on ${this.ip}:${this.port}...`);
+    if (this.verbose) {
+      log(`starting drydock ${version} server on ${this.ip}:${this.port}...`);
+    }
 
     this.server = new Server(this.ip, this.port, {
       router: { stripTrailingSlash: true },
@@ -108,7 +110,9 @@ export default class Drydock {
   }
 
   stop (cb) {
-    log("stopping server...");
+    if (this.verbose) {
+      log("stopping server...");
+    }
     this.server.stop(cb);
   }
 
