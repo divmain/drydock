@@ -38,7 +38,7 @@ describe('DryDock', () => {
         drydock2 = new Drydock({port: 9797});
         drydock2.start((error) => {
           expect(error).not.to.be.undefined;
-          done()
+          done();
         });
       });
     });
