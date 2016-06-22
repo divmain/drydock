@@ -7,3 +7,4 @@ lib
 
 # added by GitSavvy
 /npm-debug.log
+.npmrc
