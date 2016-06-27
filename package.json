@@ -17,7 +17,7 @@
     "lint": "eslint src/",
     "start": "gulp",
     "test": "npm run lint && mocha --compilers js:babel-register",
-    "test:watch": "mocha --compilers js:babel-register --watch",
+    "test:watch": "mocha --compilers js:babel-register --watch"
   },
   "devDependencies": {
     "@divmain/eslint-config-defaults": "10.0.0",
