@@ -18,7 +18,6 @@
     "start": "gulp",
     "test": "npm run lint && mocha --compilers js:babel-register",
     "test:watch": "mocha --compilers js:babel-register --watch",
-    "postinstall": "npm run build"
   },
   "devDependencies": {
     "@divmain/eslint-config-defaults": "10.0.0",
