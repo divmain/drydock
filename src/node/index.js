@@ -1,5 +1,6 @@
 import { each, cloneDeep } from "lodash";
 import { Server } from "hapi";
+import Inert from 'inert';
 
 import { version } from "../../package.json";
 
@@ -87,12 +88,20 @@ export default class Drydock {
     if (this.verbose) {
       log(`starting drydock ${version} server on ${this.ip}:${this.port}...`);
     }
+    this.server = new Server();
 
-    this.server = new Server(this.ip, this.port, {
+    const options = {
+      host: this.ip,
+      port: this.port,
       router: { stripTrailingSlash: true },
-      cors: this.cors,
-      state: { cookies: { failAction: "ignore" } }
-    });
+      routes: {
+        cors: this.cors,
+        state: { failAction: "ignore" }
+      }
+    };
+    this.server.connection(options);
+    this.server.register(Inert, () => {});
+
 
     defineApiRoutes(this);
     defineInstanceRoutes(this);
