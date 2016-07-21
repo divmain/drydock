@@ -22,7 +22,11 @@ export const route = Joi.object().keys({
   method: Joi.string().allow("*", "GET", "POST", "PUT", "DELETE", "PATCH").required(),
   path: Joi.string().required(),
   handlers: Joi.object().required(),
-  hostname: Joi.string().optional()
+  hostname: Joi.string().optional(),
+  defaultCode: Joi.alternatives().try(
+    Joi.number(),
+    Joi.func()
+  ).optional()
 });
 
 export const handler = Joi.object().keys({
@@ -36,7 +40,11 @@ export const handler = Joi.object().keys({
 
 export const staticRoute = Joi.object().keys({
   filePath: Joi.string().required(),
-  urlPath: Joi.string().required()
+  urlPath: Joi.string().required(),
+  defaultCode: Joi.alternatives().try(
+    Joi.number(),
+    Joi.func()
+  ).optional()
 });
 
 export const proxyRoute = Joi.object().keys({

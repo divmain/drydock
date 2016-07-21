@@ -48,6 +48,12 @@ function getHandlerArgs (req, handler) {
   return handlerArgs;
 }
 
+function getStatusCode(defaultCode, handlerCxt, handlerArgs) {
+  return (typeof defaultCode === 'function') ?
+            defaultCode.apply(handlerCxt, handlerArgs) :
+            defaultCode;
+}
+
 function defineDynamicRoutes (drydock) {
   drydock._initial.routes.forEach(routeCfg => {
     drydock.server.route({
@@ -61,11 +67,11 @@ function defineDynamicRoutes (drydock) {
 
         Promise.resolve()
           .then(() => drydockHandler.handler.apply(handlerCxt, handlerArgs))
-          .then(response => ({
+          .then(response => {
             payload: response,
             type: routeCfg.type,
-            code: routeCfg.defaultCode || 200
-          }))
+            code: getStatusCode(routeCfg.defaultCode, handlerCxt, handlerArgs) || 200
+          })
           .catch(Errors.HttpError, err => ({
             payload: err.payload,
             type: err.type,
