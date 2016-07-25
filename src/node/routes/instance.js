@@ -68,9 +68,11 @@ function defineDynamicRoutes (drydock) {
         Promise.resolve()
           .then(() => drydockHandler.handler.apply(handlerCxt, handlerArgs))
           .then(response => {
-            payload: response,
-            type: routeCfg.type,
-            code: getStatusCode(routeCfg.defaultCode, handlerCxt, handlerArgs) || 200
+            return {
+              payload: response,
+              type: routeCfg.type,
+              code: getStatusCode(routeCfg.defaultCode, handlerCxt, handlerArgs) || 200
+            };
           })
           .catch(Errors.HttpError, err => ({
             payload: err.payload,
