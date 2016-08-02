@@ -197,6 +197,7 @@ drydock.jsonRoute({
 
 Each handler function takes a request object.  This object will have the following properties:
 
+- `headers` - the headers of the HTTP request.
 - `payload` - the body of the HTTP request.
 - `params` - the parameters in the requested URL (see below).
 - `query` - the dictionary object equivalent of the query string.
