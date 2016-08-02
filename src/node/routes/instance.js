@@ -15,7 +15,7 @@ function getSelectedHandler (drydock, routeName) {
 
 function filterRequest (req) {
   return _.chain(req)
-    .pick("payload", "params", "query")
+    .pick("headers", "payload", "params", "query")
     .cloneDeep()
     .value();
 }
