@@ -88,7 +88,7 @@ export default class Drydock {
     if (this.verbose) {
       log(`starting drydock ${version} server on ${this.ip}:${this.port}...`);
     }
-    this.server = new Server();
+    this.server = new Server({ connections: { router: { isCaseSensitive: false } } });
 
     const options = {
       host: this.ip,
