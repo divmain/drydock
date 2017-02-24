@@ -1,6 +1,6 @@
 import { each, cloneDeep } from "lodash";
 import { Server } from "hapi";
-import Inert from 'inert';
+import Inert from "inert";
 
 import { version } from "../../package.json";
 
