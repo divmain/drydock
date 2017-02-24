@@ -20,6 +20,7 @@ const invalidRoute = /^\/drydock\//;
 export default class Drydock {
   constructor (options = {}) {
     Object.assign(this, {
+      caseInsensitive: options.caseInsensitive || false,
       port: options.port || 1337,
       ip: options.ip || "0.0.0.0",
       verbose: !!options.verbose,
@@ -88,7 +89,11 @@ export default class Drydock {
     if (this.verbose) {
       log(`starting drydock ${version} server on ${this.ip}:${this.port}...`);
     }
-    this.server = new Server();
+    const serverConfig = this.caseInsensitive
+                         ? { connections: { router: { isCaseSensitive: false } } }
+                         : {};
+
+    this.server = new Server(serverConfig);
 
     const options = {
       host: this.ip,
