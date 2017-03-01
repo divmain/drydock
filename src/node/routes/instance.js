@@ -58,13 +58,12 @@ function defineDynamicRoutes (drydock) {
         const drydockHandler = getSelectedHandler(drydock, routeCfg.name);
         const handlerCxt = getHandlerContext(drydock, req);
         const handlerArgs = getHandlerArgs(req, drydockHandler);
-
         Promise.resolve()
           .then(() => drydockHandler.handler.apply(handlerCxt, handlerArgs))
           .then(response => ({
             payload: response,
             type: routeCfg.type,
-            code: routeCfg.defaultCode || 200
+            code: routeCfg.headers && routeCfg.headers.code ? routeCfg.headers.code : 200
           }))
           .catch(Errors.HttpError, err => ({
             payload: err.payload,

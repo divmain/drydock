@@ -22,7 +22,8 @@ export const route = Joi.object().keys({
   method: Joi.string().allow("*", "GET", "POST", "PUT", "DELETE", "PATCH").required(),
   path: Joi.string().required(),
   handlers: Joi.object().required(),
-  hostname: Joi.string().optional()
+  hostname: Joi.string().optional(),
+  headers: Joi.object().optional()
 });
 
 export const handler = Joi.object().keys({
