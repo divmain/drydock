@@ -105,4 +105,65 @@ describe('DryDock', () => {
       });
     });
   });
+
+  describe('Specifying Status Codes', () => {
+    let drydock;
+
+    beforeEach(() => {
+      drydock = new Drydock({ port: 9797 });
+
+      drydock.htmlRoute({
+        name: 'default',
+        method: 'GET',
+        path: '/200',
+        handlers: {
+          success: {
+            description: 'default',
+            handler: () => {}
+          }
+        }
+      });
+    });
+
+    afterEach((done) => {
+      new Promise(resolve => drydock.stop(resolve));
+      done();
+    });
+
+    it('returns status code 200 by default', (done) => {
+      drydock.start(() => {});
+      request(`http://127.0.0.1:9797/200`, function (error, response, body) {
+        expect(response.statusCode).to.eql(200);
+        done();
+      });
+    });
+
+    describe('when a status code is specified', () => {
+      const CODE = 201;
+      beforeEach(() => {
+        drydock = new Drydock({ port: 9797 });
+
+        drydock.htmlRoute({
+          name: `${CODE}`,
+          method: 'GET',
+          path: `/${CODE}`,
+          headers: { code: CODE },
+          handlers: {
+            success: {
+              description: `${CODE}`,
+              handler: () => {}
+            }
+          }
+        });
+      });
+
+      it('returns specified status code', (done) => {
+        drydock.start(() => {});
+        request(`http://127.0.0.1:9797/${CODE}`, function (error, response, body) {
+          expect(response.statusCode).to.eql(CODE);
+          done();
+        });
+      });
+    });
+  });
 });

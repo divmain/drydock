@@ -210,6 +210,7 @@ Path values support parameters.  In our example above, if the user whose name wa
 }
 ```
 
+Drydock routes return status code 200 by default, but it does support specifying what status code the response should have. See an example in the HTML route below. Currently, the `headers` option only support status codes.  
 
 #### HTML routes
 
@@ -220,6 +221,7 @@ drydock.htmlRoute({
   name: "get-name",
   method: "GET",
   path: "/api/name",
+  headers: { code: 201 }
   handlers: {
     "get-name-success": {
       description: "Return the name that was previously set.",
