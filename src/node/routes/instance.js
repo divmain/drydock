@@ -97,7 +97,7 @@ function defineStaticRoutes (drydock) {
     if (routeCfg.type === "directory") {
       drydock.server.route({
         method: "GET",
-        path: path.join(routeCfg.urlPath, "{param*}"),
+        path: path.posix.join(routeCfg.urlPath, "{param*}"),
         handler: {
           directory: {
             path: routeCfg.filePath

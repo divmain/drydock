@@ -1,7 +1,7 @@
 {
   "name": "drydock",
   "main": "index.js",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "files": [
     "lib",
     "index.js",
@@ -13,7 +13,7 @@
     "build-frontend": "webpack --config ./webpack.config.js",
     "build-node": "babel -d ./lib/node/ ./src/node/",
     "clean": "rimraf ./lib && mkdir lib",
-    "copy": "cp src/ui/index.html lib/ui/index.html",
+    "copy": "cp-cli src/ui/index.html lib/ui/index.html",
     "lint": "eslint src/",
     "start": "gulp",
     "test": "npm run lint && mocha --compilers js:babel-register",
@@ -28,6 +28,7 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "chai": "^3.5.0",
+    "cp-cli": "^1.1.0",
     "css-loader": "^0.9.0",
     "eslint": "^2.2.0",
     "eslint-plugin-filenames": "^0.2.0",
